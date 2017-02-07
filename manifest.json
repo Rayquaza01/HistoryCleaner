@@ -1,0 +1,21 @@
+{
+    "manifest_version": 2,
+    "name": "History Cleaner",
+    "version": "1",
+    "description": "Deletes history older than a specified amount of days.",
+    "icons": {
+        "48": "icons/icon-48.png",
+        "96": "icons/icon-96.png"
+    },
+    "background": {
+        "scripts": ["background.js"]
+    },
+    "permissions": [
+        "history",
+        "storage",
+        "idle"
+    ],
+    "options_ui": {
+        "page": "options.html"
+    }
+}
