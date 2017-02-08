@@ -1,7 +1,8 @@
 browser.idle.onStateChanged.addListener(function(state) {
     if (state == 'idle') {
         browser.storage.local.get('days', function(res) {
-            if (res.days != 0) {
+            var days = res.days || 0;
+            if (days != 0) {
                 var end = new Date();
                 end.setHours(0);
                 end.setMinutes(0);

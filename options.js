@@ -4,7 +4,7 @@ function saveOptions(e) {
 }
 function restoreOptions() {
     browser.storage.local.get('days', function(res) {
-        document.querySelector("#days").value = res.days || '0';
+        document.querySelector("#days").value = res.days || 0;
     });
 }
 document.addEventListener('DOMContentLoaded', restoreOptions);
