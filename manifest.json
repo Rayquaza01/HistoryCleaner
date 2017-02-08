@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "History Cleaner",
-    "version": "1",
+    "version": "1.1",
     "description": "Deletes history older than a specified amount of days.",
     "icons": {
         "48": "icons/icon-48.png",

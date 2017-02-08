@@ -8,7 +8,7 @@ browser.idle.onStateChanged.addListener(function(state) {
                 end.setMinutes(0);
                 end.setSeconds(0);
                 end.setMilliseconds(0);
-                end.setDate(end.getDate() - res.days);
+                end.setDate(end.getDate() - days);
                 browser.history.deleteRange({startTime: 0, endTime: end.getTime()});
             }
         });
