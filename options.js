@@ -3,7 +3,7 @@ function saveOptions(e) {
     e.preventDefault();
 }
 function restoreOptions() {
-    browser.storage.local.get('days', function(res) {
+    browser.storage.local.get('days').then((res) => {
         document.querySelector("#days").value = res.days || 0;
     });
 }

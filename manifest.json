@@ -3,6 +3,11 @@
     "name": "History Cleaner",
     "version": "1.1",
     "description": "Deletes history older than a specified amount of days.",
+    "applications": {
+        "gecko": {
+            "id": "{a138007c-5ff6-4d10-83d9-0afaf0efbe5e}"
+        }
+    },
     "icons": {
         "48": "icons/icon-48.png",
         "96": "icons/icon-96.png"
