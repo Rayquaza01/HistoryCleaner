@@ -1,5 +1,5 @@
 browser.idle.onStateChanged.addListener((state) => {
-    if (state == 'idle') {
+    if (state === 'idle') {
         browser.storage.local.get('days').then((res) => {
             var days = parseInt(res.days) || 0;
             if (days !== 0) {
