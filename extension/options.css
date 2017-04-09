@@ -1,0 +1,24 @@
+body, input {
+    font-size: 1.25rem;
+}
+#box {
+    align-items: center;
+    display: flex;
+    float: left;
+}
+#labels {
+    float: left;
+    width: 50%;
+}
+#settings {
+    float: right;
+    width: 50%;
+}
+span {
+    line-height: 30px;
+}
+input {
+    height: 30px;
+    text-align: right;
+    width: 100%;
+}

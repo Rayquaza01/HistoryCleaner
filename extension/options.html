@@ -2,12 +2,17 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="options.css">
     </head>
     <body>
-        <form>
-            <label>Number of days to keep history (set to 0 to disable): <input id="days" type="number" min="0"></label>
-            <input id="submit" type="submit" value="Save">
-        </form>
+        <div id="box">
+            <div id="labels">
+                <span>Number of days to keep history (set to 0 to disable)</span>
+            </div>
+            <div id="settings">
+                <input id="days" type="number" min="0">
+            </div>
+        </div>
         <script src="options.js"></script>
     </body>
 </html>

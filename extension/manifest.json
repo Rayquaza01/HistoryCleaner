@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "History Cleaner",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "description": "Deletes history older than a specified amount of days.",
     "applications": {
         "gecko": {
@@ -21,6 +21,7 @@
         "idle"
     ],
     "options_ui": {
-        "page": "options.html"
+        "page": "options.html",
+        "browser_style": true
     }
 }
