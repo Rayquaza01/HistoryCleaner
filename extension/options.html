@@ -7,12 +7,20 @@
     <body>
         <div id="box">
             <div id="labels">
-                <span>Number of days to keep history (set to 0 to disable)</span>
+                <span>Number of days to keep history (set to 0 to disable)</span><br>
+                <span>Maximum no of visits</span><br>
+                <span>Delete Mode</span>
             </div>
             <div id="settings">
                 <input id="days" type="number" min="0">
+                <input id="visitCount" type="number" min="0">
+                <select id="mode">
+                    <option value="days">Delete older than X days</option>
+                    <option value="visits">Delete sites with &lt; X visits</option>
+                </select>
             </div>
         </div>
+        <script src="webext_utilities.js"></script>
         <script src="options.js"></script>
     </body>
 </html>
