@@ -1,22 +1,20 @@
 body, input {
     font-size: 1.25rem;
 }
-#box {
-    align-items: center;
-    display: flex;
-    float: left;
-}
-#labels {
-    float: left;
-    width: 50%;
-}
+
+
 #settings {
-    float: right;
-    width: 50%;
+    width: 100%;
 }
-span {
-    line-height: 30px;
+
+tr {
+    border-bottom: 1px solid black;
 }
+
+table > tr:last-child {
+    border-bottom: none;
+}
+
 input {
     height: 30px;
     text-align: right;

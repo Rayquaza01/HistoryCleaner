@@ -13,7 +13,7 @@
         "96": "icons/icon-96.png"
     },
     "background": {
-        "scripts": ["background.js"]
+        "scripts": ["webext_utilities.js", "background.js"]
     },
     "permissions": [
         "history",
