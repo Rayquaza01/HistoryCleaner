@@ -1,0 +1,30 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "webextensions": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "indent": ["error", 4, { "SwitchCase": 1 }],
+        "quotes": ["error", "double"],
+        "semi": ["error", "always"],
+        "curly": ["error", "all"],
+        "eqeqeq": ["error", "always"],
+        "padding-line-between-statements": [
+            "error",
+            {
+                "blankLine": "always",
+                "prev": "*",
+                "next": "function"
+            }
+        ],
+        "no-trailing-spaces": "error",
+        "comma-spacing": "error",
+        "no-nested-ternary": "error",
+        "max-depth": ["error", 4]
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018
+    }
+}

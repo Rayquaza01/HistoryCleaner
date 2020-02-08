@@ -1,0 +1,29 @@
+{
+  "name": "history-cleaner",
+  "version": "1.0.0",
+  "description": "Firefox addon that deletes history older than a specified amount of days.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "firefox": "web-ext run -s ./extension",
+    "nightly": "web-ext run -s ./extension -f firefox-trunk"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rayquaza01/HistoryCleaner.git"
+  },
+  "author": "Rayquaza01",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Rayquaza01/HistoryCleaner/issues"
+  },
+  "homepage": "https://github.com/Rayquaza01/HistoryCleaner#readme",
+  "dependencies": {
+    "eslint": "^6.5.1",
+    "prettier": "^1.18.2",
+    "web-ext": "^3.2.0"
+  },
+  "devDependencies": {
+    "webextension-polyfill": "^0.6.0"
+  }
+}
