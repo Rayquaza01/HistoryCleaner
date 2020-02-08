@@ -1,20 +1,29 @@
 /* global defaultValues */
 
+// brute force history items with visitCount or less visits
 async function filterByVisits(visitCount, end) {
-    // brute force history items with visitCount or less visits
-    let search = 1000;
-    let history = await browser.history.search({text: "", maxResults: search, startTime: 0, endTime: end});
-    while (search < history.length) {
-        search += 1000;
-        history = await browser.history.search({text: "", maxResults: search, startTime: 0, endTime: end});
+    let start = 0;
+
+    let totalHistory = [];
+
+    let history = await browser.history.search({
+        text: "",
+        startTime: start,
+        endTime: end,
+        maxResults: 1
+    });
+    while (history.length > 0) {
+        totalHistory = totalHistory.concat(history);
+        start = history[history.length - 1].lastVisitTime + 1;
+        history = await browser.history.search({text: "", startTime: start, endTime: end, maxResults: 1});
     }
-    return history.filter(item => item.visitCount <= visitCount);
+    return totalHistory.filter(item => item.visitCount <= visitCount);
 }
 
 async function deleteByVisits(visitCount, end) {
     let history = await filterByVisits(visitCount, end);
     for (let item of history) {
-        browser.history.deleteUrl({url: item.url});
+        browser.history.deleteUrl({ url: item.url });
     }
 }
 
@@ -34,13 +43,13 @@ async function deleteOlderThan(state) {
             if (res.deleteMode === "days") {
                 // delete by range OR visit count and range
                 if (res.visitCount === 0) {
-                    browser.history.deleteRange({startTime: 0, endTime: endDate});
+                    browser.history.deleteRange({ startTime: 0, endTime: endDate });
                 } else {
                     deleteByVisits(res.visitCount, endDate);
                 }
             }
         } else if (res.deleteMode === "visits") {
-            deleteByVisits(res.visitCount, new Date().getTime());
+            deleteByVisits(res.visitCount, Date.now());
         }
     }
 }
