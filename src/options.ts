@@ -10,9 +10,13 @@ let notificationRequestButton: ToggleButton = new ToggleButton(
 )
 
 function toggleButton(e: MouseEvent) {
+    // if permission is not currently granted
     if (notificationRequestButton.getState === 0) {
+        // attempt to get permission
         browser.permissions.request({ permissions: ["notifications"] })
             .then((request: boolean) => {
+                // if user gives permission
+                // switch button state, enable option, send demo notification
                 if (request) {
                     notificationRequestButton.setState = 1;
                     notifications.disabled = false;
@@ -21,18 +25,24 @@ function toggleButton(e: MouseEvent) {
                         title: "Notification Enabled!",
                         message: "You can now enable notifications for when history is deleted"
                     });
-                } else {
+                }
+                // otherwise, keep button state same, turn off notifications, disable option
+                else {
                     notificationRequestButton.setState = 0;
                     notifications.value = "false";
                     notifications.disabled = true;
                     browser.storage.local.set({ notifications: false })
                 }
             });
-    } else if (notificationRequestButton.getState === 1) {
+    }
+    // if permission currently granted
+    // revoke permission, switch button state, disable notifications, and disable option
+    else if (notificationRequestButton.getState === 1) {
         browser.permissions.remove({ permissions: ["notifications"] });
         notificationRequestButton.setState = 0;
         notifications.value = "false";
         notifications.disabled = true;
+        browser.storage.local.set({ notifications: false })
     }
 }
 
@@ -51,11 +61,16 @@ async function load() {
     days.value = res.days;
     notifications.value = res.notifications;
 
+    // check permissions
     let permissions = await browser.permissions.getAll();
+    // if notification permission
+    // enable notification option, set button to revoke
     if (permissions.permissions.includes("notifications")) {
         notifications.disabled = false;
         notificationRequestButton.setState = 1;
-    } else {
+    }
+    // otherise disable option, set button to enable
+    else {
         notifications.disabled = true;
         notificationRequestButton.setState = 0;
     }
