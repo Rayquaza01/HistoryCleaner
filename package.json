@@ -6,12 +6,12 @@
   "scripts": {
     "clean": "mkdir -p dist && rm -rf dist/*",
     "build:assets": "cpx src/**/*.{json,png} dist",
-    "build:bundle": "parcel build src/**/*.html src/background.js",
+    "build:bundle": "parcel build src/**/*.html src/background.ts",
     "build:extension": "web-ext build -s dist --overwrite-dest",
     "build:complete": "run-s clean build:assets build:bundle build:extension",
     "firefox": "web-ext run -s dist",
     "watch:assets": "cpx src/**/*.{json,png} dist -w",
-    "watch:bundle": "parcel watch src/**.html src/background.js --no-hmr --no-autoinstall",
+    "watch:bundle": "parcel watch src/**.html src/background.ts --no-hmr --no-autoinstall",
     "watch:extension": "npm-run-all clean -p watch:assets watch:bundle"
   },
   "repository": {
@@ -28,7 +28,8 @@
     "cpx": "^1.5.0",
     "npm-run-all": "^4.1.5",
     "parcel-bundler": "^1.12.4",
+    "typescript": "^4.0.5",
     "web-ext": "^5.3.0",
-    "webextension-polyfill": "^0.6.0"
+    "webextension-polyfill-ts": "^0.21.0"
   }
 }
