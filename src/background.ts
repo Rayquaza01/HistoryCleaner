@@ -1,4 +1,4 @@
-import { browser, Idle, Runtime } from "webextension-polyfill-ts";
+import { browser, Runtime } from "webextension-polyfill-ts";
 
 async function setup(installed: Runtime.OnInstalledDetailsType) {
     if (installed.reason === "install" || installed.reason === "update") {
@@ -9,7 +9,7 @@ async function setup(installed: Runtime.OnInstalledDetailsType) {
     }
 }
 
-async function deleteHistory(state: Idle.IdleState) {
+async function deleteHistory(state: any) {
     if (state === "idle") {
         let res = await browser.storage.local.get();
         if (res.days > 0) {
@@ -28,11 +28,12 @@ async function deleteHistory(state: Idle.IdleState) {
                     type: "basic",
                     title: "History deleted",
                     message: `History deleted at ${new Date().toLocaleString()}`
-                })
+                });
             }
         }
     };
 }
 
 browser.idle.onStateChanged.addListener(deleteHistory);
+browser.runtime.onMessage.addListener(deleteHistory);
 browser.runtime.onInstalled.addListener(setup);

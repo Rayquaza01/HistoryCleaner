@@ -8,8 +8,13 @@ let notificationRequestButton: ToggleButton = new ToggleButton(
     document.querySelector("#notification-permission-request"),
     ["Request Notification Permission", "Revoke Notification Permission"]
 )
+let manualDeleteButton: HTMLButtonElement = document.querySelector("#manual-delete");
 
-function toggleButton(e: MouseEvent) {
+function manualDelete() {
+    browser.runtime.sendMessage("{a138007c-5ff6-4d10-83d9-0afaf0efbe5e}", "idle");
+}
+
+function togglePermission(e: MouseEvent): void {
     // if permission is not currently granted
     if (notificationRequestButton.getState === 0) {
         // attempt to get permission
@@ -46,7 +51,7 @@ function toggleButton(e: MouseEvent) {
     }
 }
 
-function save(e: InputEvent) {
+function save(e: InputEvent): void {
     // get options from page
     let obj = {
         days: days.value || 0,
@@ -56,7 +61,7 @@ function save(e: InputEvent) {
     browser.storage.local.set(obj);
 }
 
-async function load() {
+async function load(): Promise<void> {
     let res = await browser.storage.local.get();
     days.value = res.days;
     notifications.value = res.notifications;
@@ -77,5 +82,6 @@ async function load() {
 }
 
 document.addEventListener("DOMContentLoaded", load);
-notificationRequestButton.getElement.addEventListener("click", toggleButton);
+notificationRequestButton.getElement.addEventListener("click", togglePermission);
 document.querySelector("#box").addEventListener("input", save);
+manualDeleteButton.addEventListener("click", manualDelete);
