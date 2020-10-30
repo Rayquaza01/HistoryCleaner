@@ -25,11 +25,6 @@ function togglePermission(e: MouseEvent): void {
                 if (request) {
                     notificationRequestButton.setState = 1;
                     notifications.disabled = false;
-                    browser.notifications.create({
-                        type: "basic",
-                        title: "Notification Enabled!",
-                        message: "You can now enable notifications for when history is deleted"
-                    });
                 }
                 // otherwise, keep button state same, turn off notifications, disable option
                 else {
@@ -56,6 +51,13 @@ function save(e: InputEvent): void {
     let obj = {
         days: days.value || 0,
         notifications: JSON.parse(notifications.value) || false
+    }
+    if (obj.notifications && e.target === notifications) {
+        browser.notifications.create({
+            type: "basic",
+            title: "Notification Enabled!",
+            message: "You can now enable notifications for when history is deleted"
+        });
     }
     // save options
     browser.storage.local.set(obj);

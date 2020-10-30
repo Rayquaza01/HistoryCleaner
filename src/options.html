@@ -2,21 +2,29 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" type="text/css" href="options.css">
     </head>
     <body>
         <div id="box">
-            Number of days to keep history (set to 0 to disable)
-            <input id="days" type="number" min="0">
+            <h1>Number of days to keep history</h1>
+            <input id="days" type="number" min="0"><br>
+            <p>Set to 0 to disable</p>
 
-            Show Notifications:
+            <h1>Show Notifications</h1>
+            <p>
+                Request notifications permission using the below button,
+                and then set the option to Show Notifications to enable
+                notifications on the when history is deleted.<br>
+            </p>
+            <button id="notification-permission-request"></button><br>
             <select id="notifications" disabled>
                 <option value="false">Don't show notifications</option>
                 <option value="true">Show notifications</option>
             </select>
+
+            <h1>Manual Delete</h1>
+            <p>Press the button below to delete history manually.</p>
+            <button id="manual-delete">Manual Delete</button>
         </div>
-        <button id="manual-delete">Manual Delete</button>
-        <button id="notification-permission-request"></button>
         <script src="options.ts"></script>
     </body>
 </html>

@@ -27,7 +27,7 @@ async function deleteHistory(state: any) {
                 browser.notifications.create("history-deleted", {
                     type: "basic",
                     title: "History deleted",
-                    message: `History deleted at ${new Date().toLocaleString()}`
+                    message: `History from before ${end.toLocaleString()} deleted at ${new Date().toLocaleString()}`
                 });
             }
         }
