@@ -1,0 +1,16 @@
+body, input {
+    font-size: 1.25rem;
+}
+
+#box {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+}
+
+#permission-request[data-state="0"] {
+    content: "Request Notification Permission";
+}
+
+#permission-request[data-state="1"] {
+    content: "Revoke Notification Permission";
+}
