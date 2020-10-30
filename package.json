@@ -1,0 +1,34 @@
+{
+  "name": "history-cleaner",
+  "version": "1.2.3",
+  "description": "Firefox addon that deletes history older than a specified amount of days.",
+  "main": "index.js",
+  "scripts": {
+    "clean": "mkdir -p dist && rm -rf dist/*",
+    "build:assets": "cpx src/**/*.{json,png} dist",
+    "build:bundle": "parcel build src/**/*.html src/background.js",
+    "build:extension": "web-ext build -s dist --overwrite-dest",
+    "build:complete": "run-s clean build:assets build:bundle build:extension",
+    "firefox": "web-ext run -s dist",
+    "watch:assets": "cpx src/**/*.{json,png} dist -w",
+    "watch:bundle": "parcel watch src/**.html src/background.js --no-hmr --no-autoinstall",
+    "watch:extension": "npm-run-all clean -p watch:assets watch:bundle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rayquaza01/HistoryCleaner.git"
+  },
+  "author": "Joe Jarvis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Rayquaza01/HistoryCleaner/issues"
+  },
+  "homepage": "https://github.com/Rayquaza01/HistoryCleaner#readme",
+  "dependencies": {
+    "cpx": "^1.5.0",
+    "npm-run-all": "^4.1.5",
+    "parcel-bundler": "^1.12.4",
+    "web-ext": "^5.3.0",
+    "webextension-polyfill": "^0.6.0"
+  }
+}

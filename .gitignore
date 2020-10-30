@@ -1,2 +1,4 @@
-.jshintrc
 *.swp
+node_modules/
+dist/
+.cache/
