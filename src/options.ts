@@ -1,7 +1,10 @@
 import { browser } from "webextension-polyfill-ts";
 import { ToggleButton } from "./ToggleButton";
+import { MessageInterface } from "./MessageInterface";
 
 let days: HTMLInputElement = document.querySelector("#days");
+let idleLength: HTMLInputElement = document.querySelector("#idleLength");
+let deleteMode: HTMLSelectElement = document.querySelector("#deleteMode");
 let notifications: HTMLSelectElement = document.querySelector("#notifications");
 
 let notificationRequestButton: ToggleButton = new ToggleButton(
@@ -11,7 +14,10 @@ let notificationRequestButton: ToggleButton = new ToggleButton(
 let manualDeleteButton: HTMLButtonElement = document.querySelector("#manual-delete");
 
 function manualDelete() {
-    browser.runtime.sendMessage("{a138007c-5ff6-4d10-83d9-0afaf0efbe5e}", "idle");
+    let msg: MessageInterface = {
+        state: "delete"
+    };
+    browser.runtime.sendMessage(msg);
 }
 
 function togglePermission(e: MouseEvent): void {
@@ -48,16 +54,36 @@ function togglePermission(e: MouseEvent): void {
 
 function save(e: InputEvent): void {
     // get options from page
-    let obj = {
-        days: days.value || 0,
-        notifications: JSON.parse(notifications.value) || false
+    let obj: any = {
+        days: Number(days.value) || 0,
+        idleLength: Number(idleLength.value) || 60,
+        deleteMode: deleteMode.value || "idle",
+        notifications: JSON.parse(notifications.value) || false,
     }
+    console.log(obj.deleteMode);
     if (obj.notifications && e.target === notifications) {
         browser.notifications.create({
             type: "basic",
             title: "Notification Enabled!",
             message: "You can now enable notifications for when history is deleted"
         });
+    }
+
+    if (e.target === idleLength && obj.deleteMode === "idle") {
+        let msg: MessageInterface = {
+            state: "setidle",
+            data: obj.idleLength
+        };
+        browser.runtime.sendMessage(msg);
+    } else if (e.target === deleteMode) {
+        let msg: MessageInterface = { state: null };
+        if (obj.deleteMode === "idle") {
+            msg.state = "setidle";
+            msg.data = obj.idleLength;
+        } else {
+            msg.state = "setstartup";
+        }
+        browser.runtime.sendMessage(msg);
     }
     // save options
     browser.storage.local.set(obj);
@@ -66,6 +92,8 @@ function save(e: InputEvent): void {
 async function load(): Promise<void> {
     let res = await browser.storage.local.get();
     days.value = res.days;
+    idleLength.value = res.idleLength;
+    deleteMode.value = res.deleteMode;
     notifications.value = res.notifications;
 
     // check permissions
@@ -85,5 +113,5 @@ async function load(): Promise<void> {
 
 document.addEventListener("DOMContentLoaded", load);
 notificationRequestButton.getElement.addEventListener("click", togglePermission);
-document.querySelector("#box").addEventListener("input", save);
+document.querySelector("#box").addEventListener("change", save);
 manualDeleteButton.addEventListener("click", manualDelete);

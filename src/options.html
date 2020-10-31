@@ -7,7 +7,24 @@
         <div id="box">
             <h1>Number of days to keep history</h1>
             <input id="days" type="number" min="0"><br>
-            <p>Set to 0 to disable</p>
+            <p>(Defaults to 0, set to 0 to disable)</p>
+
+            <h1>Idle Length</h1>
+            <p>
+                Amount of time (seconds) the browser should idle before deleting history.
+                (Defaults to 60, Minimum 15)
+            </p>
+            <input id="idleLength" type="number" min="15">
+
+            <h1>Deletion Mode</h1>
+            <p>
+                Choose to delete history on browser startup or after idling for the idle length.
+                (Defaults to Idle)
+            </p>
+            <select id="deleteMode">
+                <option value="idle">Idle</option>
+                <option value="startup">Startup</option>
+            </select>
 
             <h1>Show Notifications</h1>
             <p>
@@ -24,6 +41,10 @@
             <h1>Manual Delete</h1>
             <p>Press the button below to delete history manually.</p>
             <button id="manual-delete">Manual Delete</button>
+
+            <h1>Sync</h1>
+            <button id="syncUp">Upload Config to Sync</button>
+            <button id="syncDown">Download Config from Sync</button>
         </div>
         <script src="options.ts"></script>
     </body>
