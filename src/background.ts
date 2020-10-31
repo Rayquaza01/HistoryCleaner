@@ -44,8 +44,19 @@ async function setup(installed: Runtime.OnInstalledDetailsType) {
         for (let key of Object.keys(DefaultOptions)) {
             res[key] ??= DefaultOptions[key];
         }
-        browser.storage.local.set(res);
+        await browser.storage.local.set(res);
+
+        // initialize sync object
+        let syncRes = await browser.storage.sync.get();
+        for (let key of Object.keys(DefaultOptions)) {
+            syncRes[key] ??= DefaultOptions[key];
+        }
+        await browser.storage.sync.set(syncRes);
+
         startup();
+        if (installed.reason === "install") {
+            browser.runtime.openOptionsPage();
+        }
     }
 }
 

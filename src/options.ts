@@ -7,6 +7,9 @@ let idleLength: HTMLInputElement = document.querySelector("#idleLength");
 let deleteMode: HTMLSelectElement = document.querySelector("#deleteMode");
 let notifications: HTMLSelectElement = document.querySelector("#notifications");
 
+let uploadButton: HTMLButtonElement = document.querySelector("#syncUp");
+let downloadButton: HTMLButtonElement = document.querySelector("#syncDown");
+
 let notificationRequestButton: ToggleButton = new ToggleButton(
     document.querySelector("#notification-permission-request"),
     ["Request Notification Permission", "Revoke Notification Permission"]
@@ -52,6 +55,18 @@ function togglePermission(e: MouseEvent): void {
     }
 }
 
+async function upload() {
+    let res = await browser.storage.local.get();
+    await browser.storage.sync.set(res);
+    location.reload();
+}
+
+async function download() {
+    let res = await browser.storage.sync.get();
+    await browser.storage.local.set(res);
+    location.reload();
+}
+
 function save(e: InputEvent): void {
     // get options from page
     let obj: any = {
@@ -60,12 +75,11 @@ function save(e: InputEvent): void {
         deleteMode: deleteMode.value || "idle",
         notifications: JSON.parse(notifications.value) || false,
     }
-    console.log(obj.deleteMode);
     if (obj.notifications && e.target === notifications) {
         browser.notifications.create({
             type: "basic",
             title: "Notification Enabled!",
-            message: "You can now enable notifications for when history is deleted"
+            message: "Notifications will now appear when history is deleted!"
         });
     }
 
@@ -115,3 +129,6 @@ document.addEventListener("DOMContentLoaded", load);
 notificationRequestButton.getElement.addEventListener("click", togglePermission);
 document.querySelector("#box").addEventListener("change", save);
 manualDeleteButton.addEventListener("click", manualDelete);
+
+uploadButton.addEventListener("click", upload);
+downloadButton.addEventListener("click", download);
