@@ -6,8 +6,8 @@
     <body>
         <div id="box">
             <h1>Number of days to keep history</h1>
+            <p>Defaults to 0, set to 0 to disable</p>
             <input id="days" type="number" min="0"><br>
-            <p>(Defaults to 0, set to 0 to disable)</p>
 
             <h1>Idle Length</h1>
             <p>
@@ -19,7 +19,7 @@
             <h1>Deletion Mode</h1>
             <p>
                 Choose to delete history on browser startup or after idling for the idle length.
-                (Defaults to Idle)
+                (Defaults to Idle). If set to startup, Idle Length has no effect.
             </p>
             <select id="deleteMode">
                 <option value="idle">Idle</option>
