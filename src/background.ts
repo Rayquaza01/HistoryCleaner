@@ -38,7 +38,7 @@ async function startup(): Promise<void> {
     }
 }
 
-async function setup(installed: Runtime.OnInstalledDetailsType) {
+async function setup(installed: Runtime.OnInstalledDetailsType): Promise<void> {
     if (installed.reason === "install" || installed.reason === "update") {
         let res = await browser.storage.local.get();
         for (let key of Object.keys(DefaultOptions)) {
