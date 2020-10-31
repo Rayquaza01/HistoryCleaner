@@ -16,7 +16,7 @@ let notificationRequestButton: ToggleButton = new ToggleButton(
 )
 let manualDeleteButton: HTMLButtonElement = document.querySelector("#manual-delete");
 
-function manualDelete() {
+function manualDelete(): void {
     let msg: MessageInterface = {
         state: "delete"
     };
@@ -25,19 +25,19 @@ function manualDelete() {
 
 function togglePermission(e: MouseEvent): void {
     // if permission is not currently granted
-    if (notificationRequestButton.getState === 0) {
+    if (notificationRequestButton.state === 0) {
         // attempt to get permission
         browser.permissions.request({ permissions: ["notifications"] })
             .then((request: boolean) => {
                 // if user gives permission
                 // switch button state, enable option, send demo notification
                 if (request) {
-                    notificationRequestButton.setState = 1;
+                    notificationRequestButton.state = 1;
                     notifications.disabled = false;
                 }
                 // otherwise, keep button state same, turn off notifications, disable option
                 else {
-                    notificationRequestButton.setState = 0;
+                    notificationRequestButton.state = 0;
                     notifications.value = "false";
                     notifications.disabled = true;
                     browser.storage.local.set({ notifications: false })
@@ -46,23 +46,40 @@ function togglePermission(e: MouseEvent): void {
     }
     // if permission currently granted
     // revoke permission, switch button state, disable notifications, and disable option
-    else if (notificationRequestButton.getState === 1) {
+    else if (notificationRequestButton.state === 1) {
         browser.permissions.remove({ permissions: ["notifications"] });
-        notificationRequestButton.setState = 0;
+        notificationRequestButton.state = 0;
         notifications.value = "false";
         notifications.disabled = true;
         browser.storage.local.set({ notifications: false })
     }
 }
 
-async function upload() {
+async function upload(): Promise<void> {
     let res = await browser.storage.local.get();
     await browser.storage.sync.set(res);
     location.reload();
 }
 
-async function download() {
+async function download(): Promise<void> {
     let res = await browser.storage.sync.get();
+
+    // set delete mode from sync get
+    let msg: MessageInterface = { state: null }
+    if (res.deleteMode === "idle") {
+        msg.state = "setidle"
+        msg.data = res.idleLength
+        browser.runtime.sendMessage(msg);
+    } else if (res.deleteMode === "startup") {
+        msg.state = "setstartup";
+        browser.runtime.sendMessage(msg);
+    }
+
+    // disable notifications if permission not allowed
+    if (notificationRequestButton.state === 0) {
+        res.notifications = false;
+    }
+
     await browser.storage.local.set(res);
     location.reload();
 }
@@ -116,12 +133,12 @@ async function load(): Promise<void> {
     // enable notification option, set button to revoke
     if (permissions.permissions.includes("notifications")) {
         notifications.disabled = false;
-        notificationRequestButton.setState = 1;
+        notificationRequestButton.state = 1;
     }
     // otherise disable option, set button to enable
     else {
         notifications.disabled = true;
-        notificationRequestButton.setState = 0;
+        notificationRequestButton.state = 0;
     }
 }
 
