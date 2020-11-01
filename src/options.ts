@@ -95,6 +95,7 @@ function save(e: InputEvent): void {
     if (obj.notifications && e.target === notifications) {
         browser.notifications.create({
             type: "basic",
+            iconUrl: "icons/icon-96.png",
             title: "Notification Enabled!",
             message: "Notifications will now appear when history is deleted!"
         });

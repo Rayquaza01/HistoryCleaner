@@ -2,7 +2,7 @@ import { browser, Idle, Runtime } from "webextension-polyfill-ts";
 import { OptionsInterface, DefaultOptions} from "./OptionsInterface";
 import { MessageInterface } from "./MessageInterface";
 
-function onMessage(msg: MessageInterface): void {
+function onMessage(msg: MessageInterface): Promise<void> {
     switch (msg.state) {
         case "delete":
             deleteHistory();
@@ -20,6 +20,7 @@ function onMessage(msg: MessageInterface): void {
             }
             break;
     }
+    return Promise.resolve();
 }
 
 function idleListener(state: Idle.IdleState): void {
@@ -74,8 +75,9 @@ async function deleteHistory(): Promise<void> {
             endTime: end.getTime()
         });
         if (res.notifications) {
-            browser.notifications.create("history-deleted", {
+            browser.notifications.create({
                 type: "basic",
+                iconUrl: "icons/icon-96.png",
                 title: "History deleted",
                 message: `History from before ${end.toLocaleString()} deleted at ${new Date().toLocaleString()}`
             });
