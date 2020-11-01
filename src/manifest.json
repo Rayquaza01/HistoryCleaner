@@ -25,5 +25,5 @@
         "page": "options.html",
         "browser_style": true
     },
-    "default_locale": "en-US"
+    "default_locale": "en_US"
 }
