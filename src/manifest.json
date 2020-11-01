@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
-    "name": "History Cleaner",
-    "version": "1.2.2",
-    "description": "Deletes history older than a specified amount of days.",
+    "name": "__MSG_extensionName__",
+    "version": "1.2.4",
+    "description": "__MSG_extensionDescription__",
     "applications": {
         "gecko": {
             "id": "{a138007c-5ff6-4d10-83d9-0afaf0efbe5e}"
@@ -24,5 +24,6 @@
     "options_ui": {
         "page": "options.html",
         "browser_style": true
-    }
+    },
+    "default_locale": "en-US"
 }

@@ -78,8 +78,14 @@ async function deleteHistory(): Promise<void> {
             browser.notifications.create({
                 type: "basic",
                 iconUrl: "icons/icon-96.png",
-                title: "History deleted",
-                message: `History from before ${end.toLocaleString()} deleted at ${new Date().toLocaleString()}`
+                title: browser.i18n.getMessage("historyDeletedNotification"),
+                message: browser.i18n.getMessage(
+                    "historyDeletedNotificationBody",
+                    [
+                        end.toLocaleString(),
+                        new Date().toLocaleString()
+                    ]
+                )
             });
         }
     }

@@ -1,0 +1,112 @@
+{
+  "extensionName": {
+    "message": "History Cleaner",
+    "description": "Name of extension"
+  },
+  "extensionDescription": {
+    "message": "Deletes history older than a specified amount of days.",
+    "description": "Description of extension"
+  },
+  "optionDaysText": {
+    "message": "Number of days to keep history",
+    "description": ""
+  },
+  "optionDaysInfo": {
+    "message": "Defaults to 0, set to 0 to disable",
+    "description": ""
+  },
+  "optionIdleLengthText": {
+    "message": "Idle Length",
+    "description": ""
+  },
+  "optionIdleLengthInfo": {
+    "message": "Amount of time (seconds) the browser should idle before deleting history. (Defaults to 60, Minimum 15)",
+    "description": ""
+  },
+  "optionDeleteModeText": {
+    "message": "Deletion Mode",
+    "description": ""
+  },
+  "optionDeleteModeInfo": {
+    "message": "Choose to delete history on browser startup or after idling for the idle length. (Defaults to Idle). If set to startup, Idle Length has no effect.",
+    "description": ""
+  },
+  "optionDeleteModeIdle": {
+    "message": "Idle",
+    "description": ""
+  },
+  "optionDeleteModeStartup": {
+    "message": "Startup",
+    "description": ""
+  },
+  "optionNotificationsText": {
+    "message": "Show Notifications",
+    "description": ""
+  },
+  "optionNotificationsInfo": {
+    "message": "Request notifications permission using the below button, and then set the option to Show Notifications to enable and then set the option to Show Notifications to enable notifications on the when history is deleted.",
+    "description": ""
+  },
+  "optionNotificationsDisabled": {
+    "message": "Don't show notifications",
+    "description": ""
+  },
+  "optionNotificationsEnabled": {
+    "message": "Show notifications",
+    "description": ""
+  },
+  "manualDelete": {
+    "message": "Manual Delete",
+    "description": ""
+  },
+  "manualDeleteInfo": {
+    "message": "Press the button below to delete history manually.",
+    "description": ""
+  },
+  "sync": {
+    "message": "Sync",
+    "description": ""
+  },
+  "syncUp": {
+    "message": "Upload Config to Sync",
+    "description": ""
+  },
+  "syncDown": {
+    "message": "Download Config from Sync",
+    "description": ""
+  },
+  "notificationRequest": {
+    "message": "Request Notification Permission",
+    "description": ""
+  },
+  "notificationRevoke": {
+    "message": "Revoke Notification Permission",
+    "description": ""
+  },
+  "notificationEnabled": {
+    "message": "Notifications Enabled!",
+    "description": ""
+  },
+  "notificationEnabledBody": {
+    "message": "Notifications will now appear when history is deleted",
+    "description": ""
+  },
+  "historyDeletedNotification": {
+    "message": "History deleted",
+    "description": ""
+  },
+  "historyDeletedNotificationBody": {
+    "message": "History from before $END$ deleted at $NOW$",
+    "description": "",
+    "placeholders": {
+      "end": {
+        "content": "$1",
+        "example": ""
+      },
+      "now": {
+        "content": "$2",
+        "example": ""
+      }
+    }
+  }
+}

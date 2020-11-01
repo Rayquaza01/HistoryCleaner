@@ -5,46 +5,36 @@
     </head>
     <body>
         <div id="box">
-            <h1>Number of days to keep history</h1>
-            <p>Defaults to 0, set to 0 to disable</p>
+            <h1 data-i18n="optionDaysText" class="i18n"></h1>
+            <p data-i18n="optionDaysInfo" class="i18n"></p>
             <input id="days" type="number" min="0"><br>
 
-            <h1>Idle Length</h1>
-            <p>
-                Amount of time (seconds) the browser should idle before deleting history.
-                (Defaults to 60, Minimum 15)
-            </p>
+            <h1 data-i18n="optionIdleLengthText" class="i18n"></h1>
+            <p data-i18n="optionIdleLengthInfo" class="i18n"></p>
             <input id="idleLength" type="number" min="15">
 
-            <h1>Deletion Mode</h1>
-            <p>
-                Choose to delete history on browser startup or after idling for the idle length.
-                (Defaults to Idle). If set to startup, Idle Length has no effect.
-            </p>
+            <h1 data-i18n="optionDeleteModeText" class="i18n"></h1>
+            <p data-i18n="optionDeleteModeInfo" class="i18n"></p>
             <select id="deleteMode">
-                <option value="idle">Idle</option>
-                <option value="startup">Startup</option>
+                <option value="idle" data-i18n="optionDeleteModeIdle" class="i18n"></option>
+                <option value="startup" data-i18n="optionDeleteModeStartup" class="i18n"></option>
             </select>
 
-            <h1>Show Notifications</h1>
-            <p>
-                Request notifications permission using the below button,
-                and then set the option to Show Notifications to enable
-                notifications on the when history is deleted.<br>
-            </p>
+            <h1 data-i18n="optionNotificationsText" class="i18n"></h1>
+            <p data-i18n="optionNotificationsInfo" class="i18n"></p>
             <button id="notification-permission-request"></button><br>
             <select id="notifications" disabled>
-                <option value="false">Don't show notifications</option>
-                <option value="true">Show notifications</option>
+                <option value="false" data-i18n="optionNotificationsDisabled" class="i18n"></option>
+                <option value="true" data-i18n="optionNotificationsEnabled" class="i18n"></option>
             </select>
 
-            <h1>Manual Delete</h1>
-            <p>Press the button below to delete history manually.</p>
-            <button id="manual-delete">Manual Delete</button>
+            <h1 data-i18n="manualDelete" class="i18n"></h1>
+            <p data-i18n="manualDeleteInfo" class="i18n"></p>
+            <button id="manual-delete" data-i18n="manualDelete" class="i18n"></button>
 
-            <h1>Sync</h1>
-            <button id="syncUp">Upload Config to Sync</button>
-            <button id="syncDown">Download Config from Sync</button>
+            <h1 data-i18n="sync" class="i18n"></h1>
+            <button id="syncUp" data-i18n="syncUp" class="i18n"></button>
+            <button id="syncDown" data-i18n="syncDown" class="i18n"></button>
         </div>
         <script src="options.ts"></script>
     </body>

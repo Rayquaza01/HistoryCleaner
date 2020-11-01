@@ -1,6 +1,7 @@
 import { browser } from "webextension-polyfill-ts";
 import { ToggleButton } from "./ToggleButton";
 import { MessageInterface } from "./MessageInterface";
+import { i18n } from "./i18n";
 
 let days: HTMLInputElement = document.querySelector("#days");
 let idleLength: HTMLInputElement = document.querySelector("#idleLength");
@@ -12,7 +13,10 @@ let downloadButton: HTMLButtonElement = document.querySelector("#syncDown");
 
 let notificationRequestButton: ToggleButton = new ToggleButton(
     document.querySelector("#notification-permission-request"),
-    ["Request Notification Permission", "Revoke Notification Permission"]
+    [
+        browser.i18n.getMessage("notificationRequest"),
+        browser.i18n.getMessage("notificationRevoke")
+    ]
 )
 let manualDeleteButton: HTMLButtonElement = document.querySelector("#manual-delete");
 
@@ -96,8 +100,8 @@ function save(e: InputEvent): void {
         browser.notifications.create({
             type: "basic",
             iconUrl: "icons/icon-96.png",
-            title: "Notification Enabled!",
-            message: "Notifications will now appear when history is deleted!"
+            title: browser.i18n.getMessage("notificationEnabled"),
+            message: browser.i18n.getMessage("notificationEnabledBody")
         });
     }
 
@@ -122,6 +126,8 @@ function save(e: InputEvent): void {
 }
 
 async function load(): Promise<void> {
+    i18n();
+
     let res = await browser.storage.local.get();
     days.value = res.days;
     idleLength.value = res.idleLength;
