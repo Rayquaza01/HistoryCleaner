@@ -4,17 +4,24 @@ import { MessageInterface } from "./MessageInterface";
 
 function onMessage(msg: MessageInterface): Promise<void> {
     switch (msg.state) {
+        // manual delete button
         case "delete":
             deleteHistory();
             break;
+        // set idle mode
         case "setidle":
+            // remove idle listener if one exists
             if (browser.idle.onStateChanged.hasListener(idleListener)) {
                 browser.idle.onStateChanged.removeListener(idleListener);
             }
+            // set idle length
             browser.idle.setDetectionInterval(msg.data);
+            // add idle listener
             browser.idle.onStateChanged.addListener(idleListener);
             break;
+        // set startup mode
         case "setstartup":
+            // remove idle listener
             if (browser.idle.onStateChanged.hasListener(idleListener)) {
                 browser.idle.onStateChanged.removeListener(idleListener);
             }
@@ -24,6 +31,7 @@ function onMessage(msg: MessageInterface): Promise<void> {
 }
 
 function idleListener(state: Idle.IdleState): void {
+    // delete history if state is idle
     if (state === "idle") {
         deleteHistory();
     }
@@ -31,10 +39,13 @@ function idleListener(state: Idle.IdleState): void {
 
 async function startup(): Promise<void> {
     let res = await browser.storage.local.get() as OptionsInterface;
+    // if delete mode is idle, set interval and add listener
     if (res.deleteMode === "idle") {
         browser.idle.setDetectionInterval(res.idleLength);
         browser.idle.onStateChanged.addListener(idleListener);
-    } else if (res.deleteMode === "startup") {
+    }
+    // if delete mode is startup, delete history right now
+    else if (res.deleteMode === "startup") {
         deleteHistory();
     }
 }
@@ -42,6 +53,7 @@ async function startup(): Promise<void> {
 async function setup(installed: Runtime.OnInstalledDetailsType): Promise<void> {
     if (installed.reason === "install" || installed.reason === "update") {
         let res = await browser.storage.local.get();
+        // apply default values to storage
         for (let key of Object.keys(DefaultOptions)) {
             res[key] ??= DefaultOptions[key];
         }
@@ -55,6 +67,7 @@ async function setup(installed: Runtime.OnInstalledDetailsType): Promise<void> {
         await browser.storage.sync.set(syncRes);
 
         startup();
+        // open options page on first install
         if (installed.reason === "install") {
             browser.runtime.openOptionsPage();
         }
@@ -72,8 +85,9 @@ async function deleteHistory(): Promise<void> {
         end.setDate(end.getDate() - res.days);
         await browser.history.deleteRange({
             startTime: 0,
-            endTime: end.getTime()
+            endTime: end
         });
+        console.log("History deleted", end);
         if (res.notifications) {
             browser.notifications.create({
                 type: "basic",
