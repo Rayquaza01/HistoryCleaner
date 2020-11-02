@@ -5,7 +5,7 @@
 export class ToggleButton {
     private element: HTMLButtonElement;
     private textOptions: string[];
-    private buttonState: number;
+    private _state: number;
 
     /**
      * @param element - the HTMLButton element
@@ -14,19 +14,19 @@ export class ToggleButton {
     constructor(element: HTMLButtonElement, textOptions: string[]) {
         this.element = element;
         this.textOptions = textOptions;
-        this.buttonState = 0;
-        this.element.innerText = this.textOptions[this.buttonState];
+        this._state = 0;
+        this.element.innerText = this.textOptions[this._state];
     }
 
     /** Get the state of the button */
     get state(): number {
-        return this.buttonState;
+        return this._state;
     }
 
     /** Set the state of the button */
     set state(state: number) {
-        this.buttonState = state;
-        this.element.innerText = this.textOptions[this.buttonState];
+        this._state = state;
+        this.element.innerText = this.textOptions[this._state];
     }
 
     /** Get the button element */
