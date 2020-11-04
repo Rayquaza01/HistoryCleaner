@@ -44,7 +44,7 @@
     "description": ""
   },
   "optionNotificationsInfo": {
-    "message": "Request notifications permission using the below button, and then set the option to Show Notifications to enable and then set the option to Show Notifications to enable notifications on the when history is deleted.",
+    "message": "Request notifications permission using the below button, and then set the option to Show Notifications to enable notifications when history is deleted.",
     "description": ""
   },
   "optionNotificationsDisabled": {
