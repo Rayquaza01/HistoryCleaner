@@ -87,19 +87,20 @@ async function deleteHistory(): Promise<void> {
             startTime: 0,
             endTime: end
         });
-        console.log("History deleted", end);
+        let notificationBody: string = browser.i18n.getMessage(
+            "historyDeletedNotificationBody",
+            [
+                end.toLocaleString(),
+                new Date().toLocaleString()
+            ]
+        );
+        console.log(notificationBody);
         if (res.notifications) {
             browser.notifications.create({
                 type: "basic",
                 iconUrl: "icons/icon-96.png",
                 title: browser.i18n.getMessage("historyDeletedNotification"),
-                message: browser.i18n.getMessage(
-                    "historyDeletedNotificationBody",
-                    [
-                        end.toLocaleString(),
-                        new Date().toLocaleString()
-                    ]
-                )
+                message: notificationBody
             });
         }
     }
