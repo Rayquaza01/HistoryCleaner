@@ -1,4 +1,4 @@
 export interface MessageInterface {
-    state: "delete" | "setidle" | "setstartup",
+    state: "delete" | "setidle" | "setstartup";
     data?: number;
 }

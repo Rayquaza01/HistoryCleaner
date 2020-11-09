@@ -2,6 +2,7 @@ import { browser } from "webextension-polyfill-ts";
 import { ToggleButton } from "./ToggleButton";
 import { MessageInterface } from "./MessageInterface";
 import { i18n } from "./i18n";
+import { OptionsInterface } from "./OptionsInterface";
 
 let days: HTMLInputElement = document.querySelector("#days");
 let idleLength: HTMLInputElement = document.querySelector("#idleLength");
@@ -29,19 +30,19 @@ function manualDelete(): void {
 
 function togglePermission(e: MouseEvent): void {
     // if permission is not currently granted
-    if (notificationRequestButton.state === 0) {
+    if (notificationRequestButton.getState() === 0) {
         // attempt to get permission
         browser.permissions.request({ permissions: ["notifications"] })
             .then((request: boolean) => {
                 // if user gives permission
                 // switch button state, enable option, send demo notification
                 if (request) {
-                    notificationRequestButton.state = 1;
+                    notificationRequestButton.setState(1);
                     notifications.disabled = false;
                 }
                 // otherwise, keep button state same, turn off notifications, disable option
                 else {
-                    notificationRequestButton.state = 0;
+                    notificationRequestButton.setState(0);
                     notifications.value = "false";
                     notifications.disabled = true;
                     browser.storage.local.set({ notifications: false })
@@ -50,9 +51,9 @@ function togglePermission(e: MouseEvent): void {
     }
     // if permission currently granted
     // revoke permission, switch button state, disable notifications, and disable option
-    else if (notificationRequestButton.state === 1) {
+    else if (notificationRequestButton.getState() === 1) {
         browser.permissions.remove({ permissions: ["notifications"] });
-        notificationRequestButton.state = 0;
+        notificationRequestButton.setState(0);
         notifications.value = "false";
         notifications.disabled = true;
         browser.storage.local.set({ notifications: false })
@@ -80,7 +81,7 @@ async function download(): Promise<void> {
     }
 
     // disable notifications if permission not allowed
-    if (notificationRequestButton.state === 0) {
+    if (notificationRequestButton.getState() === 0) {
         res.notifications = false;
     }
 
@@ -90,7 +91,7 @@ async function download(): Promise<void> {
 
 function save(e: InputEvent): void {
     // get options from page
-    let obj: any = {
+    let obj: OptionsInterface = {
         days: Number(days.value) || 0,
         idleLength: Number(idleLength.value) || 60,
         deleteMode: deleteMode.value || "idle",
@@ -140,17 +141,17 @@ async function load(): Promise<void> {
     // enable notification option, set button to revoke
     if (permissions.permissions.includes("notifications")) {
         notifications.disabled = false;
-        notificationRequestButton.state = 1;
+        notificationRequestButton.setState(1);
     }
     // otherise disable option, set button to enable
     else {
         notifications.disabled = true;
-        notificationRequestButton.state = 0;
+        notificationRequestButton.setState(0);
     }
 }
 
 document.addEventListener("DOMContentLoaded", load);
-notificationRequestButton.getElement.addEventListener("click", togglePermission);
+notificationRequestButton.getElement().addEventListener("click", togglePermission);
 document.querySelector("#box").addEventListener("change", save);
 manualDeleteButton.addEventListener("click", manualDelete);
 
