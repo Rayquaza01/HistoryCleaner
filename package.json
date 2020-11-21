@@ -6,12 +6,12 @@
   "scripts": {
     "clean": "mkdir -p dist && rm -rf dist/*",
     "build:assets": "cpx src/**/*.{json,png} dist",
-    "build:bundle": "parcel build src/**/*.html src/background.ts",
+    "build:bundle": "parcel build src/**/*.html src/background.ts --target browser",
     "build:extension": "web-ext build -s dist --overwrite-dest",
     "build:complete": "run-s clean build:assets build:bundle build:extension",
     "firefox": "web-ext run -s dist",
     "watch:assets": "cpx src/**/*.{json,png} dist -w",
-    "watch:bundle": "parcel watch src/**.html src/background.ts --no-hmr --no-autoinstall",
+    "watch:bundle": "parcel watch src/**.html src/background.ts --no-hmr --no-autoinstall --target browser",
     "watch:extension": "npm-run-all clean -p watch:assets watch:bundle"
   },
   "repository": {
@@ -35,6 +35,6 @@
   "browserslist": [
     "last 2 Firefox versions",
     "last 2 Chrome versions",
-    "firefox esr"
+    "Firefox ESR"
   ]
 }
