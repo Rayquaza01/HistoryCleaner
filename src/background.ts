@@ -1,15 +1,15 @@
 import { browser, Idle, Runtime } from "webextension-polyfill-ts";
 import { OptionsInterface, DefaultOptions} from "./OptionsInterface";
-import { MessageInterface } from "./MessageInterface";
+import { MessageInterface, MessageState } from "./MessageInterface";
 
 function onMessage(msg: MessageInterface): Promise<void> {
     switch (msg.state) {
         // manual delete button
-        case "delete":
+        case MessageState.DELETE:
             deleteHistory();
             break;
         // set idle mode
-        case "setidle":
+        case MessageState.SET_IDLE:
             // remove idle listener if one exists
             if (browser.idle.onStateChanged.hasListener(idleListener)) {
                 browser.idle.onStateChanged.removeListener(idleListener);
@@ -20,7 +20,7 @@ function onMessage(msg: MessageInterface): Promise<void> {
             browser.idle.onStateChanged.addListener(idleListener);
             break;
         // set startup mode
-        case "setstartup":
+        case MessageState.SET_STARTUP:
             // remove idle listener
             if (browser.idle.onStateChanged.hasListener(idleListener)) {
                 browser.idle.onStateChanged.removeListener(idleListener);

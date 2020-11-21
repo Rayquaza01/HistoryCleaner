@@ -1,3 +1,8 @@
+export enum ToggleButtonState {
+    NO_PERMISSION = 0,
+    PERMISSION = 1
+}
+
 /**
  * @class
  * Manages toggling an HTMLButton between two states

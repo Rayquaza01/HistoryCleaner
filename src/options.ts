@@ -1,50 +1,56 @@
 import { browser } from "webextension-polyfill-ts";
-import { ToggleButton } from "./ToggleButton";
-import { MessageInterface } from "./MessageInterface";
+import { ToggleButton, ToggleButtonState } from "./ToggleButton";
+import { MessageInterface, MessageState } from "./MessageInterface";
 import { i18n } from "./i18n";
 import { OptionsInterface } from "./OptionsInterface";
 
+// Input elements
 let days: HTMLInputElement = document.querySelector("#days");
 let idleLength: HTMLInputElement = document.querySelector("#idleLength");
 let deleteMode: HTMLSelectElement = document.querySelector("#deleteMode");
 let notifications: HTMLSelectElement = document.querySelector("#notifications");
 
+// parent to input elements
 let box: HTMLDivElement = document.querySelector("#box");
 
+// sync buttons
 let uploadButton: HTMLButtonElement = document.querySelector("#syncUp");
 let downloadButton: HTMLButtonElement = document.querySelector("#syncDown");
 
+// permission toggle button
 let notificationRequestButton: ToggleButton = new ToggleButton(
     document.querySelector("#notification-permission-request"),
-    [
-        browser.i18n.getMessage("notificationRequest"),
-        browser.i18n.getMessage("notificationRevoke")
-    ]
+    [browser.i18n.getMessage("notificationRequest"), browser.i18n.getMessage("notificationRevoke")]
 )
+
+// manual delete button
 let manualDeleteButton: HTMLButtonElement = document.querySelector("#manual-delete");
 
+/**
+ * Sends a message to the background script telling it to delete the
+ */
 function manualDelete(): void {
     let msg: MessageInterface = {
-        state: "delete"
+        state: MessageState.DELETE
     };
     browser.runtime.sendMessage(msg);
 }
 
 function togglePermission(e: MouseEvent): void {
     // if permission is not currently granted
-    if (notificationRequestButton.getState() === 0) {
+    if (notificationRequestButton.getState() === ToggleButtonState.NO_PERMISSION) {
         // attempt to get permission
         browser.permissions.request({ permissions: ["notifications"] })
             .then((request: boolean) => {
                 // if user gives permission
                 // switch button state, enable option, send demo notification
                 if (request) {
-                    notificationRequestButton.setState(1);
+                    notificationRequestButton.setState(ToggleButtonState.PERMISSION);
                     notifications.disabled = false;
                 }
                 // otherwise, keep button state same, turn off notifications, disable option
                 else {
-                    notificationRequestButton.setState(0);
+                    notificationRequestButton.setState(ToggleButtonState.NO_PERMISSION);
                     notifications.value = "false";
                     notifications.disabled = true;
                     browser.storage.local.set({ notifications: false })
@@ -53,9 +59,9 @@ function togglePermission(e: MouseEvent): void {
     }
     // if permission currently granted
     // revoke permission, switch button state, disable notifications, and disable option
-    else if (notificationRequestButton.getState() === 1) {
+    else if (notificationRequestButton.getState() === ToggleButtonState.PERMISSION) {
         browser.permissions.remove({ permissions: ["notifications"] });
-        notificationRequestButton.setState(0);
+        notificationRequestButton.setState(ToggleButtonState.NO_PERMISSION);
         notifications.value = "false";
         notifications.disabled = true;
         browser.storage.local.set({ notifications: false })
@@ -74,11 +80,11 @@ async function download(): Promise<void> {
     // set delete mode from sync get
     let msg: MessageInterface = { state: null }
     if (res.deleteMode === "idle") {
-        msg.state = "setidle"
-        msg.data = res.idleLength
+        msg.state = MessageState.SET_IDLE;
+        msg.data = res.idleLength;
         browser.runtime.sendMessage(msg);
     } else if (res.deleteMode === "startup") {
-        msg.state = "setstartup";
+        msg.state = MessageState.SET_STARTUP;
         browser.runtime.sendMessage(msg);
     }
 
@@ -107,17 +113,17 @@ function save(e: InputEvent): void {
 
         if (e.target === idleLength && obj.deleteMode === "idle") {
             let msg: MessageInterface = {
-                state: "setidle",
+                state: MessageState.SET_IDLE,
                 data: obj.idleLength
             };
             browser.runtime.sendMessage(msg);
         } else if (e.target === deleteMode) {
             let msg: MessageInterface = { state: null };
             if (obj.deleteMode === "idle") {
-                msg.state = "setidle";
+                msg.state = MessageState.SET_IDLE;
                 msg.data = obj.idleLength;
             } else {
-                msg.state = "setstartup";
+                msg.state = MessageState.SET_STARTUP;
             }
             browser.runtime.sendMessage(msg);
         }

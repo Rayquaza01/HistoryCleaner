@@ -1,4 +1,10 @@
+export enum MessageState {
+    DELETE = 0,
+    SET_IDLE = 1,
+    SET_STARTUP = 2
+}
+
 export interface MessageInterface {
-    state: "delete" | "setidle" | "setstartup";
+    state: MessageState
     data?: number;
 }
