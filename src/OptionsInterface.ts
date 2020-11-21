@@ -1,8 +1,8 @@
 export interface OptionsInterface {
-    days: number;
-    idleLength: number;
-    deleteMode: "idle" | "startup" | string;
-    notifications: boolean;
+    days?: number;
+    idleLength?: number;
+    deleteMode?: "idle" | "startup" | string;
+    notifications?: boolean;
 }
 
 export const DefaultOptions: OptionsInterface = {

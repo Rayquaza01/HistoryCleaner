@@ -9,6 +9,8 @@ let idleLength: HTMLInputElement = document.querySelector("#idleLength");
 let deleteMode: HTMLSelectElement = document.querySelector("#deleteMode");
 let notifications: HTMLSelectElement = document.querySelector("#notifications");
 
+let box: HTMLDivElement = document.querySelector("#box");
+
 let uploadButton: HTMLButtonElement = document.querySelector("#syncUp");
 let downloadButton: HTMLButtonElement = document.querySelector("#syncDown");
 
@@ -90,38 +92,52 @@ async function download(): Promise<void> {
 }
 
 function save(e: InputEvent): void {
-    // get options from page
-    let obj: OptionsInterface = {
-        days: Number(days.value) || 0,
-        idleLength: Number(idleLength.value) || 60,
-        deleteMode: deleteMode.value || "idle",
-        notifications: JSON.parse(notifications.value) || false,
-    }
-    if (obj.notifications && e.target === notifications) {
-        browser.notifications.create({
-            type: "basic",
-            iconUrl: "icons/icon-96.png",
-            title: browser.i18n.getMessage("notificationEnabled"),
-            message: browser.i18n.getMessage("notificationEnabledBody")
-        });
+    // if options are valid
+    let obj: OptionsInterface = {};
+    if (days.validity.valid) {
+        obj.days = Number(days.value);
     }
 
-    if (e.target === idleLength && obj.deleteMode === "idle") {
-        let msg: MessageInterface = {
-            state: "setidle",
-            data: obj.idleLength
-        };
-        browser.runtime.sendMessage(msg);
-    } else if (e.target === deleteMode) {
-        let msg: MessageInterface = { state: null };
-        if (obj.deleteMode === "idle") {
-            msg.state = "setidle";
-            msg.data = obj.idleLength;
-        } else {
-            msg.state = "setstartup";
-        }
-        browser.runtime.sendMessage(msg);
+    if (deleteMode.validity.valid) {
+        obj.deleteMode = deleteMode.value;
     }
+
+    if (idleLength.validity.valid) {
+        obj.idleLength = Number(idleLength.value);
+
+        if (e.target === idleLength && obj.deleteMode === "idle") {
+            let msg: MessageInterface = {
+                state: "setidle",
+                data: obj.idleLength
+            };
+            browser.runtime.sendMessage(msg);
+        } else if (e.target === deleteMode) {
+            let msg: MessageInterface = { state: null };
+            if (obj.deleteMode === "idle") {
+                msg.state = "setidle";
+                msg.data = obj.idleLength;
+            } else {
+                msg.state = "setstartup";
+            }
+            browser.runtime.sendMessage(msg);
+        }
+    }
+
+    if (notifications.validity.valid) {
+        obj.notifications = JSON.parse(notifications.value);
+
+        // create notification if enabled
+        if (e.target === notifications && obj.notifications) {
+            browser.notifications.create({
+                type: "basic",
+                iconUrl: "icons/icon-96.png",
+                title: browser.i18n.getMessage("notificationEnabled"),
+                message: browser.i18n.getMessage("notificationEnabledBody")
+            });
+        }
+    }
+
+
     // save options
     browser.storage.local.set(obj);
 }
@@ -152,7 +168,7 @@ async function load(): Promise<void> {
 
 document.addEventListener("DOMContentLoaded", load);
 notificationRequestButton.getElement().addEventListener("click", togglePermission);
-document.querySelector("#box").addEventListener("change", save);
+box.addEventListener("input", save);
 manualDeleteButton.addEventListener("click", manualDelete);
 
 uploadButton.addEventListener("click", upload);
