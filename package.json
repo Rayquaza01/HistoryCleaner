@@ -33,8 +33,7 @@
     "webextension-polyfill-ts": "^0.21.0"
   },
   "browserslist": [
-    "last 2 Firefox versions",
-    "last 2 Chrome versions",
-    "Firefox ESR"
+    "Firefox >= 78",
+    "Chrome 87"
   ]
 }
