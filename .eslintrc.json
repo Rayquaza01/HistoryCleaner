@@ -12,7 +12,6 @@
     "indent": ["error", 4, { "SwitchCase": 1 }],
     "quotes": ["warn", "double"],
     "semi": ["warn", "always"],
-    "curly": ["warn", "all"],
     "eqeqeq": ["error", "always"],
     "no-trailing-spaces": "warn",
     "comma-spacing": "warn",
