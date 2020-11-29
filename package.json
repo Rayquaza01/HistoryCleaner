@@ -14,8 +14,9 @@
     "watch:bundle": "parcel watch src/**.html src/background.ts --no-hmr --no-autoinstall --target browser",
     "watch:extension": "npm-run-all clean -p watch:assets watch:bundle",
     "lint:extension": "web-ext lint -s dist",
-    "lint:bundle": "tsc --noEmit",
-    "lint:complete": "run-s lint:bundle lint:extension"
+    "lint:eslint": "eslint src --ext .ts",
+    "lint:typescript": "tsc --noEmit",
+    "lint:complete": "run-s lint:eslint lint:typescript lint:extension"
   },
   "repository": {
     "type": "git",
