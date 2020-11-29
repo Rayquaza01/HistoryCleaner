@@ -12,7 +12,10 @@
     "firefox": "web-ext run -s dist",
     "watch:assets": "cpx src/**/*.{json,png} dist -w",
     "watch:bundle": "parcel watch src/**.html src/background.ts --no-hmr --no-autoinstall --target browser",
-    "watch:extension": "npm-run-all clean -p watch:assets watch:bundle"
+    "watch:extension": "npm-run-all clean -p watch:assets watch:bundle",
+    "lint:extension": "web-ext lint -s dist",
+    "lint:bundle": "tsc --noEmit",
+    "lint:complete": "run-s lint:bundle lint:extension"
   },
   "repository": {
     "type": "git",
@@ -24,12 +27,17 @@
     "url": "https://github.com/Rayquaza01/HistoryCleaner/issues"
   },
   "homepage": "https://github.com/Rayquaza01/HistoryCleaner#readme",
-  "dependencies": {
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
     "cpx": "^1.5.0",
+    "eslint": "^7.14.0",
     "npm-run-all": "^4.1.5",
     "parcel-bundler": "^1.12.4",
     "typescript": "^4.1.2",
-    "web-ext": "^5.4.0",
+    "web-ext": "^5.4.0"
+  },
+  "dependencies": {
     "webextension-polyfill-ts": "^0.21.0"
   },
   "browserslist": [
