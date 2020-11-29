@@ -5,38 +5,38 @@ import { i18n } from "./i18n";
 import { OptionsInterface } from "./OptionsInterface";
 
 // Input elements
-let days: HTMLInputElement = document.querySelector("#days");
-let idleLength: HTMLInputElement = document.querySelector("#idleLength");
-let deleteMode: HTMLSelectElement = document.querySelector("#deleteMode");
-let notifications: HTMLSelectElement = document.querySelector("#notifications");
+const days: HTMLInputElement = document.querySelector("#days");
+const idleLength: HTMLInputElement = document.querySelector("#idleLength");
+const deleteMode: HTMLSelectElement = document.querySelector("#deleteMode");
+const notifications: HTMLSelectElement = document.querySelector("#notifications");
 
 // parent to input elements
-let box: HTMLDivElement = document.querySelector("#box");
+const box: HTMLDivElement = document.querySelector("#box");
 
 // sync buttons
-let uploadButton: HTMLButtonElement = document.querySelector("#syncUp");
-let downloadButton: HTMLButtonElement = document.querySelector("#syncDown");
+const uploadButton: HTMLButtonElement = document.querySelector("#syncUp");
+const downloadButton: HTMLButtonElement = document.querySelector("#syncDown");
 
 // permission toggle button
-let notificationRequestButton: ToggleButton = new ToggleButton(
+const notificationRequestButton: ToggleButton = new ToggleButton(
     document.querySelector("#notification-permission-request"),
     [browser.i18n.getMessage("notificationRequest"), browser.i18n.getMessage("notificationRevoke")]
-)
+);
 
 // manual delete button
-let manualDeleteButton: HTMLButtonElement = document.querySelector("#manual-delete");
+const manualDeleteButton: HTMLButtonElement = document.querySelector("#manual-delete");
 
 /**
  * Sends a message to the background script telling it to delete the
  */
 function manualDelete(): void {
-    let msg: MessageInterface = {
+    const msg: MessageInterface = {
         state: MessageState.DELETE
     };
     browser.runtime.sendMessage(msg);
 }
 
-function togglePermission(e: MouseEvent): void {
+function togglePermission(): void {
     // if permission is not currently granted
     if (notificationRequestButton.getState() === ToggleButtonState.NO_PERMISSION) {
         // attempt to get permission
@@ -53,7 +53,7 @@ function togglePermission(e: MouseEvent): void {
                     notificationRequestButton.setState(ToggleButtonState.NO_PERMISSION);
                     notifications.value = "false";
                     notifications.disabled = true;
-                    browser.storage.local.set({ notifications: false })
+                    browser.storage.local.set({ notifications: false });
                 }
             });
     }
@@ -64,21 +64,21 @@ function togglePermission(e: MouseEvent): void {
         notificationRequestButton.setState(ToggleButtonState.NO_PERMISSION);
         notifications.value = "false";
         notifications.disabled = true;
-        browser.storage.local.set({ notifications: false })
+        browser.storage.local.set({ notifications: false });
     }
 }
 
 async function upload(): Promise<void> {
-    let res = await browser.storage.local.get();
+    const res = await browser.storage.local.get();
     await browser.storage.sync.set(res);
     location.reload();
 }
 
 async function download(): Promise<void> {
-    let res = await browser.storage.sync.get();
+    const res = await browser.storage.sync.get();
 
     // set delete mode from sync get
-    let msg: MessageInterface = { state: null }
+    const msg: MessageInterface = { state: null };
     if (res.deleteMode === "idle") {
         msg.state = MessageState.SET_IDLE;
         msg.data = res.idleLength;
@@ -99,7 +99,7 @@ async function download(): Promise<void> {
 
 function save(e: InputEvent): void {
     // if options are valid
-    let obj: OptionsInterface = {};
+    const obj: OptionsInterface = {};
     if (days.validity.valid) {
         obj.days = Number(days.value);
     }
@@ -112,13 +112,13 @@ function save(e: InputEvent): void {
         obj.idleLength = Number(idleLength.value);
 
         if (e.target === idleLength && obj.deleteMode === "idle") {
-            let msg: MessageInterface = {
+            const msg: MessageInterface = {
                 state: MessageState.SET_IDLE,
                 data: obj.idleLength
             };
             browser.runtime.sendMessage(msg);
         } else if (e.target === deleteMode) {
-            let msg: MessageInterface = { state: null };
+            const msg: MessageInterface = { state: null };
             if (obj.deleteMode === "idle") {
                 msg.state = MessageState.SET_IDLE;
                 msg.data = obj.idleLength;
@@ -151,14 +151,14 @@ function save(e: InputEvent): void {
 async function load(): Promise<void> {
     i18n();
 
-    let res = await browser.storage.local.get();
+    const res = await browser.storage.local.get();
     days.value = res.days;
     idleLength.value = res.idleLength;
     deleteMode.value = res.deleteMode;
     notifications.value = res.notifications;
 
     // check permissions
-    let permissions = await browser.permissions.getAll();
+    const permissions = await browser.permissions.getAll();
     // if notification permission
     // enable notification option, set button to revoke
     if (permissions.permissions.includes("notifications")) {

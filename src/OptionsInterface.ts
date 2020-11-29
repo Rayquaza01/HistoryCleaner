@@ -9,5 +9,5 @@ export const DefaultOptions: OptionsInterface = {
     days: 0,
     idleLength: 60,
     deleteMode: "idle",
-    notifications: false,
+    notifications: false
 };

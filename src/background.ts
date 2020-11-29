@@ -38,7 +38,7 @@ function idleListener(state: Idle.IdleState): void {
 }
 
 async function startup(): Promise<void> {
-    let res = await browser.storage.local.get() as OptionsInterface;
+    const res = await browser.storage.local.get() as OptionsInterface;
     // if delete mode is idle, set interval and add listener
     if (res.deleteMode === "idle") {
         browser.idle.setDetectionInterval(res.idleLength);
@@ -52,16 +52,16 @@ async function startup(): Promise<void> {
 
 async function setup(installed: Runtime.OnInstalledDetailsType): Promise<void> {
     if (installed.reason === "install" || installed.reason === "update") {
-        let res = await browser.storage.local.get();
+        const res = await browser.storage.local.get();
         // apply default values to storage
-        for (let key of Object.keys(DefaultOptions)) {
+        for (const key of Object.keys(DefaultOptions)) {
             res[key] ??= DefaultOptions[key];
         }
         await browser.storage.local.set(res);
 
         // initialize sync object
-        let syncRes = await browser.storage.sync.get();
-        for (let key of Object.keys(DefaultOptions)) {
+        const syncRes = await browser.storage.sync.get();
+        for (const key of Object.keys(DefaultOptions)) {
             syncRes[key] ??= DefaultOptions[key];
         }
         await browser.storage.sync.set(syncRes);
@@ -75,11 +75,11 @@ async function setup(installed: Runtime.OnInstalledDetailsType): Promise<void> {
 }
 
 async function deleteHistory(): Promise<void> {
-    let res = await browser.storage.local.get();
+    const res = await browser.storage.local.get();
     if (res.days > 0) {
-        let end = new Date();
+        const end = new Date();
         end.setHours(0);
-        end.setMinutes(0)
+        end.setMinutes(0);
         end.setSeconds(0);
         end.setMilliseconds(0);
         end.setDate(end.getDate() - res.days);
@@ -87,7 +87,7 @@ async function deleteHistory(): Promise<void> {
             startTime: 0,
             endTime: end
         });
-        let notificationBody: string = browser.i18n.getMessage(
+        const notificationBody: string = browser.i18n.getMessage(
             "historyDeletedNotificationBody",
             [
                 end.toLocaleString(),
