@@ -1,0 +1,22 @@
+input {
+    border-radius: 2px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: auto;
+    height: 32px;
+    border: 1px solid rgba(12, 12, 13, 0.2);
+}
+
+input:hover {
+    border-color: rgba(12, 12, 13, 0.3);
+}
+
+input:focus {
+    border-color: #0a84ff;
+    box-shadow: 0 0 0 1px #0a84ff, 0 0 0 4px rgba(10, 132, 255, 0.3);
+}
+
+input:invalid {
+    border-color: #d70022;
+    box-shadow: 0 0 0 1px #d70022, 0 0 0 4px rgba(251, 0, 34, 0.3);
+}
