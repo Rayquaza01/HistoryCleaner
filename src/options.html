@@ -8,11 +8,11 @@
         <div id="box">
             <h2 data-i18n="optionDaysText" class="i18n"></h2>
             <p data-i18n="optionDaysInfo" class="i18n"></p>
-            <input id="days" name="days" type="number" min="0"><br>
+            <input id="days" name="days" type="number" min="0" class="text"><br>
 
             <h2 data-i18n="optionIdleLengthText" class="i18n"></h2>
             <p data-i18n="optionIdleLengthInfo" class="i18n"></p>
-            <input id="idleLength" name="idleLength" type="number" min="15">
+            <input id="idleLength" name="idleLength" type="number" min="15" class="text">
 
             <h2 data-i18n="optionDeleteModeText" class="i18n"></h2>
             <p data-i18n="optionDeleteModeInfo" class="i18n"></p>
@@ -23,11 +23,12 @@
 
             <h2 data-i18n="optionNotificationsText" class="i18n"></h2>
             <p data-i18n="optionNotificationsInfo" class="i18n"></p>
-            <button class="default" id="notification-permission-request"></button><br>
-            <select id="notifications" disabled name="notifications">
-                <option value="false" data-i18n="optionNotificationsDisabled" class="i18n"></option>
-                <option value="true" data-i18n="optionNotificationsEnabled" class="i18n"></option>
-            </select>
+            <span class="vertcenter">
+                <input type="checkbox" id="notifications" class="checkbox" disabled>
+                <label for="notifications">Show Notifications on Delete</label>
+            </span>
+            <br>
+            <button class="default" id="notification-permission-request"></button>
 
             <h2 data-i18n="manualDelete" class="i18n"></h2>
             <p data-i18n="manualDeleteInfo" class="i18n"></p>
