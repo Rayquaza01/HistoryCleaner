@@ -3,5 +3,5 @@ input.checkbox:focus {
 }
 
 input.checkbox:disabled + label {
-    opacity: 40%;
+    opacity: .4;
 }
