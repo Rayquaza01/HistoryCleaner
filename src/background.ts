@@ -85,7 +85,7 @@ async function deleteHistory(): Promise<void> {
         end.setDate(end.getDate() - res.days);
         await browser.history.deleteRange({
             startTime: 0,
-            endTime: end
+            endTime: end.getTime()
         });
         const notificationBody: string = browser.i18n.getMessage(
             "historyDeletedNotificationBody",
