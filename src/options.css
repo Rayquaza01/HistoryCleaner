@@ -1,2 +1,8 @@
 @import url("./Photon/DefaultButton.css");
 @import url("./Photon/Input.css");
+@import url("./Photon/Dropdown.css");
+
+h2 {
+    font-size: 17px;
+    font-weight: 500;
+}
