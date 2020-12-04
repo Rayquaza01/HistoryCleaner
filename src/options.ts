@@ -8,7 +8,7 @@ import { OptionsInterface } from "./OptionsInterface";
 const days: HTMLInputElement = document.querySelector("#days");
 const idleLength: HTMLInputElement = document.querySelector("#idleLength");
 const deleteMode: HTMLSelectElement = document.querySelector("#deleteMode");
-const notifications: HTMLSelectElement = document.querySelector("#notifications");
+const notifications: HTMLInputElement = document.querySelector("#notifications");
 
 // parent to input elements
 const box: HTMLDivElement = document.querySelector("#box");
@@ -51,7 +51,7 @@ function togglePermission(): void {
                 // otherwise, keep button state same, turn off notifications, disable option
                 else {
                     notificationRequestButton.setState(ToggleButtonState.NO_PERMISSION);
-                    notifications.value = "false";
+                    notifications.checked = false;
                     notifications.disabled = true;
                     browser.storage.local.set({ notifications: false });
                 }
@@ -62,7 +62,7 @@ function togglePermission(): void {
     else if (notificationRequestButton.getState() === ToggleButtonState.PERMISSION) {
         browser.permissions.remove({ permissions: ["notifications"] });
         notificationRequestButton.setState(ToggleButtonState.NO_PERMISSION);
-        notifications.value = "false";
+        notifications.checked = false;
         notifications.disabled = true;
         browser.storage.local.set({ notifications: false });
     }
@@ -130,7 +130,7 @@ function save(e: InputEvent): void {
     }
 
     if (notifications.validity.valid) {
-        obj.notifications = JSON.parse(notifications.value);
+        obj.notifications = notifications.checked;
 
         // create notification if enabled
         if (e.target === notifications && obj.notifications) {
@@ -155,7 +155,7 @@ async function load(): Promise<void> {
     days.value = res.days;
     idleLength.value = res.idleLength;
     deleteMode.value = res.deleteMode;
-    notifications.value = res.notifications;
+    notifications.checked = res.notifications;
 
     // check permissions
     const permissions = await browser.permissions.getAll();
