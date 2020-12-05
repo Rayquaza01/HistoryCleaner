@@ -4,8 +4,8 @@
   "description": "Firefox addon that deletes history older than a specified amount of days.",
   "main": "index.js",
   "scripts": {
-    "build:dev": "node bin/build.js development",
-    "build:prod": "node bin/build.js production",
+    "build:dev": "node bin/build.js development 1",
+    "build:prod": "node bin/build.js production 1",
     "build:extension": "web-ext build -s dist --overwrite-dest",
     "build:buildscript": "parcel build bin-src/build/build.ts --out-dir bin --target node --no-autoinstall --detailed-report",
     "start:firefox": "web-ext run -s dist",
