@@ -2,10 +2,9 @@
   "compilerOptions": {
     "target": "ES2017",
     "module": "commonjs",
-    "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "files": ["clean.ts"]
+  "files": ["clean.ts", "parcel.ts", "build.ts"]
 }
