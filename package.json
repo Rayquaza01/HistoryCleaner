@@ -7,7 +7,7 @@
     "build:dev": "node bin/build.js",
     "build:prod": "node bin/build.js prod",
     "build:extension": "web-ext build -s dist --overwrite-dest",
-    "build:buildscript": "parcel build bin/build.ts --out-dir bin --target node --no-autoinstall",
+    "build:buildscript": "parcel build bin/build.ts --out-dir bin --target node --no-autoinstall --detailed-report",
     "start:firefox": "web-ext run -s dist",
     "lint:extension": "web-ext lint -s dist",
     "lint:eslint": "eslint src --ext .ts",
