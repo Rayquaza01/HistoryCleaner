@@ -1,13 +1,11 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
     "target": "ES2017",
-    "module": "ES6",
-    "moduleResolution": "node",
-    "alwaysStrict": true,
+    "module": "commonjs",
+    "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "files": ["src/options.ts", "src/background.ts"]
+  "files": ["clean.ts"]
 }
