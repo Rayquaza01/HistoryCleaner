@@ -8,7 +8,7 @@ async function main(): Promise<void> {
     console.log("Cleaning...");
     await clean();
     console.log("Copying assets...");
-    await assets(prod);
+    assets(prod);
     console.log("Building bundle...");
     await bundle(prod);
 }

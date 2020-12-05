@@ -3,7 +3,7 @@ import cpx from "cpx";
 const src = "src/**/*.{json,png}";
 const dest = "dist";
 
-export async function assets(production: boolean): Promise<void> {
+export function assets(production: boolean): void {
     if (production) {
         cpx.copySync(src, dest);
     } else {

@@ -1,10 +1,10 @@
 import Bundler from "parcel-bundler";
 
-const entryFiles = ["src/**/*.html", "background.ts"];
+const entryFiles = ["src/**/*.html", "src/background.ts"];
 
 const options = {
     outDir: "./dist",
-    watch: false,
+    watch: true,
     cache: true,
     cacheDir: ".cache",
     minify: false,
@@ -12,7 +12,7 @@ const options = {
     logLevel: 3,
     hmr: false,
     sourceMaps: true,
-    detailedReport: true,
+    detailedReport: false,
     autoInstall: false
 };
 
@@ -21,10 +21,6 @@ export async function bundle(production: boolean): Promise<void> {
         options.watch = false;
         options.detailedReport = true;
         options.minify = true;
-    } else {
-        options.watch = true;
-        options.detailedReport = false,
-        options.minify = false;
     }
 
     const bundler = new Bundler(entryFiles, options);
