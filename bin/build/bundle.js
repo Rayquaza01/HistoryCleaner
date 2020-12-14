@@ -1,3 +1,4 @@
+"use strict";
 const Bundler = require("parcel-bundler");
 
 const entryFiles = ["src/**/*.html", "src/background.ts"];
