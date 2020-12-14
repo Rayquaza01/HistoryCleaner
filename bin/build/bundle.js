@@ -1,4 +1,4 @@
-import Bundler from "parcel-bundler";
+const Bundler = require("parcel-bundler");
 
 const entryFiles = ["src/**/*.html", "src/background.ts"];
 
@@ -10,7 +10,11 @@ const options = {
     autoInstall: false
 };
 
-export async function bundle(production: boolean): Promise<void> {
+/**
+ * Bundles assets
+ * @param {boolean} production
+ */
+module.exports = async function bundle(production) {
     if (production) {
         options.watch = false;
         options.detailedReport = true;

@@ -1,9 +1,14 @@
-import cpx from "cpx";
+"use strict";
+const cpx = require("cpx");
 
 const src = "src/**/*.{json,png}";
 const dest = "dist";
 
-export function assets(production: boolean): void {
+/**
+ * Copys assets to destination folder
+ * @param {boolean} production
+ */
+module.exports = function assets(production) {
     if (production) {
         cpx.copySync(src, dest);
     } else {
