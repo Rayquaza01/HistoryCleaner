@@ -1,8 +1,8 @@
-# Building History Cleaner 1.2.4
+# Building History Cleaner 1.3.0
 
 ## System Info
  * Ubuntu 20.10
- * node 12.19.0
+ * node v14.15.3
  * npm 6.14.9
  * bash 5.0.17
  * For tool and library versions, check package.json
@@ -11,10 +11,8 @@
 
 To build the extension, run:
 ```shell
-# Install node modules and build buildscript
-# Only needs to be done after updating the repo
+# Install node modules
 npm install
-npm run build:buildscript
 
 # Build the extension
 # Moves / bundles assets to dist
