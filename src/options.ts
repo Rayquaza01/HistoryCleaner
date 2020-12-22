@@ -96,9 +96,9 @@ async function download(): Promise<void> {
     location.reload();
 }
 
-function save(e: Event): void {
+async function save(e: Event): Promise<void> {
     // if options are valid
-    const opts = new Options();
+    const opts = new Options(await browser.storage.local.get());
     if (days.validity.valid) {
         opts.days = Number(days.value);
     }
