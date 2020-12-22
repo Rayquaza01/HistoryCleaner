@@ -89,7 +89,7 @@ async function download(): Promise<void> {
     }
 
     // disable notifications if permission not allowed
-    if (notificationRequestButton.getState() === 0) {
+    if (notificationRequestButton.getState() === ToggleButtonState.NO_PERMISSION) {
         res.notifications = false;
     }
 

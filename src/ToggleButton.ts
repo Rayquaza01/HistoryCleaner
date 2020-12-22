@@ -1,6 +1,6 @@
 export enum ToggleButtonState {
-    NO_PERMISSION = 0,
-    PERMISSION = 1
+    NO_PERMISSION,
+    PERMISSION
 }
 
 /**
@@ -10,7 +10,7 @@ export enum ToggleButtonState {
 export class ToggleButton {
     private element: HTMLButtonElement;
     private textOptions: string[];
-    private state: number;
+    private state: ToggleButtonState;
 
     /**
      * @param element - the HTMLButton element
@@ -19,17 +19,17 @@ export class ToggleButton {
     constructor(element: HTMLButtonElement, textOptions: string[]) {
         this.element = element;
         this.textOptions = textOptions;
-        this.state = 0;
+        this.state = ToggleButtonState.NO_PERMISSION;
         this.element.innerText = this.textOptions[this.state];
     }
 
     /** Get the state of the button */
-    getState(): number {
+    getState(): ToggleButtonState {
         return this.state;
     }
 
     /** Set the state of the button */
-    setState(state: number): void {
+    setState(state: ToggleButtonState): void {
         this.state = state;
         this.element.innerText = this.textOptions[this.state];
     }
