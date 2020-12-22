@@ -14,9 +14,7 @@ export class Message implements MessageInterface {
     idleLength: number;
 
     constructor(msgObj?: Partial<MessageInterface>) {
-        msgObj ??= {};
-
-        this.state = msgObj.state ?? -1;
-        this.idleLength = msgObj.idleLength ?? -1;
+        this.state = msgObj?.state ?? -1;
+        this.idleLength = msgObj?.idleLength ?? -1;
     }
 }
