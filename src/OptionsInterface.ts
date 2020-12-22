@@ -19,7 +19,7 @@ export class Options implements OptionsInterface {
     }
 
     setDays(d?: number): void {
-        if (typeof d === "number" && d > 0) {
+        if (typeof d === "number" && d >= 0) {
             this.days = d;
         }
     }
