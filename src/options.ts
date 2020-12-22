@@ -5,26 +5,27 @@ import { i18n } from "./i18n";
 import { Options } from "./OptionsInterface";
 
 // Input elements
-const days: HTMLInputElement = document.querySelector("#days");
-const idleLength: HTMLInputElement = document.querySelector("#idleLength");
-const deleteMode: HTMLSelectElement = document.querySelector("#deleteMode");
-const notifications: HTMLInputElement = document.querySelector("#notifications");
+// type casting because the elements will always exist, provided the HTML is correct
+const days = document.querySelector("#days") as HTMLInputElement;
+const idleLength = document.querySelector("#idleLength") as HTMLInputElement;
+const deleteMode = document.querySelector("#deleteMode") as HTMLSelectElement;
+const notifications = document.querySelector("#notifications") as HTMLInputElement;
 
 // parent to input elements
-const box: HTMLDivElement = document.querySelector("#box");
+const box = document.querySelector("#box") as HTMLDivElement;
 
 // sync buttons
-const uploadButton: HTMLButtonElement = document.querySelector("#syncUp");
-const downloadButton: HTMLButtonElement = document.querySelector("#syncDown");
+const uploadButton = document.querySelector("#syncUp") as HTMLButtonElement;
+const downloadButton = document.querySelector("#syncDown") as HTMLButtonElement;
 
 // permission toggle button
 const notificationRequestButton: ToggleButton = new ToggleButton(
-    document.querySelector("#notification-permission-request"),
+    document.querySelector("#notification-permission-request") as HTMLButtonElement,
     [browser.i18n.getMessage("notificationRequest"), browser.i18n.getMessage("notificationRevoke")]
 );
 
 // manual delete button
-const manualDeleteButton: HTMLButtonElement = document.querySelector("#manual-delete");
+const manualDeleteButton = document.querySelector("#manual-delete") as HTMLButtonElement;
 
 /**
  * Sends a message to the background script telling it to delete the
@@ -95,7 +96,7 @@ async function download(): Promise<void> {
     location.reload();
 }
 
-function save(e: InputEvent): void {
+function save(e: Event): void {
     // if options are valid
     const opts = new Options();
     if (days.validity.valid) {
@@ -159,6 +160,7 @@ async function load(): Promise<void> {
     const permissions = await browser.permissions.getAll();
     // if notification permission
     // enable notification option, set button to revoke
+    permissions.permissions ??= [];
     if (permissions.permissions.includes("notifications")) {
         notifications.disabled = false;
         notificationRequestButton.setState(1);
