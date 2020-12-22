@@ -1,7 +1,16 @@
 import { browser, Idle, Runtime } from "webextension-polyfill-ts";
-import { OptionsInterface, Options } from "./OptionsInterface";
+import { Options } from "./OptionsInterface";
 import { MessageInterface, MessageState, Message } from "./MessageInterface";
 
+/**
+ * Message listener
+ *
+ * Listens for messages from options page
+ *  * Deletes message when Manual delete button is pressed
+ *  * Sets delete mode to idle (updates detection interval and adds event listener)
+ *  * Sets delete mode to startup (removes event listener)
+ * @param msg The message from the options page
+ */
 async function onMessage(msg: MessageInterface): Promise<void> {
     const message = new Message(msg);
     switch (message.state) {
@@ -30,6 +39,12 @@ async function onMessage(msg: MessageInterface): Promise<void> {
     }
 }
 
+/**
+ * Attached to idle onStateChanged listener
+ *
+ * Deletes history if new state is "idle"
+ * @param state New state on idle change
+ */
 function idleListener(state: Idle.IdleState): void {
     // delete history if state is idle
     if (state === "idle") {
@@ -37,8 +52,13 @@ function idleListener(state: Idle.IdleState): void {
     }
 }
 
+/**
+ * Runs at browser startup
+ *  * Sets event listener and detection length if delete mode set to idle
+ *  * Deletes history if set delete mode set to startup
+ */
 async function startup(): Promise<void> {
-    const res = await browser.storage.local.get() as OptionsInterface;
+    const res = new Options(await browser.storage.local.get());
     // if delete mode is idle, set interval and add listener
     if (res.deleteMode === "idle") {
         browser.idle.setDetectionInterval(res.idleLength);
@@ -50,6 +70,12 @@ async function startup(): Promise<void> {
     }
 }
 
+/**
+ * Runs on extension install or update (not browser update)
+ *  * Initializes local and sync storage
+ *  * Opens options page on first install
+ * @param installed Reason for install
+ */
 async function setup(installed: Runtime.OnInstalledDetailsType): Promise<void> {
     if (installed.reason === "install" || installed.reason === "update") {
         // apply default values to storage
@@ -68,8 +94,13 @@ async function setup(installed: Runtime.OnInstalledDetailsType): Promise<void> {
     }
 }
 
+/**
+ * Deletes history older than specified days
+ *  * Only deletes if days > 0
+ *  * Creates notification if notifications are enabled
+ */
 async function deleteHistory(): Promise<void> {
-    const res = await browser.storage.local.get();
+    const res = new Options(await browser.storage.local.get());
     if (res.days > 0) {
         const end = new Date();
         end.setHours(0);
