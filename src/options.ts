@@ -124,15 +124,15 @@ async function save(e: Event): Promise<void> {
 
     // if options are valid
     if (days.validity.valid) {
-        opts.days = Number(days.value);
+        opts.setDays(parseInt(days.value));
     }
 
     if (deleteMode.validity.valid) {
-        opts.deleteMode = deleteMode.value;
+        opts.setDeleteMode(deleteMode.value);
     }
 
     if (idleLength.validity.valid) {
-        opts.idleLength = Number(idleLength.value);
+        opts.setIdleLength(parseInt(idleLength.value));
 
         const msg = new Message();
         // if changing the setting will update idle / startup
@@ -147,7 +147,7 @@ async function save(e: Event): Promise<void> {
     }
 
     if (notifications.validity.valid) {
-        opts.notifications = notifications.checked;
+        opts.setNotifications(notifications.checked);
 
         // create notification if enabled
         if (e.target === notifications && opts.notifications) {
