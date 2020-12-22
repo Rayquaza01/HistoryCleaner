@@ -160,15 +160,14 @@ async function load(): Promise<void> {
     const permissions = await browser.permissions.getAll();
     // if notification permission
     // enable notification option, set button to revoke
-    permissions.permissions ??= [];
-    if (permissions.permissions.includes("notifications")) {
+    if (Array.isArray(permissions.permissions) && permissions.permissions.includes("notifications")) {
         notifications.disabled = false;
-        notificationRequestButton.setState(1);
+        notificationRequestButton.setState(ToggleButtonState.PERMISSION);
     }
     // otherise disable option, set button to enable
     else {
         notifications.disabled = true;
-        notificationRequestButton.setState(0);
+        notificationRequestButton.setState(ToggleButtonState.NO_PERMISSION);
     }
 }
 
