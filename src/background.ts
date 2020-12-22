@@ -2,7 +2,7 @@ import { browser, Idle, Runtime } from "webextension-polyfill-ts";
 import { OptionsInterface, Options } from "./OptionsInterface";
 import { MessageInterface, MessageState, Message } from "./MessageInterface";
 
-function onMessage(msg: MessageInterface): Promise<void> {
+async function onMessage(msg: MessageInterface): Promise<void> {
     const message = new Message(msg);
     switch (message.state) {
         // manual delete button
@@ -28,7 +28,6 @@ function onMessage(msg: MessageInterface): Promise<void> {
             }
             break;
     }
-    return Promise.resolve();
 }
 
 function idleListener(state: Idle.IdleState): void {
