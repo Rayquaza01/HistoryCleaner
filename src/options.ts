@@ -28,13 +28,21 @@ const notificationRequestButton: ToggleButton = new ToggleButton(
 const manualDeleteButton = document.querySelector("#manual-delete") as HTMLButtonElement;
 
 /**
- * Sends a message to the background script telling it to delete the
+ * Sends a message to the background script telling it to delete history
  */
 function manualDelete(): void {
     const msg = new Message({ state: MessageState.DELETE });
     browser.runtime.sendMessage(msg);
 }
 
+/**
+ * Toggle notifications permission
+ *
+ * Activates when the notification request button is pressed.
+ * Requests or revokes notification permission based on the state of the button.
+ *
+ * Updates the button state afterwards
+ */
 function togglePermission(): void {
     // if permission is not currently granted
     if (notificationRequestButton.getState() === ToggleButtonState.NO_PERMISSION) {
@@ -67,14 +75,22 @@ function togglePermission(): void {
     }
 }
 
+/**
+ * Upload current local storage to sync storage
+ */
 async function upload(): Promise<void> {
-    const res = await browser.storage.local.get();
+    const res = new Options(await browser.storage.local.get());
     await browser.storage.sync.set(res);
     location.reload();
 }
 
+/**
+ * Download current sync storage to local storage
+ *
+ * Sets idle or startup based on the contents of the downloaded options
+ */
 async function download(): Promise<void> {
-    const res = await browser.storage.sync.get();
+    const res = new Options(await browser.storage.sync.get());
 
     // set delete mode from sync get
     const msg = new Message();
@@ -96,9 +112,17 @@ async function download(): Promise<void> {
     location.reload();
 }
 
+/**
+ * Saves inputs on options page to storage
+ *  * Runs when input is changed by user
+ *  * If user input is not valid, falls back to data already in storage
+ *  * Set idle or startup based on input
+ * @param e event object
+ */
 async function save(e: Event): Promise<void> {
-    // if options are valid
     const opts = new Options(await browser.storage.local.get());
+
+    // if options are valid
     if (days.validity.valid) {
         opts.days = Number(days.value);
     }
@@ -140,12 +164,17 @@ async function save(e: Event): Promise<void> {
     browser.storage.local.set(opts);
 }
 
+/**
+ * Runs on page load
+ *  * Adds i18n text to the page
+ *  * Loads current options to inputs on page
+ */
 async function load(): Promise<void> {
     i18n();
 
-    const res = await browser.storage.local.get();
-    days.value = res.days;
-    idleLength.value = res.idleLength;
+    const res = new Options(await browser.storage.local.get());
+    days.value = res.days.toString();
+    idleLength.value = res.idleLength.toString();
     deleteMode.value = res.deleteMode;
     notifications.checked = res.notifications;
 
