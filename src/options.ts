@@ -110,20 +110,14 @@ async function save(e: Event): Promise<void> {
     if (idleLength.validity.valid) {
         opts.idleLength = Number(idleLength.value);
 
-        if (e.target === idleLength && opts.deleteMode === "idle") {
-            const msg = new Message({
-                state: MessageState.SET_IDLE,
-                idleLength: opts.idleLength
-            });
+        const msg = new Message();
+        // if changing the setting will update idle / startup
+        if ((e.target === idleLength || e.target === deleteMode) && opts.deleteMode === "idle") {
+            msg.state = MessageState.SET_IDLE;
+            msg.idleLength = opts.idleLength;
             browser.runtime.sendMessage(msg);
-        } else if (e.target === deleteMode) {
-            const msg = new Message();
-            if (opts.deleteMode === "idle") {
-                msg.state = MessageState.SET_IDLE;
-                msg.idleLength = opts.idleLength;
-            } else {
-                msg.state = MessageState.SET_STARTUP;
-            }
+        } else if (e.target === deleteMode && opts.deleteMode === "startup") {
+            msg.state = MessageState.SET_STARTUP;
             browser.runtime.sendMessage(msg);
         }
     }
@@ -141,7 +135,6 @@ async function save(e: Event): Promise<void> {
             });
         }
     }
-
 
     // save options
     browser.storage.local.set(opts);
