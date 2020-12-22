@@ -1,8 +1,8 @@
 import { browser } from "webextension-polyfill-ts";
 import { ToggleButton, ToggleButtonState } from "./ToggleButton";
-import { MessageInterface, MessageState } from "./MessageInterface";
+import { Message, MessageState } from "./MessageInterface";
 import { i18n } from "./i18n";
-import { OptionsInterface } from "./OptionsInterface";
+import { Options } from "./OptionsInterface";
 
 // Input elements
 const days: HTMLInputElement = document.querySelector("#days");
@@ -30,9 +30,7 @@ const manualDeleteButton: HTMLButtonElement = document.querySelector("#manual-de
  * Sends a message to the background script telling it to delete the
  */
 function manualDelete(): void {
-    const msg: MessageInterface = {
-        state: MessageState.DELETE
-    };
+    const msg = new Message({ state: MessageState.DELETE });
     browser.runtime.sendMessage(msg);
 }
 
@@ -78,10 +76,10 @@ async function download(): Promise<void> {
     const res = await browser.storage.sync.get();
 
     // set delete mode from sync get
-    const msg: MessageInterface = { state: null };
+    const msg = new Message();
     if (res.deleteMode === "idle") {
         msg.state = MessageState.SET_IDLE;
-        msg.data = res.idleLength;
+        msg.idleLength = res.idleLength;
         browser.runtime.sendMessage(msg);
     } else if (res.deleteMode === "startup") {
         msg.state = MessageState.SET_STARTUP;
@@ -99,29 +97,29 @@ async function download(): Promise<void> {
 
 function save(e: InputEvent): void {
     // if options are valid
-    const obj: OptionsInterface = {};
+    const opts = new Options();
     if (days.validity.valid) {
-        obj.days = Number(days.value);
+        opts.days = Number(days.value);
     }
 
     if (deleteMode.validity.valid) {
-        obj.deleteMode = deleteMode.value;
+        opts.deleteMode = deleteMode.value;
     }
 
     if (idleLength.validity.valid) {
-        obj.idleLength = Number(idleLength.value);
+        opts.idleLength = Number(idleLength.value);
 
-        if (e.target === idleLength && obj.deleteMode === "idle") {
-            const msg: MessageInterface = {
+        if (e.target === idleLength && opts.deleteMode === "idle") {
+            const msg = new Message({
                 state: MessageState.SET_IDLE,
-                data: obj.idleLength
-            };
+                idleLength: opts.idleLength
+            });
             browser.runtime.sendMessage(msg);
         } else if (e.target === deleteMode) {
-            const msg: MessageInterface = { state: null };
-            if (obj.deleteMode === "idle") {
+            const msg = new Message();
+            if (opts.deleteMode === "idle") {
                 msg.state = MessageState.SET_IDLE;
-                msg.data = obj.idleLength;
+                msg.idleLength = opts.idleLength;
             } else {
                 msg.state = MessageState.SET_STARTUP;
             }
@@ -130,10 +128,10 @@ function save(e: InputEvent): void {
     }
 
     if (notifications.validity.valid) {
-        obj.notifications = notifications.checked;
+        opts.notifications = notifications.checked;
 
         // create notification if enabled
-        if (e.target === notifications && obj.notifications) {
+        if (e.target === notifications && opts.notifications) {
             browser.notifications.create({
                 type: "basic",
                 iconUrl: "icons/icon-96.png",
@@ -145,7 +143,7 @@ function save(e: InputEvent): void {
 
 
     // save options
-    browser.storage.local.set(obj);
+    browser.storage.local.set(opts);
 }
 
 async function load(): Promise<void> {

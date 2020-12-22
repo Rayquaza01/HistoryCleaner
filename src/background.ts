@@ -1,9 +1,10 @@
 import { browser, Idle, Runtime } from "webextension-polyfill-ts";
-import { OptionsInterface, DefaultOptions} from "./OptionsInterface";
-import { MessageInterface, MessageState } from "./MessageInterface";
+import { OptionsInterface, Options } from "./OptionsInterface";
+import { MessageInterface, MessageState, Message } from "./MessageInterface";
 
 function onMessage(msg: MessageInterface): Promise<void> {
-    switch (msg.state) {
+    const message = new Message(msg);
+    switch (message.state) {
         // manual delete button
         case MessageState.DELETE:
             deleteHistory();
@@ -15,7 +16,7 @@ function onMessage(msg: MessageInterface): Promise<void> {
                 browser.idle.onStateChanged.removeListener(idleListener);
             }
             // set idle length
-            browser.idle.setDetectionInterval(msg.data);
+            browser.idle.setDetectionInterval(msg.idleLength);
             // add idle listener
             browser.idle.onStateChanged.addListener(idleListener);
             break;
@@ -52,18 +53,12 @@ async function startup(): Promise<void> {
 
 async function setup(installed: Runtime.OnInstalledDetailsType): Promise<void> {
     if (installed.reason === "install" || installed.reason === "update") {
-        const res = await browser.storage.local.get();
         // apply default values to storage
-        for (const key of Object.keys(DefaultOptions)) {
-            res[key] ??= DefaultOptions[key];
-        }
+        const res = new Options(await browser.storage.local.get());
         await browser.storage.local.set(res);
 
         // initialize sync object
-        const syncRes = await browser.storage.sync.get();
-        for (const key of Object.keys(DefaultOptions)) {
-            syncRes[key] ??= DefaultOptions[key];
-        }
+        const syncRes = new Options(await browser.storage.sync.get());
         await browser.storage.sync.set(syncRes);
 
         startup();
