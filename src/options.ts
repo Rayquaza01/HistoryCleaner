@@ -2,7 +2,7 @@ import { browser } from "webextension-polyfill-ts";
 import { ToggleButton, ToggleButtonState } from "./ToggleButton";
 import { Message, MessageState } from "./MessageInterface";
 import { i18n } from "./i18n";
-import { Options } from "./OptionsInterface";
+import { Options, OptionsInterface } from "./OptionsInterface";
 
 // Input elements
 // type casting because the elements will always exist, provided the HTML is correct
@@ -119,20 +119,20 @@ async function download(): Promise<void> {
  *  * Set idle or startup based on input
  * @param e event object
  */
-async function save(e: Event): Promise<void> {
-    const opts = new Options(await browser.storage.local.get());
+function save(e: Event): void {
+    const opts: Partial<OptionsInterface> = {};
 
     // if options are valid
     if (days.validity.valid) {
-        opts.setDays(parseInt(days.value));
+        opts.days = parseInt(days.value);
     }
 
     if (deleteMode.validity.valid) {
-        opts.setDeleteMode(deleteMode.value);
+        opts.deleteMode = deleteMode.value;
     }
 
     if (idleLength.validity.valid) {
-        opts.setIdleLength(parseInt(idleLength.value));
+        opts.idleLength = parseInt(idleLength.value);
 
         const msg = new Message();
         // if changing the setting will update idle / startup
@@ -147,7 +147,7 @@ async function save(e: Event): Promise<void> {
     }
 
     if (notifications.validity.valid) {
-        opts.setNotifications(notifications.checked);
+        opts.notifications = notifications.checked;
 
         // create notification if enabled
         if (e.target === notifications && opts.notifications) {
