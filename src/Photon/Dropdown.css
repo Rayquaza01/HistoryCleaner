@@ -1,0 +1,24 @@
+select {
+    color: #0c0c0d;
+    background-color: rgba(12, 12, 13, 0.1);
+    border-radius: 2px;
+    height: 32px;
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 13px;
+    font-weight: 400;
+    min-width: 132px;
+    border: none;
+}
+
+select:hover {
+    background-color: rgba(12, 12, 13, 0.2);
+}
+
+select:active {
+    background-color: rgba(12, 12, 13, 0.3);
+}
+
+select:focus {
+    box-shadow: 0 0 0 1px #0a84ff inset, 0 0 0 1px #0a84ff, 0 0 0 4px rgba(10, 132, 255, 0.3);
+}

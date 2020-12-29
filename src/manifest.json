@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+  "name": "__MSG_extensionName__",
+  "version": "1.3.0",
+  "description": "__MSG_extensionDescription__",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{a138007c-5ff6-4d10-83d9-0afaf0efbe5e}"
+    }
+  },
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png"
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "permissions": [
+    "history",
+    "storage",
+    "idle"
+  ],
+  "optional_permissions": ["notifications"],
+  "options_ui": {
+    "page": "options.html",
+    "browser_style": true
+  },
+  "default_locale": "en_US"
+}

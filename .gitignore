@@ -1,2 +1,5 @@
 *.swp
-node_modules
+node_modules/
+dist/
+.cache/
+web-ext-artifacts/
