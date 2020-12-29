@@ -1,4 +1,4 @@
-v1.2.4 Changelog
+v1.3.0 Changelog
  * Rewrote extension in TypeScript
  * Option to change idle length
  * Option to show notifications when history is deleted
