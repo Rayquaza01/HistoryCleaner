@@ -1,4 +1,4 @@
-import { browser } from "webextension-polyfill-ts";
+import * as browser from "webextension-polyfill";
 import { ToggleButton, ToggleButtonState } from "./ToggleButton";
 import { Message, MessageState } from "./MessageInterface";
 import { i18n } from "./i18n";

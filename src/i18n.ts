@@ -1,4 +1,4 @@
-import { browser } from "webextension-polyfill-ts";
+import * as browser from "webextension-polyfill";
 
 /**
  * Loads i18n text to page

@@ -13,7 +13,7 @@
     "96": "icons/icon-96.png"
   },
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["browser-polyfill.min.js", "background.bundle.js"]
   },
   "permissions": [
     "history",
