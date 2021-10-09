@@ -104,5 +104,9 @@
         "example": ""
       }
     }
+  },
+  "historyAllDeleted": {
+    "message": "All history has been deleted",
+    "description": ""
   }
 }

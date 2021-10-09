@@ -1,4 +1,5 @@
-import { browser, Idle, Runtime } from "webextension-polyfill-ts";
+import * as browser from "webextension-polyfill";
+import { Idle, Runtime } from "webextension-polyfill";
 import { Options } from "./OptionsInterface";
 import { MessageInterface, MessageState, Message } from "./MessageInterface";
 
@@ -128,6 +129,15 @@ async function deleteHistory(): Promise<void> {
                 message: notificationBody
             });
         }
+    } else if (res.days === -1) {
+        await browser.history.deleteAll();
+        console.log(browser.i18n.getMessage("historyAllDeleted"));
+        browser.notifications.create({
+            type: "basic",
+            iconUrl: "icons/icon-96.png",
+            title: browser.i18n.getMessage("historyDeletionNotification"),
+            message: browser.i18n.getMessage("historyAllDeleted")
+        });
     }
 }
 
