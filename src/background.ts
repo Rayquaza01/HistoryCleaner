@@ -1,6 +1,6 @@
 import * as browser from "webextension-polyfill";
 import { Idle, Runtime } from "webextension-polyfill";
-import { Options } from "./OptionsInterface";
+import { Options, OptionsInterface } from "./OptionsInterface";
 import { MessageInterface, MessageState, Message } from "./MessageInterface";
 
 /**
@@ -59,7 +59,7 @@ function idleListener(state: Idle.IdleState): void {
  *  * Deletes history if set delete mode set to startup
  */
 async function startup(): Promise<void> {
-    const res = new Options(await browser.storage.local.get());
+    const res = new Options(await browser.storage.local.get() as OptionsInterface);
     // if delete mode is idle, set interval and add listener
     if (res.deleteMode === "idle") {
         browser.idle.setDetectionInterval(res.idleLength);
@@ -80,11 +80,11 @@ async function startup(): Promise<void> {
 async function setup(installed: Runtime.OnInstalledDetailsType): Promise<void> {
     if (installed.reason === "install" || installed.reason === "update") {
         // apply default values to storage
-        const res = new Options(await browser.storage.local.get());
+        const res = new Options(await browser.storage.local.get() as OptionsInterface);
         await browser.storage.local.set(res);
 
         // initialize sync object
-        const syncRes = new Options(await browser.storage.sync.get());
+        const syncRes = new Options(await browser.storage.sync.get() as OptionsInterface);
         await browser.storage.sync.set(syncRes);
 
         startup();
@@ -101,8 +101,8 @@ async function setup(installed: Runtime.OnInstalledDetailsType): Promise<void> {
  *  * Creates notification if notifications are enabled
  */
 async function deleteHistory(): Promise<void> {
-    const res = new Options(await browser.storage.local.get());
-    if (res.days > 0) {
+    const res = new Options(await browser.storage.local.get() as OptionsInterface);
+    if (res.behavior === "days") {
         const end = new Date();
         end.setHours(0);
         end.setMinutes(0);
@@ -129,7 +129,7 @@ async function deleteHistory(): Promise<void> {
                 message: notificationBody
             });
         }
-    } else if (res.days === -1) {
+    } else if (res.behavior === "all") {
         await browser.history.deleteAll();
         console.log(browser.i18n.getMessage("historyAllDeleted"));
         browser.notifications.create({
