@@ -4,6 +4,8 @@ import { Message, MessageState } from "./MessageInterface";
 import { i18n } from "./i18n";
 import { Options, OptionsInterface } from "./OptionsInterface";
 
+require("./options.css");
+
 // Input elements
 // type casting because the elements will always exist, provided the HTML is correct
 const days = document.querySelector("#days") as HTMLInputElement;

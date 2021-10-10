@@ -2,8 +2,6 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const copyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CssMinimizerWebpackPlugin = require("css-minimizer-webpack-plugin");
 const TerserWebpackPlugin = require("terser-webpack-plugin");
 
 module.exports = {
@@ -25,7 +23,7 @@ module.exports = {
             },
             {
                 test: /\.css$/i,
-                use: [MiniCssExtractPlugin.loader, "css-loader"]
+                use: ["style-loader", "css-loader"]
             }
         ]
     },
@@ -63,7 +61,6 @@ module.exports = {
     optimization: {
         usedExports: true,
         minimizer: [
-            new CssMinimizerWebpackPlugin(),
             new TerserWebpackPlugin()
         ]
     }
