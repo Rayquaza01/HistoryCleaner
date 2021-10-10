@@ -32,7 +32,7 @@ export class Options implements OptionsInterface {
      * @param d Number of days (>= 0)
      */
     setDays(d?: number): void {
-        if (typeof d === "number" && d >= 0) {
+        if (typeof d === "number" && d >= -1) {
             this.days = d;
         }
     }
