@@ -2,19 +2,13 @@ import * as browser from "webextension-polyfill";
 import { ToggleButton, ToggleButtonState } from "./ToggleButton";
 import { Message, MessageState } from "./MessageInterface";
 import { i18n } from "./i18n";
-import { Options, OptionsInterface } from "./OptionsInterface";
+import { Options, OptionsInterface, FormElements } from "./OptionsInterface";
 
 require("./options.css");
 
-// Input elements
-// type casting because the elements will always exist, provided the HTML is correct
-const days = document.querySelector("#days") as HTMLInputElement;
-const idleLength = document.querySelector("#idleLength") as HTMLInputElement;
-const deleteMode = document.querySelector("#deleteMode") as HTMLSelectElement;
-const notifications = document.querySelector("#notifications") as HTMLInputElement;
-
 // parent to input elements
-const box = document.querySelector("#box") as HTMLDivElement;
+const form = document.querySelector("#box") as HTMLFormElement;
+const formElements = form.elements as FormElements;
 
 // sync buttons
 const uploadButton = document.querySelector("#syncUp") as HTMLButtonElement;
@@ -55,13 +49,13 @@ function togglePermission(): void {
                 // switch button state, enable option, send demo notification
                 if (request) {
                     notificationRequestButton.setState(ToggleButtonState.PERMISSION);
-                    notifications.disabled = false;
+                    formElements.notifications.disabled = false;
                 }
                 // otherwise, keep button state same, turn off notifications, disable option
                 else {
                     notificationRequestButton.setState(ToggleButtonState.NO_PERMISSION);
-                    notifications.checked = false;
-                    notifications.disabled = true;
+                    formElements.notifications.checked = false;
+                    formElements.notifications.disabled = true;
                     browser.storage.local.set({ notifications: false });
                 }
             });
@@ -71,8 +65,8 @@ function togglePermission(): void {
     else if (notificationRequestButton.getState() === ToggleButtonState.PERMISSION) {
         browser.permissions.remove({ permissions: ["notifications"] });
         notificationRequestButton.setState(ToggleButtonState.NO_PERMISSION);
-        notifications.checked = false;
-        notifications.disabled = true;
+        formElements.notifications.checked = false;
+        formElements.notifications.disabled = true;
         browser.storage.local.set({ notifications: false });
     }
 }
@@ -81,7 +75,7 @@ function togglePermission(): void {
  * Upload current local storage to sync storage
  */
 async function upload(): Promise<void> {
-    const res = new Options(await browser.storage.local.get());
+    const res = new Options(await browser.storage.local.get() as OptionsInterface);
     await browser.storage.sync.set(res);
     location.reload();
 }
@@ -92,7 +86,7 @@ async function upload(): Promise<void> {
  * Sets idle or startup based on the contents of the downloaded options
  */
 async function download(): Promise<void> {
-    const res = new Options(await browser.storage.sync.get());
+    const res = new Options(await browser.storage.sync.get() as OptionsInterface);
 
     // set delete mode from sync get
     const msg = new Message();
@@ -114,53 +108,50 @@ async function download(): Promise<void> {
     location.reload();
 }
 
-/**
- * Saves inputs on options page to storage
- *  * Runs when input is changed by user
- *  * If user input is not valid, falls back to data already in storage
- *  * Set idle or startup based on input
- * @param e event object
- */
-function save(e: Event): void {
-    const opts: Partial<OptionsInterface> = {};
+function updateFormInput(e: Event): void {
+    const target = e.target as HTMLFieldSetElement;
 
-    // if options are valid
-    if (days.validity.valid) {
-        opts.days = parseInt(days.value);
-    }
+    form.requestSubmit();
 
-    if (deleteMode.validity.valid) {
-        opts.deleteMode = deleteMode.value;
-    }
-
-    if (idleLength.validity.valid) {
-        opts.idleLength = parseInt(idleLength.value);
-
+    if (formElements.idleLength.validity.valid) {
         const msg = new Message();
         // if changing the setting will update idle / startup
-        if ((e.target === idleLength || e.target === deleteMode) && opts.deleteMode === "idle") {
+        if ((target.name === "idleLength" || target.name === "deleteMode") && formElements.deleteMode.value === "idle") {
             msg.state = MessageState.SET_IDLE;
-            msg.idleLength = opts.idleLength;
+            msg.idleLength = parseInt(formElements.idleLength.value);
             browser.runtime.sendMessage(msg);
-        } else if (e.target === deleteMode && opts.deleteMode === "startup") {
+        } else if (target.name === "deleteMode" && formElements.deleteMode.value === "startup") {
             msg.state = MessageState.SET_STARTUP;
             browser.runtime.sendMessage(msg);
         }
     }
 
-    if (notifications.validity.valid) {
-        opts.notifications = notifications.checked;
-
-        // create notification if enabled
-        if (e.target === notifications && opts.notifications) {
-            browser.notifications.create({
-                type: "basic",
-                iconUrl: "icons/icon-96.png",
-                title: browser.i18n.getMessage("notificationEnabled"),
-                message: browser.i18n.getMessage("notificationEnabledBody")
-            });
-        }
+    if (target.name === "notifications" && formElements.notifications.checked) {
+        browser.notifications.create({
+            type: "basic",
+            iconUrl: "icons/icon-96.png",
+            title: browser.i18n.getMessage("notificationEnabled"),
+            message: browser.i18n.getMessage("notificationEnabledBody")
+        });
     }
+}
+
+/**
+ * Saves inputs on options page to storage
+ *  * Runs when input is changed by user
+ *  * If user input is not valid, does not save
+ * @param e event object
+ */
+function save(e: Event): void {
+    e.preventDefault();
+
+    const opts: OptionsInterface = {
+        behavior: formElements.behavior.value,
+        days: parseInt(formElements.days.value),
+        deleteMode: formElements.deleteMode.value,
+        idleLength: parseInt(formElements.idleLength.value),
+        notifications: formElements.notifications.checked
+    };
 
     // save options
     browser.storage.local.set(opts);
@@ -174,30 +165,32 @@ function save(e: Event): void {
 async function load(): Promise<void> {
     i18n();
 
-    const res = new Options(await browser.storage.local.get());
-    days.value = res.days.toString();
-    idleLength.value = res.idleLength.toString();
-    deleteMode.value = res.deleteMode;
-    notifications.checked = res.notifications;
+    const res = new Options(await browser.storage.local.get() as OptionsInterface);
+    formElements.behavior.value = res.behavior.toString();
+    formElements.days.value = res.days.toString();
+    formElements.idleLength.value = res.idleLength.toString();
+    formElements.deleteMode.value = res.deleteMode;
+    formElements.notifications.checked = res.notifications;
 
     // check permissions
     const permissions = await browser.permissions.getAll();
     // if notification permission
     // enable notification option, set button to revoke
     if (Array.isArray(permissions.permissions) && permissions.permissions.includes("notifications")) {
-        notifications.disabled = false;
+        formElements.notifications.disabled = false;
         notificationRequestButton.setState(ToggleButtonState.PERMISSION);
     }
     // otherise disable option, set button to enable
     else {
-        notifications.disabled = true;
+        formElements.notifications.disabled = true;
         notificationRequestButton.setState(ToggleButtonState.NO_PERMISSION);
     }
 }
 
 document.addEventListener("DOMContentLoaded", load);
 notificationRequestButton.getElement().addEventListener("click", togglePermission);
-box.addEventListener("input", save);
+form.addEventListener("input", updateFormInput);
+form.addEventListener("submit", save);
 manualDeleteButton.addEventListener("click", manualDelete);
 
 uploadButton.addEventListener("click", upload);

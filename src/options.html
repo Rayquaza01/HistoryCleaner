@@ -10,15 +10,15 @@
             <h2 data-i18n="optionBehaviorText" class="i18n"></h2>
             <p data-i18n="optionBehaviorInfo" class="i18n"></p>
             <span class="vertcenter">
-                <input type="radio" name="behavior" id="behaviorDisable" value="behaviorDisable" required checked>
+                <input type="radio" name="behavior" id="behaviorDisable" value="disable" required checked>
                 <label for="behaviorDisable" class="i18n" data-i18n="behaviorDisable"></label>
             </span>
             <span class="vertcenter">
-                <input type="radio" name="behavior" id="behaviorDays" value="behaviorDays">
+                <input type="radio" name="behavior" id="behaviorDays" value="days">
                 <label for="behaviorDays" class="i18n" data-i18n="behaviorDays"></label>
             </span>
             <span class="vertcenter">
-                <input type="radio" name="behavior" id="behaviorAll" value="behaviorAll">
+                <input type="radio" name="behavior" id="behaviorAll" value="all">
                 <label for="behaviorAll" class="i18n" data-i18n="behaviorAll"></label>
             </span>
 
@@ -32,10 +32,14 @@
 
             <h2 data-i18n="optionDeleteModeText" class="i18n"></h2>
             <p data-i18n="optionDeleteModeInfo" class="i18n"></p>
-            <select id="deleteMode" name="deleteMode">
-                <option value="idle" data-i18n="optionDeleteModeIdle" class="i18n"></option>
-                <option value="startup" data-i18n="optionDeleteModeStartup" class="i18n"></option>
-            </select>
+            <span class="vertcenter">
+                <input type="radio" name="deleteMode" id="deleteModeIdle" value="idle" required checked>
+                <label for="deleteModeIdle" class="i18n" data-i18n="optionDeleteModeIdle"></label>
+            </span>
+            <span class="vertcenter">
+                <input type="radio" name="deleteMode" id="deleteModeStartup" value="startup">
+                <label for="deleteModeStartup" class="i18n" data-i18n="optionDeleteModeStartup"></label>
+            </span>
 
             <h2 data-i18n="optionNotificationsText" class="i18n"></h2>
             <p data-i18n="optionNotificationsInfo" class="i18n"></p>
@@ -44,15 +48,15 @@
                 <label for="notifications" class="i18n" data-i18n="optionNotificationsCheckbox"></label>
             </span>
             <br>
-            <button class="default" id="notification-permission-request"></button>
+            <button class="default" id="notification-permission-request" name="notificationPermissionRequest"></button>
 
             <h2 data-i18n="manualDelete" class="i18n"></h2>
             <p data-i18n="manualDeleteInfo" class="i18n"></p>
-            <button id="manual-delete" data-i18n="manualDelete" class="i18n default"></button>
+            <button id="manual-delete" data-i18n="manualDelete" class="i18n default" name="manualDelete"></button>
 
             <h2 data-i18n="sync" class="i18n"></h2>
-            <button id="syncUp" data-i18n="syncUp" class="i18n default"></button>
-            <button id="syncDown" data-i18n="syncDown" class="i18n default"></button>
+            <button id="syncUp" data-i18n="syncUp" class="i18n default" name="syncUp"></button>
+            <button id="syncDown" data-i18n="syncDown" class="i18n default" name="syncDown"></button>
         </form>
     </body>
 </html>
