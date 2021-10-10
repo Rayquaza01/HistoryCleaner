@@ -12,7 +12,7 @@
     "description": ""
   },
   "optionDaysInfo": {
-    "message": "Defaults to 0, set to 0 to disable",
+    "message": "Defaults to 0. Will delete history older than midnight on the specified number of days ago. Will have no effect if behavior is set to disabled or delete all.",
     "description": ""
   },
   "optionIdleLengthText": {
@@ -20,15 +20,15 @@
     "description": ""
   },
   "optionIdleLengthInfo": {
-    "message": "Amount of time (seconds) the browser should idle before deleting history. (Defaults to 60, Minimum 15)",
+    "message": "Amount of time (seconds) the browser should idle before triggering. (Defaults to 60, Minimum 15)",
     "description": ""
   },
   "optionDeleteModeText": {
-    "message": "Deletion Mode",
+    "message": "Trigger Mode",
     "description": ""
   },
   "optionDeleteModeInfo": {
-    "message": "Choose to delete history on browser startup or after idling for the idle length. (Defaults to Idle). If set to startup, Idle Length has no effect.",
+    "message": "Choose whether the extension should trigger on browser startup, or after idling for the idle length. (Defaults to idle). If set to startup, Idle Length has no effect.",
     "description": ""
   },
   "optionDeleteModeIdle": {
@@ -107,6 +107,26 @@
   },
   "historyAllDeleted": {
     "message": "All history has been deleted",
+    "description": ""
+  },
+  "optionBehaviorText": {
+    "message": "Extension Behavior",
+    "description": ""
+  },
+  "optionBehaviorInfo": {
+    "message": "Decides what history the extension should delete when it triggers.",
+    "description": ""
+  },
+  "behaviorDisable": {
+    "message": "Disabled",
+    "description": ""
+  },
+  "behaviorDays": {
+    "message": "Delete history older than a specified amount of days",
+    "description": ""
+  },
+  "behaviorAll": {
+    "message": "Delete All History",
     "description": ""
   }
 }

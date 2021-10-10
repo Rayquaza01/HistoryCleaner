@@ -6,14 +6,29 @@
         <script defer src="browser-polyfill.min.js"></script>
     </head>
     <body>
-        <div id="box">
+        <form id="box">
+            <h2 data-i18n="optionBehaviorText" class="i18n"></h2>
+            <p data-i18n="optionBehaviorInfo" class="i18n"></p>
+            <span class="vertcenter">
+                <input type="radio" name="behavior" id="behaviorDisable" value="behaviorDisable" required checked>
+                <label for="behaviorDisable" class="i18n" data-i18n="behaviorDisable"></label>
+            </span>
+            <span class="vertcenter">
+                <input type="radio" name="behavior" id="behaviorDays" value="behaviorDays">
+                <label for="behaviorDays" class="i18n" data-i18n="behaviorDays"></label>
+            </span>
+            <span class="vertcenter">
+                <input type="radio" name="behavior" id="behaviorAll" value="behaviorAll">
+                <label for="behaviorAll" class="i18n" data-i18n="behaviorAll"></label>
+            </span>
+
             <h2 data-i18n="optionDaysText" class="i18n"></h2>
             <p data-i18n="optionDaysInfo" class="i18n"></p>
-            <input id="days" name="days" type="number" min="-1" class="text"><br>
+            <input id="days" name="days" type="number" min="0" class="text" required><br>
 
             <h2 data-i18n="optionIdleLengthText" class="i18n"></h2>
             <p data-i18n="optionIdleLengthInfo" class="i18n"></p>
-            <input id="idleLength" name="idleLength" type="number" min="15" class="text">
+            <input id="idleLength" name="idleLength" type="number" min="15" class="text" required>
 
             <h2 data-i18n="optionDeleteModeText" class="i18n"></h2>
             <p data-i18n="optionDeleteModeInfo" class="i18n"></p>
@@ -38,6 +53,6 @@
             <h2 data-i18n="sync" class="i18n"></h2>
             <button id="syncUp" data-i18n="syncUp" class="i18n default"></button>
             <button id="syncDown" data-i18n="syncDown" class="i18n default"></button>
-        </div>
+        </form>
     </body>
 </html>
