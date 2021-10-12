@@ -108,53 +108,48 @@ async function download(): Promise<void> {
     location.reload();
 }
 
-function updateFormInput(e: Event): void {
-    const target = e.target as HTMLFieldSetElement;
-
-    form.requestSubmit();
-
-    if (formElements.idleLength.validity.valid) {
-        const msg = new Message();
-        // if changing the setting will update idle / startup
-        if ((target.name === "idleLength" || target.name === "deleteMode") && formElements.deleteMode.value === "idle") {
-            msg.state = MessageState.SET_IDLE;
-            msg.idleLength = parseInt(formElements.idleLength.value);
-            browser.runtime.sendMessage(msg);
-        } else if (target.name === "deleteMode" && formElements.deleteMode.value === "startup") {
-            msg.state = MessageState.SET_STARTUP;
-            browser.runtime.sendMessage(msg);
-        }
-    }
-
-    if (target.name === "notifications" && formElements.notifications.checked) {
-        browser.notifications.create({
-            type: "basic",
-            iconUrl: "icons/icon-96.png",
-            title: browser.i18n.getMessage("notificationEnabled"),
-            message: browser.i18n.getMessage("notificationEnabledBody")
-        });
-    }
-}
-
 /**
  * Saves inputs on options page to storage
  *  * Runs when input is changed by user
  *  * If user input is not valid, does not save
+ *  * Set idle or startup based on input
  * @param e event object
  */
 function save(e: Event): void {
-    e.preventDefault();
+    const target = e.target as HTMLFieldSetElement;
 
-    const opts: OptionsInterface = {
-        behavior: formElements.behavior.value,
-        days: parseInt(formElements.days.value),
-        deleteMode: formElements.deleteMode.value,
-        idleLength: parseInt(formElements.idleLength.value),
-        notifications: formElements.notifications.checked
-    };
+    if (form.checkValidity()) {
+        const opts: OptionsInterface = {
+            behavior: formElements.behavior.value,
+            days: parseInt(formElements.days.value),
+            deleteMode: formElements.deleteMode.value,
+            idleLength: parseInt(formElements.idleLength.value),
+            notifications: formElements.notifications.checked
+        };
 
-    // save options
-    browser.storage.local.set(opts);
+        const msg = new Message();
+        // if changing the setting will update idle / startup
+        if ((target.name === "idleLength" || target.name === "deleteMode") && opts.deleteMode === "idle") {
+            msg.state = MessageState.SET_IDLE;
+            msg.idleLength = opts.idleLength;
+            browser.runtime.sendMessage(msg);
+        } else if (target.name === "deleteMode" && opts.deleteMode === "startup") {
+            msg.state = MessageState.SET_STARTUP;
+            browser.runtime.sendMessage(msg);
+        }
+
+        if (target.name === "notifications" && opts.notifications) {
+            browser.notifications.create({
+                type: "basic",
+                iconUrl: "icons/icon-96.png",
+                title: browser.i18n.getMessage("notificationEnabled"),
+                message: browser.i18n.getMessage("notificationEnabledBody")
+            });
+        }
+
+        // save options
+        browser.storage.local.set(opts);
+    }
 }
 
 /**
@@ -189,8 +184,7 @@ async function load(): Promise<void> {
 
 document.addEventListener("DOMContentLoaded", load);
 notificationRequestButton.getElement().addEventListener("click", togglePermission);
-form.addEventListener("input", updateFormInput);
-form.addEventListener("submit", save);
+form.addEventListener("input", save);
 manualDeleteButton.addEventListener("click", manualDelete);
 
 uploadButton.addEventListener("click", upload);
