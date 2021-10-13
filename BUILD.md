@@ -1,10 +1,10 @@
-# Building History Cleaner 1.3.0
+# Building History Cleaner 1.4.0
 
 ## System Info
- * Ubuntu 20.10
- * node v14.15.3
- * npm 6.14.9
- * bash 5.0.17
+ * Ubuntu 21.04
+ * node v14.18.1
+ * npm 8.0.0
+ * bash 5.1.4
  * For tool and library versions, check package.json
 
 # Building
@@ -21,7 +21,7 @@ npm run build:prod
 # Zip extension for distribution
 npm run build:extension
 ```
-The built files will be in `./dist` and the complete extension will be `./web-ext-artifacts/history_cleaner-1.3.0.zip`
+The built files will be in `./dist` and the complete extension will be `./web-ext-artifacts/history_cleaner-1.4.0.zip`
 
 # Testing the extension
 
