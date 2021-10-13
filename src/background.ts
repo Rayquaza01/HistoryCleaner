@@ -1,5 +1,4 @@
-import * as browser from "webextension-polyfill";
-import { Idle, Runtime } from "webextension-polyfill";
+import browser, { Idle, Runtime } from "webextension-polyfill";
 import { Options } from "./OptionsInterface";
 import { MessageInterface, MessageState, Message } from "./MessageInterface";
 
