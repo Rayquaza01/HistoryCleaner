@@ -27,7 +27,7 @@ export class Options implements OptionsInterface {
      * Creates default options object, with overrides from optionsObj
      * @param optionsObj Initial options object, likely from storage
      */
-    constructor(optionsObj?: OptionsInterface) {
+    constructor(optionsObj?: Record<string, unknown>) {
         if (optionsObj === undefined) {
             return;
         }

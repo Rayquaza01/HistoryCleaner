@@ -75,7 +75,7 @@ function togglePermission(): void {
  * Upload current local storage to sync storage
  */
 async function upload(): Promise<void> {
-    const res = new Options(await browser.storage.local.get() as OptionsInterface);
+    const res = new Options(await browser.storage.local.get());
     await browser.storage.sync.set(res);
     location.reload();
 }
@@ -86,7 +86,7 @@ async function upload(): Promise<void> {
  * Sets idle or startup based on the contents of the downloaded options
  */
 async function download(): Promise<void> {
-    const res = new Options(await browser.storage.sync.get() as OptionsInterface);
+    const res = new Options(await browser.storage.sync.get());
 
     // set delete mode from sync get
     const msg = new Message();
@@ -127,8 +127,8 @@ function save(e: Event): void {
             notifications: formElements.notifications.checked
         };
 
-        const msg = new Message();
         // if changing the setting will update idle / startup
+        const msg = new Message();
         if ((target.name === "idleLength" || target.name === "deleteMode") && opts.deleteMode === "idle") {
             msg.state = MessageState.SET_IDLE;
             msg.idleLength = opts.idleLength;
@@ -138,6 +138,7 @@ function save(e: Event): void {
             browser.runtime.sendMessage(msg);
         }
 
+        // if notifications were enabled
         if (target.name === "notifications" && opts.notifications) {
             browser.notifications.create({
                 type: "basic",
@@ -160,7 +161,7 @@ function save(e: Event): void {
 async function load(): Promise<void> {
     i18n();
 
-    const res = new Options(await browser.storage.local.get() as OptionsInterface);
+    const res = new Options(await browser.storage.local.get());
     formElements.behavior.value = res.behavior.toString();
     formElements.days.value = res.days.toString();
     formElements.idleLength.value = res.idleLength.toString();
