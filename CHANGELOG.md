@@ -1,7 +1,3 @@
-v1.3.0 Changelog
- * Rewrote extension in TypeScript
- * Option to change idle length
- * Option to show notifications when history is deleted
- * Option to delete history on startup instead of idle
- * Button to manually delete history on options page
- * Basic sync support
+v1.4.0 Changelog
+ * Change build to use webpack instead of parcel
+ * New behavior option to delete all history when extension triggers
