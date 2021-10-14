@@ -96,7 +96,9 @@ async function setup(installed: Runtime.OnInstalledDetailsType): Promise<void> {
 
 /**
  * Deletes history older than specified days
- *  * Only deletes if days > 0
+ *  * Takes no action if behavior is set to disable
+ *  * Deletes older than days if behavior is set to days
+ *  * Deletes all history if behavior is set to all
  *  * Creates notification if notifications are enabled
  */
 async function deleteHistory(): Promise<void> {
