@@ -3,6 +3,10 @@
 @import url("./Photon/Dropdown.css");
 @import url("./Photon/Checkbox.css");
 
+html, body {
+    font-family: sans-serif;
+}
+
 h2 {
     font-size: 17px;
     font-weight: 500;

@@ -1,5 +1,5 @@
 import browser from "webextension-polyfill";
-import { ToggleButton, ToggleButtonState } from "./ToggleButton";
+// import { ToggleButton, ToggleButtonState } from "./ToggleButton";
 import { Message, MessageState } from "./MessageInterface";
 import { i18n } from "./i18n";
 import { Options, OptionsInterface, FormElements } from "./OptionsInterface";
@@ -15,10 +15,10 @@ const uploadButton = document.querySelector("#syncUp") as HTMLButtonElement;
 const downloadButton = document.querySelector("#syncDown") as HTMLButtonElement;
 
 // permission toggle button
-const notificationRequestButton: ToggleButton = new ToggleButton(
-    document.querySelector("#notification-permission-request") as HTMLButtonElement,
-    [browser.i18n.getMessage("notificationRequest"), browser.i18n.getMessage("notificationRevoke")]
-);
+// const notificationRequestButton: ToggleButton = new ToggleButton(
+//     document.querySelector("#notification-permission-request") as HTMLButtonElement,
+//     [browser.i18n.getMessage("notificationRequest"), browser.i18n.getMessage("notificationRevoke")]
+// );
 
 // manual delete button
 const manualDeleteButton = document.querySelector("#manual-delete") as HTMLButtonElement;
@@ -39,37 +39,37 @@ function manualDelete(): void {
  *
  * Updates the button state afterwards
  */
-function togglePermission(): void {
-    // if permission is not currently granted
-    if (notificationRequestButton.getState() === ToggleButtonState.NO_PERMISSION) {
-        // attempt to get permission
-        browser.permissions.request({ permissions: ["notifications"] })
-            .then((request: boolean) => {
-                // if user gives permission
-                // switch button state, enable option, send demo notification
-                if (request) {
-                    notificationRequestButton.setState(ToggleButtonState.PERMISSION);
-                    formElements.notifications.disabled = false;
-                }
-                // otherwise, keep button state same, turn off notifications, disable option
-                else {
-                    notificationRequestButton.setState(ToggleButtonState.NO_PERMISSION);
-                    formElements.notifications.checked = false;
-                    formElements.notifications.disabled = true;
-                    browser.storage.local.set({ notifications: false });
-                }
-            });
-    }
-    // if permission currently granted
-    // revoke permission, switch button state, disable notifications, and disable option
-    else if (notificationRequestButton.getState() === ToggleButtonState.PERMISSION) {
-        browser.permissions.remove({ permissions: ["notifications"] });
-        notificationRequestButton.setState(ToggleButtonState.NO_PERMISSION);
-        formElements.notifications.checked = false;
-        formElements.notifications.disabled = true;
-        browser.storage.local.set({ notifications: false });
-    }
-}
+// function togglePermission(): void {
+//     // if permission is not currently granted
+//     if (notificationRequestButton.getState() === ToggleButtonState.NO_PERMISSION) {
+//         // attempt to get permission
+//         browser.permissions.request({ permissions: ["notifications"] })
+//             .then((request: boolean) => {
+//                 // if user gives permission
+//                 // switch button state, enable option, send demo notification
+//                 if (request) {
+//                     notificationRequestButton.setState(ToggleButtonState.PERMISSION);
+//                     formElements.notifications.disabled = false;
+//                 }
+//                 // otherwise, keep button state same, turn off notifications, disable option
+//                 else {
+//                     notificationRequestButton.setState(ToggleButtonState.NO_PERMISSION);
+//                     formElements.notifications.checked = false;
+//                     formElements.notifications.disabled = true;
+//                     browser.storage.local.set({ notifications: false });
+//                 }
+//             });
+//     }
+//     // if permission currently granted
+//     // revoke permission, switch button state, disable notifications, and disable option
+//     else if (notificationRequestButton.getState() === ToggleButtonState.PERMISSION) {
+//         browser.permissions.remove({ permissions: ["notifications"] });
+//         notificationRequestButton.setState(ToggleButtonState.NO_PERMISSION);
+//         formElements.notifications.checked = false;
+//         formElements.notifications.disabled = true;
+//         browser.storage.local.set({ notifications: false });
+//     }
+// }
 
 /**
  * Upload current local storage to sync storage
@@ -100,9 +100,9 @@ async function download(): Promise<void> {
     }
 
     // disable notifications if permission not allowed
-    if (notificationRequestButton.getState() === ToggleButtonState.NO_PERMISSION) {
-        res.notifications = false;
-    }
+    // if (notificationRequestButton.getState() === ToggleButtonState.NO_PERMISSION) {
+    //     res.notifications = false;
+    // }
 
     await browser.storage.local.set(res);
     location.reload();
@@ -124,7 +124,8 @@ function save(e: Event): void {
             days: parseInt(formElements.days.value),
             deleteMode: formElements.deleteMode.value,
             idleLength: parseInt(formElements.idleLength.value),
-            notifications: formElements.notifications.checked
+            notifications: formElements.notifications.checked,
+            lastRun: parseInt(formElements.lastRun.value)
         };
 
         // if changing the setting will update idle / startup
@@ -167,24 +168,25 @@ async function load(): Promise<void> {
     formElements.idleLength.value = res.idleLength.toString();
     formElements.deleteMode.value = res.deleteMode;
     formElements.notifications.checked = res.notifications;
+    formElements.lastRun.value = res.lastRun.toString();
 
     // check permissions
-    const permissions = await browser.permissions.getAll();
-    // if notification permission
-    // enable notification option, set button to revoke
-    if (Array.isArray(permissions.permissions) && permissions.permissions.includes("notifications")) {
-        formElements.notifications.disabled = false;
-        notificationRequestButton.setState(ToggleButtonState.PERMISSION);
-    }
-    // otherise disable option, set button to enable
-    else {
-        formElements.notifications.disabled = true;
-        notificationRequestButton.setState(ToggleButtonState.NO_PERMISSION);
-    }
+    // const permissions = await browser.permissions.getAll();
+    // // if notification permission
+    // // enable notification option, set button to revoke
+    // if (Array.isArray(permissions.permissions) && permissions.permissions.includes("notifications")) {
+    //     formElements.notifications.disabled = false;
+    //     notificationRequestButton.setState(ToggleButtonState.PERMISSION);
+    // }
+    // // otherise disable option, set button to enable
+    // else {
+    //     formElements.notifications.disabled = true;
+    //     notificationRequestButton.setState(ToggleButtonState.NO_PERMISSION);
+    // }
 }
 
 document.addEventListener("DOMContentLoaded", load);
-notificationRequestButton.getElement().addEventListener("click", togglePermission);
+// notificationRequestButton.getElement().addEventListener("click", togglePermission);
 form.addEventListener("input", save);
 manualDeleteButton.addEventListener("click", manualDelete);
 
