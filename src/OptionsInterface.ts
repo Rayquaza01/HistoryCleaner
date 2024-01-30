@@ -5,6 +5,7 @@ export interface OptionsInterface {
     idleLength: number;
     deleteMode: "idle" | "startup" | string;
     notifications: boolean;
+    lastRun: number;
 }
 
 export interface FormElements extends HTMLFormControlsCollection {
@@ -13,6 +14,7 @@ export interface FormElements extends HTMLFormControlsCollection {
     idleLength: HTMLInputElement;
     deleteMode: RadioNodeList;
     notifications: HTMLInputElement;
+    lastRun: HTMLInputElement;
 }
 
 /** Creates Options object */
@@ -22,6 +24,7 @@ export class Options implements OptionsInterface {
     idleLength = 60;
     deleteMode = "idle";
     notifications = false;
+    lastRun = 0;
 
     /**
      * Creates default options object, with overrides from optionsObj
@@ -54,6 +57,10 @@ export class Options implements OptionsInterface {
 
         if (typeof optionsObj.notifications === "boolean") {
             this.notifications = optionsObj.notifications;
+        }
+
+        if (typeof optionsObj.lastRun === "number") {
+            this.lastRun = optionsObj.lastRun;
         }
     }
 }

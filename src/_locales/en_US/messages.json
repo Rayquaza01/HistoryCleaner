@@ -47,6 +47,10 @@
     "message": "Request notifications permission using the below button, and then set the option to Show Notifications to enable notifications when history is deleted.",
     "description": ""
   },
+  "optionNotificationsInfoNew": {
+    "message": "Wheather a notification should be shown when history is deleted.",
+    "description": ""
+  },
   "optionNotificationsCheckbox": {
     "message": "Show Notifications on Delete",
     "description": ""
@@ -127,6 +131,26 @@
   },
   "behaviorAll": {
     "message": "Delete all history",
+    "description": ""
+  },
+  "statisticsSection": {
+    "message": "Statistics",
+    "description": ""
+  },
+  "optionsSection": {
+    "message": "Options",
+    "description": ""
+  },
+  "syncSection": {
+    "message": "Sync",
+    "description": ""
+  },
+  "statisticsLastRun": {
+    "message": "History was last deleted on",
+    "description": ""
+  },
+  "lastRunNever": {
+    "message": "Never",
     "description": ""
   }
 }

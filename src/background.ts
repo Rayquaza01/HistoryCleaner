@@ -101,8 +101,8 @@ async function setup(installed: Runtime.OnInstalledDetailsType): Promise<void> {
  *  * Deletes all history if behavior is set to all
  *  * Creates notification if notifications are enabled
  */
-async function deleteHistory(): Promise<void> {
-    const res = new Options(await browser.storage.local.get());
+async function deleteHistory(opts?: Options): Promise<void> {
+    const res = opts ?? new Options(await browser.storage.local.get());
     if (res.behavior === "days") {
         const end = new Date();
         end.setHours(0);
@@ -114,6 +114,7 @@ async function deleteHistory(): Promise<void> {
             startTime: 0,
             endTime: end.getTime()
         });
+
         const notificationBody: string = browser.i18n.getMessage(
             "historyDeletedNotificationBody",
             [
@@ -130,6 +131,8 @@ async function deleteHistory(): Promise<void> {
                 message: notificationBody
             });
         }
+
+        browser.storage.local.set({ lastRun: new Date().getTime() });
     } else if (res.behavior === "all") {
         await browser.history.deleteAll();
         console.log(browser.i18n.getMessage("historyAllDeleted"));
@@ -139,6 +142,8 @@ async function deleteHistory(): Promise<void> {
             title: browser.i18n.getMessage("historyDeletedNotification"),
             message: browser.i18n.getMessage("historyAllDeleted")
         });
+
+        browser.storage.local.set({ lastRun: new Date().getTime() });
     }
 }
 
