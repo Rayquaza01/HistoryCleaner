@@ -17,8 +17,10 @@
         <form>
             <details open>
                 <summary class="i18n" data-i18n="statisticsSection"></summary>
-                <p><span class="i18n" data-i18n="statisticsLastRun"></span>: <span id="last-run"></span></p>
-                <input type="hidden" name="lastRun" value="0">
+
+                <p><span id="last-run"></span></p>
+                <input type="hidden" name="lastRun" value="">
+
                 <button type="button" id="manual-delete">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg>
                     <span class="i18n" data-i18n="manualDelete"></span>
@@ -30,7 +32,7 @@
                 <h2 class="i18n" data-i18n="optionBehaviorText"></h2>
                 <p class="i18n" data-i18n="optionBehaviorInfo"></p>
                 <div class="radio-group-buttons">
-                    <label class="radio">
+                    <label class="radio" tabindex="0">
                         <input type="radio" name="behavior" value="disable" required checked>
                         <span class="radio-text">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 5.27L3.28 4L5 5.72L5.28 6L6.28 7L18 18.72L20 20.72L18.73 22L17.27 20.54C16.93 20.83 16.5 21 16 21H8C6.9 21 6 20.1 6 19V9.27L2 5.27M19 4V6H7.82L5.82 4H8.5L9.5 3H14.5L15.5 4H19M18 7V16.18L8.82 7H18Z" /></svg>
@@ -82,6 +84,17 @@
                 <label>
                     <input type="number" min="15" value="60" id="idleLength" name="idleLength">
                 </label>
+
+                <!-- <h2 class="i18n" data-i18n="optionFilterHistoryText"></h2> -->
+                <!-- <p class="i18n" data-i18n="optionFilterHistoryInfo"></p> -->
+                <!-- <label> -->
+                <!--     <input type="checkbox" name="filterHistory"> -->
+                <!--     <span class="i18n" data-i18n="optionFilterHistoryCheckbox"></span> -->
+                <!-- </label> -->
+
+                <!-- <h2 class="i18n" data-i18n="optionFilterListText"></h2> -->
+                <!-- <p class="i18n" data-i18n="optionFilterListInfo"></p> -->
+                <!-- <textarea name="filterList"></textarea> -->
 
                 <h2 class="i18n" data-i18n="optionNotificationsText"></h2>
                 <p class="i18n" data-i18n="optionNotificationsInfoNew"></p>

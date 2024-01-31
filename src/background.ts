@@ -132,18 +132,22 @@ async function deleteHistory(opts?: Options): Promise<void> {
             });
         }
 
-        browser.storage.local.set({ lastRun: new Date().getTime() });
+        browser.storage.local.set({ lastRun: notificationBody });
     } else if (res.behavior === "all") {
+        const notificationBody = browser.i18n.getMessage("historyAllDeleted", [new Date().toLocaleString()]);
+
         await browser.history.deleteAll();
-        console.log(browser.i18n.getMessage("historyAllDeleted"));
+
+        console.log(notificationBody);
+
         browser.notifications.create({
             type: "basic",
             iconUrl: "icons/icon-96.png",
             title: browser.i18n.getMessage("historyDeletedNotification"),
-            message: browser.i18n.getMessage("historyAllDeleted")
+            message: notificationBody
         });
 
-        browser.storage.local.set({ lastRun: new Date().getTime() });
+        browser.storage.local.set({ lastRun: notificationBody });
     }
 }
 

@@ -1,5 +1,5 @@
 import browser from "webextension-polyfill";
-import { Options, OptionsInterface, FormElements } from "./OptionsInterface"
+import { Options, OptionsInterface, FormElements } from "./OptionsInterface";
 import { Message, MessageState } from "./MessageInterface";
 
 import { i18n } from "./i18n";
@@ -10,6 +10,7 @@ i18n();
 
 const form = document.querySelector("form") as HTMLFormElement;
 const formElements = form.elements as FormElements;
+
 const lastRunVisible = document.querySelector("#last-run") as HTMLSpanElement;
 
 // sync buttons
@@ -73,8 +74,7 @@ async function download(e: MouseEvent): Promise<void> {
  *  * Set idle or startup based on input
  * @param e event object
  */
-function save(e: Event): void {
-    const target = e.target as HTMLFieldSetElement;
+function save(e?: Event): void {
 
     if (form.checkValidity()) {
         const opts: OptionsInterface = {
@@ -83,7 +83,10 @@ function save(e: Event): void {
             deleteMode: formElements.deleteMode.value,
             idleLength: parseInt(formElements.idleLength.value),
             notifications: formElements.notifications.checked,
-            lastRun: parseInt(formElements.lastRun.value)
+            // filterHistory: formElements.filterHistory.checked,
+            // filterList: formElements.filterList.value.split("\n"),
+
+            lastRun: formElements.lastRun.value
         };
 
         if (opts.behavior === "disable") {
@@ -96,26 +99,33 @@ function save(e: Event): void {
 
         console.log(opts);
 
-        // if changing the setting will update idle / startup
-        const msg = new Message();
-        if ((target.name === "idleLength" || target.name === "deleteMode") && opts.deleteMode === "idle") {
-            msg.state = MessageState.SET_IDLE;
-            msg.idleLength = opts.idleLength;
-            browser.runtime.sendMessage(msg);
-        } else if (target.name === "deleteMode" && opts.deleteMode === "startup") {
-            msg.state = MessageState.SET_STARTUP;
-            browser.runtime.sendMessage(msg);
+        if (e !== undefined) {
+            const target = e.target as HTMLFieldSetElement;
+
+            // if changing the setting will update idle / startup
+            const msg = new Message();
+            if ((target.name === "idleLength" || target.name === "deleteMode") && opts.deleteMode === "idle") {
+                msg.state = MessageState.SET_IDLE;
+                msg.idleLength = opts.idleLength;
+                browser.runtime.sendMessage(msg);
+            } else if (target.name === "deleteMode" && opts.deleteMode === "startup") {
+                msg.state = MessageState.SET_STARTUP;
+                browser.runtime.sendMessage(msg);
+            }
+
+            console.log(msg);
+
+            // if notifications were enabled
+            if (target.name === "notifications" && opts.notifications) {
+                browser.notifications.create({
+                    type: "basic",
+                    iconUrl: "icons/icon-96.png",
+                    title: browser.i18n.getMessage("notificationEnabled"),
+                    message: browser.i18n.getMessage("notificationEnabledBody")
+                });
+            }
         }
 
-        // if notifications were enabled
-        if (target.name === "notifications" && opts.notifications) {
-            browser.notifications.create({
-                type: "basic",
-                iconUrl: "icons/icon-96.png",
-                title: browser.i18n.getMessage("notificationEnabled"),
-                message: browser.i18n.getMessage("notificationEnabledBody")
-            });
-        }
 
         // save options
         browser.storage.local.set(opts);
@@ -124,7 +134,6 @@ function save(e: Event): void {
 
 /**
  * Runs on page load
- *  * Adds i18n text to the page
  *  * Loads current options to inputs on page
  */
 async function load(): Promise<void> {
@@ -137,10 +146,11 @@ async function load(): Promise<void> {
     formElements.idleLength.value = res.idleLength.toString();
     formElements.deleteMode.value = res.deleteMode;
     formElements.notifications.checked = res.notifications;
-    formElements.lastRun.value = res.lastRun.toString();
-    lastRunVisible.innerText = res.lastRun > 0
-        ? new Date(res.lastRun).toLocaleString()
-        : browser.i18n.getMessage("lastRunNever");
+    // formElements.filterHistory.checked = res.filterHistory;
+    // formElements.filterList.value = res.filterList.join("\n");
+
+    formElements.lastRun.value = res.lastRun;
+    lastRunVisible.innerText = res.lastRun;
 
     if (res.behavior === "disable") {
         manualDeleteButton.disabled = true;

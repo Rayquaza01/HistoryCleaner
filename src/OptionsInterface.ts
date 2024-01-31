@@ -1,3 +1,5 @@
+import browser from "webextension-polyfill";
+
 /** Shape of options object */
 export interface OptionsInterface {
     behavior: "disable" | "days" | "all" | string;
@@ -5,7 +7,11 @@ export interface OptionsInterface {
     idleLength: number;
     deleteMode: "idle" | "startup" | string;
     notifications: boolean;
-    lastRun: number;
+    // filterHistory: boolean;
+    // filterList: string[];
+
+    // statistics
+    lastRun: string;
 }
 
 export interface FormElements extends HTMLFormControlsCollection {
@@ -14,7 +20,12 @@ export interface FormElements extends HTMLFormControlsCollection {
     idleLength: HTMLInputElement;
     deleteMode: RadioNodeList;
     notifications: HTMLInputElement;
+    // filterHistory: HTMLInputElement;
+    // filterList: HTMLTextAreaElement;
+
+    // statistics
     lastRun: HTMLInputElement;
+    deleteCount: HTMLInputElement;
 }
 
 /** Creates Options object */
@@ -24,7 +35,11 @@ export class Options implements OptionsInterface {
     idleLength = 60;
     deleteMode = "idle";
     notifications = false;
-    lastRun = 0;
+    // filterHistory = false
+    // filterList = ["example.com", "example.org"]
+
+    lastRun = browser.i18n.getMessage("lastRunNever");
+    deleteCount = 0;
 
     /**
      * Creates default options object, with overrides from optionsObj
@@ -59,7 +74,15 @@ export class Options implements OptionsInterface {
             this.notifications = optionsObj.notifications;
         }
 
-        if (typeof optionsObj.lastRun === "number") {
+        // if (typeof optionsObj.filterHistory === "boolean") {
+        //     this.filterHistory = optionsObj.filterHistory;
+        // }
+
+        // if (Array.isArray(optionsObj.filterList) && optionsObj.filterList.every(item => typeof item === "string")) {
+        //     this.filterList = optionsObj.filterList;
+        // }
+
+        if (typeof optionsObj.lastRun === "string") {
             this.lastRun = optionsObj.lastRun;
         }
     }
