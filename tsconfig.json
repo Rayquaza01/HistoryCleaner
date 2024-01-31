@@ -9,5 +9,5 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "files": ["src/options.ts", "src/background.ts"]
+  "files": ["src/popup.ts", "src/background.ts"]
 }
