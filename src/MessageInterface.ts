@@ -1,5 +1,6 @@
 /** Possible states for a message */
 export enum MessageState {
+    INVALID = -1,
     DELETE,
     SET_IDLE,
     SET_STARTUP
