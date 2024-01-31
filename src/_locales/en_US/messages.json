@@ -48,7 +48,7 @@
     "description": ""
   },
   "optionNotificationsInfoNew": {
-    "message": "Wheather a notification should be shown when history is deleted.",
+    "message": "Whether a notification should be shown when history is deleted.",
     "description": ""
   },
   "optionNotificationsCheckbox": {
@@ -56,7 +56,7 @@
     "description": ""
   },
   "manualDelete": {
-    "message": "Manual Delete",
+    "message": "Delete History Now",
     "description": ""
   },
   "manualDeleteInfo": {
@@ -96,7 +96,7 @@
     "description": ""
   },
   "historyDeletedNotificationBody": {
-    "message": "History from before $END$ deleted at $NOW$",
+    "message": "History from before $END$ was deleted at $NOW$",
     "description": "",
     "placeholders": {
       "end": {
@@ -110,8 +110,14 @@
     }
   },
   "historyAllDeleted": {
-    "message": "All history has been deleted",
-    "description": ""
+    "message": "All history was deleted at $NOW",
+    "description": "",
+    "placeholders": {
+      "now": {
+        "content": "$1",
+        "example": ""
+      }
+    }
   },
   "optionBehaviorText": {
     "message": "Extension Behavior",
@@ -133,6 +139,26 @@
     "message": "Delete all history",
     "description": ""
   },
+  "optionFilterHistoryText": {
+    "message": "Filter History",
+    "description": ""
+  },
+  "optionFilterHistoryInfo": {
+    "message": "Whether to prevent certain sites from being deleted. If enabled, the total number of history items deleted will be counted.",
+    "description": ""
+  },
+  "optionFilterHistoryCheckbox": {
+    "message": "Exclude sites from deletion",
+    "description": ""
+  },
+  "optionFilterListText": {
+    "message": "Filter List",
+    "description": ""
+  },
+  "optionFilterListInfo": {
+    "message": "A list of sites that will not be deleted. Filter History must be enabled for this to take effect. Every line should contain a hostname that will be excluded from deletion.",
+    "description": ""
+  },
   "statisticsSection": {
     "message": "Statistics",
     "description": ""
@@ -149,8 +175,20 @@
     "message": "History was last deleted on",
     "description": ""
   },
+  "statisticsDeleteCount": {
+    "message": "Total history entries deleted",
+    "description": ""
+  },
+  "statisticsDeleteCountWarning": {
+    "message": "(History filtering must be enabled to track statistics)",
+    "description": ""
+  },
   "lastRunNever": {
-    "message": "Never",
+    "message": "History has not been cleared yet.",
+    "description": ""
+  },
+  "resetStatistics": {
+    "message": "Delete Statistics",
     "description": ""
   }
 }
