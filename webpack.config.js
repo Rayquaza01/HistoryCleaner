@@ -9,7 +9,7 @@ const TerserWebpackPlugin = require("terser-webpack-plugin");
 module.exports = {
     entry: {
         background: __dirname + "/src/background.ts",
-        options: __dirname + "/src/options.ts",
+        // options: __dirname + "/src/options.ts",
         popup: __dirname + "/src/popup.ts"
     },
     devtool: "source-map",
@@ -36,11 +36,11 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(),
         new MiniCssExtrackPlugin(),
-        new HtmlWebpackPlugin({
-            template: "src/options.html",
-            filename: "options.html",
-            chunks: ["options"],
-        }),
+        // new HtmlWebpackPlugin({
+        //     template: "src/options.html",
+        //     filename: "options.html",
+        //     chunks: ["options"],
+        // }),
         new HtmlWebpackPlugin({
             template: "src/popup.html",
             filename: "popup.html",
