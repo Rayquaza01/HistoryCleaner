@@ -34,7 +34,7 @@ html, body {
     color: var(--color);
     font-family: sans-serif;
 
-    width: 500px;
+    width: 600px;
     min-height: 300px;
 
     display: flex;
@@ -68,6 +68,10 @@ h1 {
 h1 svg {
     height: 32px;
     margin-right: 5px;
+}
+
+h1 svg path {
+    fill: var(--accent-color);
 }
 
 h2 {
@@ -121,13 +125,18 @@ label.radio svg {
     margin-right: 5px;
 }
 
-label.radio > input {
-    display: none;
+label.radio {
+    display: inline-flex;
+    flex-direction: row-reverse;
 }
 
 label.radio > input:checked + span {
     background-color: var(--accent-bg);
     color: white;
+}
+
+label.radio > span {
+    flex-grow: 1;
 }
 
 button,
@@ -160,7 +169,8 @@ label.radio > input:checked + span > svg path {
 }
 
 input[type="text"],
-input[type="number"] {
+input[type="number"],
+textarea {
     width: 100%;
     padding: 10px;
     border-radius: 5px;
@@ -172,16 +182,9 @@ input[type="number"] {
     color: var(--color);
 }
 
-/* button { */
-/*     border: 1px solid; */
-/*     border-radius: 5px; */
-/*     padding: 20px; */
-
-/*     vertical-align: text-align; */
-
-/*     line-height: 24px; */
-/*     height: 24px; */
-/* } */
+textarea {
+    min-height: 100px;
+}
 
 button {
     padding: 5px;
