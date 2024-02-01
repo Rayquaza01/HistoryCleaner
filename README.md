@@ -40,7 +40,7 @@ Firefox addon that deletes history older than a specified amount of days.
 * `alarms`
     * Used to set a timer for the timer trigger mode.
 
-# Building and Running
+## Building and Running
 
 Clone this repository, and run `npm install` to install necessary dependencies and build tools.
 
@@ -48,11 +48,11 @@ Clone this repository, and run `npm install` to install necessary dependencies a
 * `npm run build:prod` will build the extension for production.
 * `npm run firefox` will load `./dist/` as a temporary extension in Firefox.
 
-# Acknowledgements
+## Acknowledgements
 
 Icons used in History Cleaner are from [Pictogrammers](https://pictogrammers.com/), formerly Material Design Icons. ([Pictogrammers Free License](https://pictogrammers.com/docs/general/license/))
 
-# Links
+## Links
 
 [![](https://raw.githubusercontent.com/Rayquaza01/HistoryCleaner/master/src/icons/amo.png)](https://addons.mozilla.org/en-US/firefox/addon/history-cleaner/)
 [![](https://raw.githubusercontent.com/Rayquaza01/HistoryCleaner/master/src/icons/cws.png)](https://chrome.google.com/webstore/detail/history-cleaner/epoabannnmjdknejdggkgjoebomipene/)
