@@ -87,6 +87,14 @@
     "message": "Download Config from Sync",
     "description": ""
   },
+  "exportConfig": {
+    "message": "Export Config to File",
+    "description": ""
+  },
+  "importConfig": {
+    "message": "Import Config from File",
+    "description": ""
+  },
   "notificationRequest": {
     "message": "Request Notification Permission",
     "description": ""

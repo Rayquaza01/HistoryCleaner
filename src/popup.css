@@ -251,3 +251,6 @@ a:hover {
     text-decoration: underline;
 }
 
+#import-file {
+    display: none;
+}

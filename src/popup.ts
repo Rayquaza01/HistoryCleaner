@@ -18,8 +18,40 @@ const nextRun = document.querySelector("#next-run") as HTMLSpanElement;
 const uploadButton = document.querySelector("#sync-up") as HTMLButtonElement;
 const downloadButton = document.querySelector("#sync-down") as HTMLButtonElement;
 
+const exportButton = document.querySelector("#export") as HTMLAnchorElement;
+const importButton = document.querySelector("#import") as HTMLButtonElement;
+const importFile = document.querySelector("#import-file") as HTMLInputElement;
+
 // manual delete button
 const manualDeleteButton = document.querySelector("#manual-delete") as HTMLButtonElement;
+
+/**
+ * Resets the trigger mode
+ * Used when importing from file or sync
+ * @param opts - The imported options to apply
+ */
+function resetTriggerMode(opts: Options) {
+    // typically the trigger mode is initialized on startup or right as it's changed in the form
+    // but if you import, the form is not updated and startup is not ran
+    // so we have to reset the trigger mode manually
+    const msg = new Message();
+
+    switch (opts.deleteMode) {
+        case "idle":
+            msg.state = MessageState.SET_IDLE;
+            msg.idleLength = opts.idleLength;
+            break;
+        case "startup":
+            msg.state = MessageState.SET_STARTUP;
+            break;
+        case "timer":
+            msg.state = MessageState.SET_TIMER;
+            msg.timerInterval = opts.timerInterval;
+            break;
+    }
+
+    browser.runtime.sendMessage(msg);
+}
 
 /**
  * Sends a message to the background script telling it to delete history
@@ -53,19 +85,30 @@ async function download(e: MouseEvent): Promise<void> {
 
     const res = new Options(await browser.storage.sync.get());
 
-    // set delete mode from sync get
-    const msg = new Message();
-    if (res.deleteMode === "idle") {
-        msg.state = MessageState.SET_IDLE;
-        msg.idleLength = res.idleLength;
-        browser.runtime.sendMessage(msg);
-    } else if (res.deleteMode === "startup") {
-        msg.state = MessageState.SET_STARTUP;
-        browser.runtime.sendMessage(msg);
-    }
+    resetTriggerMode(res);
 
-    await browser.storage.local.set(res);
-    location.reload();
+    browser.storage.local.set(res);
+    // location.reload();
+}
+
+/**
+ * Imports the config from a file.
+ */
+function importConfig() {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+        if (typeof reader.result === "string") {
+            const importedConfig = new Options(JSON.parse(reader.result));
+
+            resetTriggerMode(importedConfig);
+
+            browser.storage.local.set(importedConfig);
+        }
+    });
+
+    if (importFile.files !== null && importFile.files.length > 0) {
+        reader.readAsText(importFile.files[0]);
+    }
 }
 
 /**
@@ -98,8 +141,6 @@ function save(e?: Event): void {
             console.log("Enabled");
         }
 
-        console.log(opts);
-
         if (e !== undefined) {
             const target = e.target as HTMLFieldSetElement;
 
@@ -117,8 +158,6 @@ function save(e?: Event): void {
                 msg.timerInterval = opts.timerInterval;
                 browser.runtime.sendMessage(msg);
             }
-
-            console.log(msg);
 
             // if notifications were enabled
             if (target.name === "notifications" && opts.notifications) {
@@ -181,6 +220,9 @@ async function load(): Promise<void> {
     } else {
         manualDeleteButton.disabled = false;
     }
+
+    // allow config to be exported
+    exportButton.href = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(res));
 }
 
 document.addEventListener("DOMContentLoaded", load);
@@ -190,5 +232,8 @@ manualDeleteButton.addEventListener("click", manualDelete);
 
 uploadButton.addEventListener("click", upload);
 downloadButton.addEventListener("click", download);
+
+importButton.addEventListener("click", () => importFile.click());
+importFile.addEventListener("change", importConfig);
 
 browser.storage.onChanged.addListener(load);
