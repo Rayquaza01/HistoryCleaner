@@ -12,7 +12,7 @@
     "description": ""
   },
   "optionDaysInfo": {
-    "message": "Defaults to 0. Will delete history older than midnight on the specified number of days ago. Will have no effect if behavior is set to disabled or delete all.",
+    "message": "Delete history older than midnight on the specified number of days ago. Will have no effect if behavior is set to disabled or delete all. (Defaults to 0)",
     "description": ""
   },
   "optionIdleLengthText": {
@@ -20,7 +20,15 @@
     "description": ""
   },
   "optionIdleLengthInfo": {
-    "message": "Amount of time (seconds) the browser should idle before triggering. (Defaults to 60, Minimum 15)",
+    "message": "Amount of time in seconds the browser should idle before triggering. (Defaults to 60, Minimum 15)",
+    "description": ""
+  },
+  "optionTimerIntervalText": {
+    "message": "Timer Interval",
+    "description": ""
+  },
+  "optionTimerIntervalInfo": {
+    "message": "Interval in minutes between triggering. (Defaults to 1440 minutes or 24 hours, Minimum 1)",
     "description": ""
   },
   "optionDeleteModeText": {
@@ -28,7 +36,7 @@
     "description": ""
   },
   "optionDeleteModeInfo": {
-    "message": "Choose whether the extension should trigger on browser startup, or after idling for the idle length. (Defaults to idle). If set to startup, Idle Length has no effect.",
+    "message": "Whether the extension triggers on after idling, on browser startup, or at a set interval. (Defaults to idle)",
     "description": ""
   },
   "optionDeleteModeIdle": {
@@ -37,6 +45,10 @@
   },
   "optionDeleteModeStartup": {
     "message": "Startup",
+    "description": ""
+  },
+  "optionDeleteModeAlarm": {
+    "message": "Timer",
     "description": ""
   },
   "optionNotificationsText": {
@@ -96,7 +108,7 @@
     "description": ""
   },
   "historyDeletedNotificationBody": {
-    "message": "History from before $END$ was deleted at $NOW$",
+    "message": "History from before $END$ was deleted on $NOW$.",
     "description": "",
     "placeholders": {
       "end": {
@@ -110,7 +122,7 @@
     }
   },
   "historyAllDeleted": {
-    "message": "All history was deleted at $NOW",
+    "message": "All history was deleted on $NOW$.",
     "description": "",
     "placeholders": {
       "now": {
@@ -132,7 +144,7 @@
     "description": ""
   },
   "behaviorDays": {
-    "message": "Delete history older than a specified amount of days",
+    "message": "Delete history older than a specified number of days",
     "description": ""
   },
   "behaviorAll": {
@@ -174,6 +186,28 @@
   "statisticsLastRun": {
     "message": "History was last deleted on",
     "description": ""
+  },
+  "statisticsNextRunDisable": {
+    "message": "History will not be automatically cleared.",
+    "description": ""
+  },
+  "statisticsNextRunIdle": {
+    "message": "History will be cleared on browser idle.",
+    "description": ""
+  },
+  "statisticsNextRunStartup": {
+    "message": "History will be cleared on browser startup.",
+    "description": ""
+  },
+  "statisticsNextRunTimer": {
+    "message": "History will be cleared on $TIMER$.",
+    "description": "",
+    "placeholders": {
+      "timer": {
+        "content": "$1",
+        "example": ""
+      }
+    }
   },
   "statisticsDeleteCount": {
     "message": "Total history entries deleted",
