@@ -15,6 +15,6 @@ v1.5.0 Changelog
 * New required permission: notifications
     * Previously was an optional permission
     * If you set the notifications option, you will get a notification whenever history is cleared
-    * Not notifications will be sent otherwise
+    * Notifications will not be sent otherwise
 * New required permission: alarms
     * Required for timer trigger mode
