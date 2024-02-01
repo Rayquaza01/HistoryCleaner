@@ -1,13 +1,13 @@
 {
   "name": "history-cleaner",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Firefox addon that deletes history older than a specified amount of days.",
   "main": "index.js",
   "scripts": {
     "build:dev": "webpack --config webpack.config.js --mode=development --watch",
     "build:prod": "webpack --config webpack.config.js --mode=production",
     "build:extension": "web-ext build -s dist --overwrite-dest",
-    "start:firefox": "web-ext run -s dist",
+    "firefox": "web-ext run -s dist",
     "lint:extension": "web-ext lint -s dist",
     "lint:eslint": "eslint src --ext .ts",
     "lint:typescript": "tsc --noEmit"
