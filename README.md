@@ -29,11 +29,11 @@ Firefox addon that deletes history older than a specified amount of days.
 ## Permissions
 
 * `history`
-    * Needed to clear browser history
+    * Used to clear browser history
 * `storage`
-    * Needed to save user options
+    * Used to save user options
 * `idle`
-    * Needed to detect when the browser is idle for the idle trigger mode
+    * Used to detect when the browser is idle for the idle trigger mode
 * `notifications`
     * Used to send a notification when history is cleared
     * Notifications are only sent if the user enables notifications in options
