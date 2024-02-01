@@ -6,47 +6,47 @@ Firefox addon that deletes history older than a specified amount of days.
 
 ## Options
 
- * Behavior
-  * Decides what history the extension will delete when it triggers.
-  * Either disabled, delete old history, or delete all history.
-  * Defaults to disabled, so the extension doesn't do anything until you configure it.
- * Number of Days to Keep History
-  * Delete history older than midnight on the specified number of days ago.
-  * Only has effect if behavior is set to delete old history.
-  * Defaults to 0.
- * Trigger Mode
-  * Whether the extension triggers on idle, on browser startup, or at a set interval.
-  * Defaults to idle.
- * Idle Length
-  * Amount of time in seconds the browser should idle before triggering.
-  * Only has effect if trigger mode is set to idle.
-  * Defaults to 60, minimum 15.
- * Timer Interval
-  * Interval in minutes between triggering.
-  * Only has effect if trigger mode is set to timer.
-  * Defaults to 1440 (24 hours), Minimum 1
+* Behavior
+    * Decides what history the extension will delete when it triggers.
+    * Either disabled, delete old history, or delete all history.
+    * Defaults to disabled, so the extension doesn't do anything until you configure it.
+* Number of Days to Keep History
+    * Delete history older than midnight on the specified number of days ago.
+    * Only has effect if behavior is set to delete old history.
+    * Defaults to 0.
+* Trigger Mode
+    * Whether the extension triggers on idle, on browser startup, or at a set interval.
+    * Defaults to idle.
+* Idle Length
+    * Amount of time in seconds the browser should idle before triggering.
+    * Only has effect if trigger mode is set to idle.
+    * Defaults to 60, minimum 15.
+* Timer Interval
+    * Interval in minutes between triggering.
+    * Only has effect if trigger mode is set to timer.
+    * Defaults to 1440 (24 hours), Minimum 1
 
 ## Permissions
 
- * `history`
-  * Needed to clear browser history
- * `storage`
-  * Needed to save user options
- * `idle`
-  * Needed to detect when the browser is idle for the idle trigger mode
- * `notifications`
-  * Used to send a notification when history is cleared
-  * Notifications are only sent if the user enables notifications in options
- * `alarms`
-  * Used to set a timer for the timer trigger mode.
+* `history`
+    * Needed to clear browser history
+* `storage`
+    * Needed to save user options
+* `idle`
+    * Needed to detect when the browser is idle for the idle trigger mode
+* `notifications`
+    * Used to send a notification when history is cleared
+    * Notifications are only sent if the user enables notifications in options
+* `alarms`
+    * Used to set a timer for the timer trigger mode.
 
 # Building and Running
 
 Clone this repository, and run `npm install` to install necessary dependencies and build tools.
 
- * `npm run build:dev` will build the extension in watch mode for development.
- * `npm run build:prod` will build the extension for production.
- * `npm run firefox` will load `./dist/` as a temporary extension in Firefox.
+* `npm run build:dev` will build the extension in watch mode for development.
+* `npm run build:prod` will build the extension for production.
+* `npm run firefox` will load `./dist/` as a temporary extension in Firefox.
 
 # Acknowledgements
 
