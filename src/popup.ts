@@ -12,6 +12,7 @@ const form = document.querySelector("form") as HTMLFormElement;
 const formElements = form.elements as FormElements;
 
 const lastRunVisible = document.querySelector("#last-run") as HTMLSpanElement;
+const nextRun = document.querySelector("#next-run") as HTMLSpanElement;
 
 // sync buttons
 const uploadButton = document.querySelector("#sync-up") as HTMLButtonElement;
@@ -75,13 +76,13 @@ async function download(e: MouseEvent): Promise<void> {
  * @param e event object
  */
 function save(e?: Event): void {
-
     if (form.checkValidity()) {
         const opts: OptionsInterface = {
             behavior: formElements.behavior.value,
             days: parseInt(formElements.days.value),
             deleteMode: formElements.deleteMode.value,
             idleLength: parseInt(formElements.idleLength.value),
+            timerInterval: parseInt(formElements.timerInterval.value),
             notifications: formElements.notifications.checked,
             // filterHistory: formElements.filterHistory.checked,
             // filterList: formElements.filterList.value.split("\n"),
@@ -110,6 +111,10 @@ function save(e?: Event): void {
                 browser.runtime.sendMessage(msg);
             } else if (target.name === "deleteMode" && opts.deleteMode === "startup") {
                 msg.state = MessageState.SET_STARTUP;
+                browser.runtime.sendMessage(msg);
+            } else if ((target.name === "timerInterval" || target.name === "deleteMode") && opts.deleteMode === "timer") {
+                msg.state = MessageState.SET_TIMER;
+                msg.timerInterval = opts.timerInterval;
                 browser.runtime.sendMessage(msg);
             }
 
@@ -144,10 +149,29 @@ async function load(): Promise<void> {
     formElements.behavior.value = res.behavior.toString();
     formElements.days.value = res.days.toString();
     formElements.idleLength.value = res.idleLength.toString();
+    formElements.timerInterval.value = res.timerInterval.toString();
     formElements.deleteMode.value = res.deleteMode;
     formElements.notifications.checked = res.notifications;
     // formElements.filterHistory.checked = res.filterHistory;
     // formElements.filterList.value = res.filterList.join("\n");
+
+    if (res.behavior === "disable") {
+        nextRun.innerText = browser.i18n.getMessage("statisticsNextRunDisable");
+    } else {
+        const alarm = await browser.alarms.get("DeleteHistoryAlarm");
+        if (res.deleteMode === "timer" && alarm !== undefined) {
+            nextRun.innerText = browser.i18n.getMessage("statisticsNextRunTimer", [ new Date(alarm.scheduledTime).toLocaleString() ]);
+        }
+
+        if (res.deleteMode === "idle") {
+            nextRun.innerText = browser.i18n.getMessage("statisticsNextRunIdle");
+        }
+
+        if (res.deleteMode === "startup") {
+            nextRun.innerText = browser.i18n.getMessage("statisticsNextRunStartup");
+        }
+    }
+
 
     formElements.lastRun.value = res.lastRun;
     lastRunVisible.innerText = res.lastRun;
