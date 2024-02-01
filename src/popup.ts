@@ -72,7 +72,7 @@ async function upload(e: MouseEvent): Promise<void> {
 
     const res = new Options(await browser.storage.local.get());
     await browser.storage.sync.set(res);
-    location.reload();
+    // location.reload();
 }
 
 /**
