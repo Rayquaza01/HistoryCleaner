@@ -8,7 +8,7 @@
     "description": "Description of extension"
   },
   "optionDaysText": {
-    "message": "Number of days to keep history",
+    "message": "Number of Days to Keep History",
     "description": ""
   },
   "optionDaysInfo": {
