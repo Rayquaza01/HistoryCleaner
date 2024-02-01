@@ -2,6 +2,8 @@
     --bg-color: #f6f5f4;
     --color: #000000;
 
+    --link-color: #1a5fb4;
+
     --button-color: #ffffff;
 
     --hover: #deddda;
@@ -17,6 +19,8 @@
     :root {
         --bg-color: #241f31;
         --color: #ffffff;
+
+        --link-color: #99c1f1;
 
         --button-color: #000000;
 
@@ -232,5 +236,18 @@ details[open] {
     border-left: 10px solid;
     border-left-color: var(--accent-bg);
     padding: 0.5em;
+}
+
+img.badge {
+    height: 50px;
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }
 
