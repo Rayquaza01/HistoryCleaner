@@ -28,6 +28,8 @@ async function onMessage(msg: MessageInterface): Promise<void> {
             browser.idle.setDetectionInterval(msg.idleLength);
             // add idle listener
             browser.idle.onStateChanged.addListener(idleListener);
+
+            browser.alarms.clear("DeleteHistoryAlarm");
             break;
         // set startup mode
         case MessageState.SET_STARTUP:
@@ -35,7 +37,27 @@ async function onMessage(msg: MessageInterface): Promise<void> {
             if (browser.idle.onStateChanged.hasListener(idleListener)) {
                 browser.idle.onStateChanged.removeListener(idleListener);
             }
+
+            browser.alarms.clear("DeleteHistoryAlarm");
             break;
+        case MessageState.SET_TIMER:
+            if (browser.idle.onStateChanged.hasListener(idleListener)) {
+                browser.idle.onStateChanged.removeListener(idleListener);
+            }
+
+            // delete old alarm
+            browser.alarms.clear("DeleteHistoryAlarm");
+
+            // create a new one with new period
+            browser.alarms.create("DeleteHistoryAlarm", { delayInMinutes: 1, periodInMinutes: message.timerInterval });
+            break;
+
+    }
+}
+
+async function onAlarm(alarm: browser.Alarms.Alarm) {
+    if (alarm.name === "DeleteHistoryAlarm") {
+        deleteHistory();
     }
 }
 
@@ -59,14 +81,21 @@ function idleListener(state: Idle.IdleState): void {
  */
 async function startup(): Promise<void> {
     const res = new Options(await browser.storage.local.get());
-    // if delete mode is idle, set interval and add listener
-    if (res.deleteMode === "idle") {
-        browser.idle.setDetectionInterval(res.idleLength);
-        browser.idle.onStateChanged.addListener(idleListener);
-    }
-    // if delete mode is startup, delete history right now
-    else if (res.deleteMode === "startup") {
-        deleteHistory();
+
+    switch (res.deleteMode) {
+        // if delete mode is idle, set interval and add listener
+        case "idle":
+            browser.idle.setDetectionInterval(res.idleLength);
+            browser.idle.onStateChanged.addListener(idleListener);
+            break;
+        // if delete mode is startup, delete history right now
+        case "startup":
+            deleteHistory();
+            break;
+        // if delete mode is timer, set alarm to run at timer interval
+        case "timer":
+            browser.alarms.create("DeleteHistoryAlarm", { delayInMinutes: 1, periodInMinutes: res.timerInterval });
+            break;
     }
 }
 
@@ -151,6 +180,7 @@ async function deleteHistory(opts?: Options): Promise<void> {
     }
 }
 
+browser.alarms.onAlarm.addListener(onAlarm);
 browser.runtime.onMessage.addListener(onMessage);
 browser.runtime.onInstalled.addListener(setup);
 browser.runtime.onStartup.addListener(startup);
