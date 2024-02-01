@@ -5,7 +5,8 @@ export interface OptionsInterface {
     behavior: "disable" | "days" | "all" | string;
     days: number;
     idleLength: number;
-    deleteMode: "idle" | "startup" | string;
+    timerInterval: number;
+    deleteMode: "idle" | "startup" | "timer" | string;
     notifications: boolean;
     // filterHistory: boolean;
     // filterList: string[];
@@ -18,6 +19,7 @@ export interface FormElements extends HTMLFormControlsCollection {
     behavior: RadioNodeList;
     days: HTMLInputElement;
     idleLength: HTMLInputElement;
+    timerInterval: HTMLInputElement;
     deleteMode: RadioNodeList;
     notifications: HTMLInputElement;
     // filterHistory: HTMLInputElement;
@@ -33,6 +35,7 @@ export class Options implements OptionsInterface {
     behavior = "disable";
     days = 0;
     idleLength = 60;
+    timerInterval = 1440;
     deleteMode = "idle";
     notifications = false;
     // filterHistory = false
@@ -66,7 +69,11 @@ export class Options implements OptionsInterface {
             this.idleLength = optionsObj.idleLength;
         }
 
-        if (typeof optionsObj.deleteMode === "string" && ["idle", "startup"].includes(optionsObj.deleteMode)) {
+        if (typeof optionsObj.timerInterval === "number" && optionsObj.timerInterval >= 1) {
+            this.timerInterval = optionsObj.timerInterval;
+        }
+
+        if (typeof optionsObj.deleteMode === "string" && ["idle", "startup", "timer"].includes(optionsObj.deleteMode)) {
             this.deleteMode = optionsObj.deleteMode;
         }
 
