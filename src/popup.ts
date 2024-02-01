@@ -178,7 +178,7 @@ function save(e?: Event): void {
 
 /**
  * Runs on page load
- *  * Loads current options to inputs on page
+ * Loads current options to inputs on page
  */
 async function load(): Promise<void> {
     const res = new Options(await browser.storage.local.get());
