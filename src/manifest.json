@@ -18,7 +18,8 @@
     "history",
     "storage",
     "idle",
-    "notifications"
+    "notifications",
+    "alarms"
   ],
   "options_ui": {
     "page": "popup.html",
