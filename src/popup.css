@@ -131,7 +131,8 @@ label.radio svg {
 
 label.radio {
     display: inline-flex;
-    flex-direction: row-reverse;
+    gap: 5px;
+    /* flex-direction: row-reverse; */
 }
 
 label.radio > input:checked + span {
