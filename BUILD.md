@@ -1,4 +1,4 @@
-# Building History Cleaner 1.5.0
+# Building History Cleaner 1.5.1
 
 ## System Info
  * Fedora 39
