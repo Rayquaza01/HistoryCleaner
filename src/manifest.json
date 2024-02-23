@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "__MSG_extensionName__",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "__MSG_extensionDescription__",
   "browser_specific_settings": {
     "gecko": {
@@ -9,7 +9,7 @@
     }
   },
   "icons": {
-    "16": "icons/icon.svg"
+    "96": "icons/icon-96.png"
   },
   "background": {
     "scripts": ["browser-polyfill.min.js", "background.bundle.js"]

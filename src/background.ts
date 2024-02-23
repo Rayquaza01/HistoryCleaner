@@ -169,12 +169,14 @@ async function deleteHistory(opts?: Options): Promise<void> {
 
         console.log(notificationBody);
 
-        browser.notifications.create({
-            type: "basic",
-            iconUrl: "icons/icon-96.png",
-            title: browser.i18n.getMessage("historyDeletedNotification"),
-            message: notificationBody
-        });
+        if (res.notifications) {
+            browser.notifications.create({
+                type: "basic",
+                iconUrl: "icons/icon-96.png",
+                title: browser.i18n.getMessage("historyDeletedNotification"),
+                message: notificationBody
+            });
+        }
 
         browser.storage.local.set({ lastRun: notificationBody });
     }
