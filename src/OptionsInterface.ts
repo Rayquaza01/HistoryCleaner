@@ -77,6 +77,11 @@ export class Options implements OptionsInterface {
             this.deleteMode = optionsObj.deleteMode;
         }
 
+        // if set to idle on manifest v3, switch to timer
+        if (browser.runtime.getManifest().manifest_version === 3 && this.deleteMode === "idle") {
+            this.deleteMode = "timer";
+        }
+
         if (typeof optionsObj.notifications === "boolean") {
             this.notifications = optionsObj.notifications;
         }

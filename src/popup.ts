@@ -182,8 +182,7 @@ function save(e?: Event): void {
  */
 async function load(): Promise<void> {
     const res = new Options(await browser.storage.local.get());
-
-    console.log(res);
+    const manifest = browser.runtime.getManifest();
 
     formElements.behavior.value = res.behavior.toString();
     formElements.days.value = res.days.toString();
@@ -193,6 +192,10 @@ async function load(): Promise<void> {
     formElements.notifications.checked = res.notifications;
     // formElements.filterHistory.checked = res.filterHistory;
     // formElements.filterList.value = res.filterList.join("\n");
+
+    if (manifest.manifest_version === 3) {
+        document.querySelector("input[type=\"radio\"][value=\"idle\"]")?.setAttribute("disabled", "true");
+    }
 
     if (res.behavior === "disable") {
         nextRun.innerText = browser.i18n.getMessage("statisticsNextRunDisable");
