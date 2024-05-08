@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_extensionName__",
+  "version": "1.5.1",
+  "description": "__MSG_extensionDescription__",
+  "icons": {
+    "96": "icons/icon-96.png"
+  },
+  "background": {
+    "scripts": ["browser-polyfill.min.js", "background.bundle.js"]
+  },
+  "permissions": [
+    "history",
+    "storage",
+    "idle",
+    "notifications",
+    "alarms"
+  ],
+  "options_ui": {
+    "page": "popup.html"
+  },
+  "action": {
+    "default_icon": "icons/icon-96.png",
+    "default_popup": "popup.html",
+    "theme_icons": [{
+      "light": "icons/icon-96.png",
+      "dark": "icons/icon-dark.png",
+      "size": 96
+    }]
+  },
+  "default_locale": "en_US"
+}

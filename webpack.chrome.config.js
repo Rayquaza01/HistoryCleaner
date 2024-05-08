@@ -8,7 +8,7 @@ const TerserWebpackPlugin = require("terser-webpack-plugin");
 
 module.exports = {
     entry: {
-        background: __dirname + "/src/background-firefox.ts",
+        background: __dirname + "/src/background-chrome.ts",
         // options: __dirname + "/src/options.ts",
         popup: __dirname + "/src/popup.ts"
     },
@@ -48,7 +48,7 @@ module.exports = {
         }),
         new copyWebpackPlugin({
             patterns: [
-                { from: "src/manifest-firefox.json", to: "manifest.json" },
+                { from: "src/manifest-chrome.json", to: "manifest.json" },
                 {
                     from: "src/icons/",
                     to: "icons",

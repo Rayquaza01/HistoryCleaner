@@ -1,68 +1,62 @@
+import { Options } from "./OptionsInterface";
 import browser from "webextension-polyfill";
 
-/** The number of entries to get at once */
-const HISTORY_LIMIT = 100;
-
 /**
- * Deletes history iteratively, excluding history items that match certain hostnames
- * @param end The end date for deletion
- * @param excludeFromDeletion A list of hostnames that won't be deleted
+ * Deletes history older than specified days
+ *  * Takes no action if behavior is set to disable
+ *  * Deletes older than days if behavior is set to days
+ *  * Deletes all history if behavior is set to all
+ *  * Creates notification if notifications are enabled
  */
-export async function deleteHistoryWithExclusions(end: Date, excludeFromDeletion: string[]): Promise<void> {
-    let nextPage = end;
-    let hist: browser.History.HistoryItem[] = [];
-
-    excludeFromDeletion = excludeFromDeletion.filter(item => item !== "");
-
-    let count = 0;
-
-    do {
-        console.log("Deleting History before ", nextPage);
-
-        // queries all history after between 0 and end date
-        // browser.history.search returns most recent history first,
-        // so we decrement the end time for each iteration
-        hist = await browser.history.search({
-            text: "",
+export async function deleteHistory(opts?: Options): Promise<void> {
+    const res = opts ?? new Options(await browser.storage.local.get());
+    if (res.behavior === "days") {
+        const end = new Date();
+        end.setHours(0);
+        end.setMinutes(0);
+        end.setSeconds(0);
+        end.setMilliseconds(0);
+        end.setDate(end.getDate() - res.days);
+        await browser.history.deleteRange({
             startTime: 0,
-            endTime: nextPage,
-            maxResults: HISTORY_LIMIT
+            endTime: end.getTime()
         });
 
-        let toDelete: browser.History.HistoryItem[] = [];
-
-        if (excludeFromDeletion.length === 0) {
-            toDelete = hist;
-        } else {
-            // if hostname is not in include list, history should be deleted
-            toDelete = hist
-                .filter(item => {
-                    const url = new URL(item.url ?? "");
-                    // console.log(url.hostname, "Matches?", !excludeFromDeletion.includes(url.hostname));
-
-                    // if match for hostname is not found in the exclusion list, history item can be deleted
-                    return excludeFromDeletion.find(exclusion => exclusion.endsWith(url.hostname)) === null;
-                });
+        const notificationBody: string = browser.i18n.getMessage(
+            "historyDeletedNotificationBody",
+            [
+                end.toLocaleString(),
+                new Date().toLocaleString()
+            ]
+        );
+        console.log(notificationBody);
+        if (res.notifications) {
+            browser.notifications.create({
+                type: "basic",
+                iconUrl: "icons/icon-96.png",
+                title: browser.i18n.getMessage("historyDeletedNotification"),
+                message: notificationBody
+            });
         }
 
-        count += toDelete.length;
+        browser.storage.local.set({ lastRun: notificationBody });
+    } else if (res.behavior === "all") {
+        const notificationBody = browser.i18n.getMessage("historyAllDeleted", [new Date().toLocaleString()]);
 
-        // delete items on the to delete list
-        toDelete.forEach(item => browser.history.deleteUrl({ url: item.url ?? "" }));
+        await browser.history.deleteAll();
 
-        console.log(hist.map(item => item.lastVisitTime));
+        console.log(notificationBody);
 
-        // sort history to make sure we're picking the correct value for the next iteration
-        // i don't think this is nessecary (it should already be sorted), but just in case
-        hist.sort((a, b) => (a.lastVisitTime ?? 0) - (b.lastVisitTime ?? 0));
-        nextPage = new Date(hist[0].lastVisitTime ?? 0);
+        if (res.notifications) {
+            browser.notifications.create({
+                type: "basic",
+                iconUrl: "icons/icon-96.png",
+                title: browser.i18n.getMessage("historyDeletedNotification"),
+                message: notificationBody
+            });
+        }
 
-        console.log(hist.map(item => item.lastVisitTime));
-    } while (hist.length === HISTORY_LIMIT);
-    // if we get less than the limit, we've hit the bottom of history
-
-    const prevCount: number = (await browser.storage.local.get("deleteCount")).deleteCount ?? 0;
-    browser.storage.local.set({ deleteCount: prevCount + count });
-
-    console.log("Deleted ", count, " items");
+        browser.storage.local.set({ lastRun: notificationBody });
+    }
 }
+
