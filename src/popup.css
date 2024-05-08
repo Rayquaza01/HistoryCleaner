@@ -160,6 +160,15 @@ label.radio:active > span {
     background-color: var(--pressed);
 }
 
+input[type="radio"]:disabled + .radio-text {
+    color: var(--disabled-text);
+    background-color: var(--bg-color);
+}
+
+input[type="radio"]:disabled + .radio-text > svg path {
+    fill: var(--disabled-text);
+}
+
 button:disabled {
     color: var(--disabled-text);
     background-color: var(--bg-color);

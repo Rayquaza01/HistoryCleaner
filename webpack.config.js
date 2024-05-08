@@ -42,7 +42,7 @@ module.exports = {
         //     chunks: ["options"],
         // }),
         new HtmlWebpackPlugin({
-            template: "src/popup.html",
+            template: "src/popup-ff.html",
             filename: "popup.html",
             chunks: ["popup"],
         }),

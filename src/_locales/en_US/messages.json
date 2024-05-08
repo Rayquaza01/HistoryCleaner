@@ -39,6 +39,10 @@
     "message": "Whether the extension triggers on idle, on browser startup, or at a set interval. (Defaults to idle)",
     "description": ""
   },
+  "optionDeleteModeInfoManifestv3": {
+    "message": "Whether the extension triggers on on browser startup or at a set interval. (Defaults to timer)",
+    "description": ""
+  },
   "optionDeleteModeIdle": {
     "message": "Idle",
     "description": ""

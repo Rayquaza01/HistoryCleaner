@@ -51,7 +51,6 @@ async function onAlarm(alarm: browser.Alarms.Alarm) {
  */
 async function startup(): Promise<void> {
     const res = new Options(await browser.storage.local.get());
-
     switch (res.deleteMode) {
         case "idle":
             // should never run on chrome!
@@ -80,8 +79,11 @@ async function setup(installed: Runtime.OnInstalledDetailsType): Promise<void> {
         await browser.storage.local.set(res);
 
         // initialize sync object
-        const syncRes = new Options(await browser.storage.sync.get());
-        await browser.storage.sync.set(syncRes);
+        // doing this in manifest v3 causes the bg script to get unloaded
+        // unsure of why
+        //
+        // const syncRes = new Options(await browser.storage.sync.get());
+        // await browser.storage.sync.set(syncRes);
 
         startup();
         // open options page on first install
