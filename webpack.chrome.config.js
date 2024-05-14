@@ -58,15 +58,10 @@ module.exports = {
                     from: "src/_locales/",
                     to: "_locales",
                     toType: "dir"
-                },
-                { from: "node_modules/webextension-polyfill/dist/browser-polyfill.min.js" },
-                { from: "node_modules/webextension-polyfill/dist/browser-polyfill.min.js.map" }
+                }
             ]
         })
     ],
-    externals: {
-        "webextension-polyfill": "browser"
-    },
     optimization: {
         usedExports: true,
         minimizer: [
