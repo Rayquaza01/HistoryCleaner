@@ -1,5 +1,3 @@
-import browser from "webextension-polyfill";
-
 /** Shape of options object */
 export interface OptionsInterface {
     behavior: "disable" | "days" | "all" | string;
@@ -36,12 +34,12 @@ export class Options implements OptionsInterface {
     days = 0;
     idleLength = 60;
     timerInterval = 1440;
-    deleteMode = "idle";
+    deleteMode = "timer";
     notifications = false;
     // filterHistory = false
     // filterList = ["example.com", "example.org"]
 
-    lastRun = browser.i18n.getMessage("lastRunNever");
+    lastRun = chrome.i18n.getMessage("lastRunNever");
     deleteCount = 0;
 
     /**
@@ -78,7 +76,7 @@ export class Options implements OptionsInterface {
         }
 
         // if set to idle on manifest v3, switch to timer
-        if (browser.runtime.getManifest().manifest_version === 3 && this.deleteMode === "idle") {
+        if (this.deleteMode === "idle") {
             this.deleteMode = "timer";
         }
 

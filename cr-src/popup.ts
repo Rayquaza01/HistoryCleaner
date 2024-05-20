@@ -1,4 +1,3 @@
-import browser from "webextension-polyfill";
 import { Options, OptionsInterface, FormElements } from "./OptionsInterface";
 import { Message, MessageState } from "./MessageInterface";
 
@@ -50,7 +49,7 @@ function resetTriggerMode(opts: Options) {
             break;
     }
 
-    browser.runtime.sendMessage(msg);
+    chrome.runtime.sendMessage(msg);
 }
 
 /**
@@ -61,7 +60,7 @@ function manualDelete(e: MouseEvent): void {
     console.log("Here?");
 
     const msg = new Message({ state: MessageState.DELETE });
-    browser.runtime.sendMessage(msg);
+    chrome.runtime.sendMessage(msg);
 }
 
 /**
@@ -70,8 +69,8 @@ function manualDelete(e: MouseEvent): void {
 async function upload(e: MouseEvent): Promise<void> {
     e.preventDefault();
 
-    const res = new Options(await browser.storage.local.get());
-    await browser.storage.sync.set(res);
+    const res = new Options(await chrome.storage.local.get());
+    await chrome.storage.sync.set(res);
     // location.reload();
 }
 
@@ -83,11 +82,11 @@ async function upload(e: MouseEvent): Promise<void> {
 async function download(e: MouseEvent): Promise<void> {
     e.preventDefault();
 
-    const res = new Options(await browser.storage.sync.get());
+    const res = new Options(await chrome.storage.sync.get());
 
     resetTriggerMode(res);
 
-    browser.storage.local.set(res);
+    chrome.storage.local.set(res);
     // location.reload();
 }
 
@@ -102,7 +101,7 @@ function importConfig() {
 
             resetTriggerMode(importedConfig);
 
-            browser.storage.local.set(importedConfig);
+            chrome.storage.local.set(importedConfig);
         }
     });
 
@@ -149,30 +148,30 @@ function save(e?: Event): void {
             if ((target.name === "idleLength" || target.name === "deleteMode") && opts.deleteMode === "idle") {
                 msg.state = MessageState.SET_IDLE;
                 msg.idleLength = opts.idleLength;
-                browser.runtime.sendMessage(msg);
+                chrome.runtime.sendMessage(msg);
             } else if (target.name === "deleteMode" && opts.deleteMode === "startup") {
                 msg.state = MessageState.SET_STARTUP;
-                browser.runtime.sendMessage(msg);
+                chrome.runtime.sendMessage(msg);
             } else if ((target.name === "timerInterval" || target.name === "deleteMode") && opts.deleteMode === "timer") {
                 msg.state = MessageState.SET_TIMER;
                 msg.timerInterval = opts.timerInterval;
-                browser.runtime.sendMessage(msg);
+                chrome.runtime.sendMessage(msg);
             }
 
             // if notifications were enabled
             if (target.name === "notifications" && opts.notifications) {
-                browser.notifications.create({
+                chrome.notifications.create({
                     type: "basic",
                     iconUrl: "icons/icon-96.png",
-                    title: browser.i18n.getMessage("notificationEnabled"),
-                    message: browser.i18n.getMessage("notificationEnabledBody")
+                    title: chrome.i18n.getMessage("notificationEnabled"),
+                    message: chrome.i18n.getMessage("notificationEnabledBody")
                 });
             }
         }
 
 
         // save options
-        browser.storage.local.set(opts);
+        chrome.storage.local.set(opts);
     }
 }
 
@@ -181,7 +180,7 @@ function save(e?: Event): void {
  * Loads current options to inputs on page
  */
 async function load(): Promise<void> {
-    const res = new Options(await browser.storage.local.get());
+    const res = new Options(await chrome.storage.local.get());
 
     formElements.behavior.value = res.behavior.toString();
     formElements.days.value = res.days.toString();
@@ -193,19 +192,19 @@ async function load(): Promise<void> {
     // formElements.filterList.value = res.filterList.join("\n");
 
     if (res.behavior === "disable") {
-        nextRun.innerText = browser.i18n.getMessage("statisticsNextRunDisable");
+        nextRun.innerText = chrome.i18n.getMessage("statisticsNextRunDisable");
     } else {
-        const alarm = await browser.alarms.get("DeleteHistoryAlarm");
+        const alarm = await chrome.alarms.get("DeleteHistoryAlarm");
         if (res.deleteMode === "timer" && alarm !== undefined) {
-            nextRun.innerText = browser.i18n.getMessage("statisticsNextRunTimer", [ new Date(alarm.scheduledTime).toLocaleString() ]);
+            nextRun.innerText = chrome.i18n.getMessage("statisticsNextRunTimer", [ new Date(alarm.scheduledTime).toLocaleString() ]);
         }
 
         if (res.deleteMode === "idle") {
-            nextRun.innerText = browser.i18n.getMessage("statisticsNextRunIdle");
+            nextRun.innerText = chrome.i18n.getMessage("statisticsNextRunIdle");
         }
 
         if (res.deleteMode === "startup") {
-            nextRun.innerText = browser.i18n.getMessage("statisticsNextRunStartup");
+            nextRun.innerText = chrome.i18n.getMessage("statisticsNextRunStartup");
         }
     }
 
@@ -234,4 +233,4 @@ downloadButton.addEventListener("click", download);
 importButton.addEventListener("click", () => importFile.click());
 importFile.addEventListener("change", importConfig);
 
-browser.storage.onChanged.addListener(load);
+chrome.storage.onChanged.addListener(load);

@@ -1,5 +1,4 @@
 import { Options } from "./OptionsInterface";
-import browser from "webextension-polyfill";
 
 /**
  * Deletes history older than specified days
@@ -9,7 +8,7 @@ import browser from "webextension-polyfill";
  *  * Creates notification if notifications are enabled
  */
 export async function deleteHistory(opts?: Options): Promise<void> {
-    const res = opts ?? new Options(await browser.storage.local.get());
+    const res = opts ?? new Options(await chrome.storage.local.get());
     if (res.behavior === "days") {
         const end = new Date();
         end.setHours(0);
@@ -17,12 +16,12 @@ export async function deleteHistory(opts?: Options): Promise<void> {
         end.setSeconds(0);
         end.setMilliseconds(0);
         end.setDate(end.getDate() - res.days);
-        await browser.history.deleteRange({
+        await chrome.history.deleteRange({
             startTime: 0,
             endTime: end.getTime()
         });
 
-        const notificationBody: string = browser.i18n.getMessage(
+        const notificationBody: string = chrome.i18n.getMessage(
             "historyDeletedNotificationBody",
             [
                 end.toLocaleString(),
@@ -31,32 +30,32 @@ export async function deleteHistory(opts?: Options): Promise<void> {
         );
         console.log(notificationBody);
         if (res.notifications) {
-            browser.notifications.create({
+            chrome.notifications.create({
                 type: "basic",
                 iconUrl: "icons/icon-96.png",
-                title: browser.i18n.getMessage("historyDeletedNotification"),
+                title: chrome.i18n.getMessage("historyDeletedNotification"),
                 message: notificationBody
             });
         }
 
-        browser.storage.local.set({ lastRun: notificationBody });
+        chrome.storage.local.set({ lastRun: notificationBody });
     } else if (res.behavior === "all") {
-        const notificationBody = browser.i18n.getMessage("historyAllDeleted", [new Date().toLocaleString()]);
+        const notificationBody = chrome.i18n.getMessage("historyAllDeleted", [new Date().toLocaleString()]);
 
-        await browser.history.deleteAll();
+        await chrome.history.deleteAll();
 
         console.log(notificationBody);
 
         if (res.notifications) {
-            browser.notifications.create({
+            chrome.notifications.create({
                 type: "basic",
                 iconUrl: "icons/icon-96.png",
-                title: browser.i18n.getMessage("historyDeletedNotification"),
+                title: chrome.i18n.getMessage("historyDeletedNotification"),
                 message: notificationBody
             });
         }
 
-        browser.storage.local.set({ lastRun: notificationBody });
+        chrome.storage.local.set({ lastRun: notificationBody });
     }
 }
 
