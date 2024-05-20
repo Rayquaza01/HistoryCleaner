@@ -9,5 +9,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "files": ["src/popup.ts", "src/background-firefox.ts", "src/background-chrome.ts"]
+  "files": ["src/popup.ts", "src/background.ts", "cr-src/background.ts", "cr-src/popup.ts"],
+  "include": ["tsglobal.ts"]
 }
