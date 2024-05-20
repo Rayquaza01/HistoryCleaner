@@ -8,7 +8,7 @@ const TerserWebpackPlugin = require("terser-webpack-plugin");
 
 module.exports = {
     entry: {
-        background: __dirname + "/src/background-firefox.ts",
+        background: __dirname + "/src/background.ts",
         // options: __dirname + "/src/options.ts",
         popup: __dirname + "/src/popup.ts"
     },
@@ -42,13 +42,13 @@ module.exports = {
         //     chunks: ["options"],
         // }),
         new HtmlWebpackPlugin({
-            template: "src/popup-ff.html",
+            template: "src/popup.html",
             filename: "popup.html",
             chunks: ["popup"],
         }),
         new copyWebpackPlugin({
             patterns: [
-                { from: "src/manifest-firefox.json", to: "manifest.json" },
+                { from: "src/manifest.json" },
                 {
                     from: "src/icons/",
                     to: "icons",
@@ -59,8 +59,8 @@ module.exports = {
                     to: "_locales",
                     toType: "dir"
                 },
-                { from: "node_modules/webextension-polyfill/dist/browser-polyfill.min.js" },
-                { from: "node_modules/webextension-polyfill/dist/browser-polyfill.min.js.map" }
+                // { from: "node_modules/webextension-polyfill/dist/browser-polyfill.min.js" },
+                // { from: "node_modules/webextension-polyfill/dist/browser-polyfill.min.js.map" }
             ]
         })
     ],
