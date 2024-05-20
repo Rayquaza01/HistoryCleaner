@@ -10,5 +10,5 @@
     "forceConsistentCasingInFileNames": true
   },
   "files": ["src/popup.ts", "src/background.ts", "cr-src/background.ts", "cr-src/popup.ts"],
-  "include": ["tsglobal.ts"]
+  "include": ["tsglobal.d.ts"]
 }
