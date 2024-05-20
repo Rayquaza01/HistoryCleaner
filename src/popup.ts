@@ -1,4 +1,3 @@
-import browser from "webextension-polyfill";
 import { Options, OptionsInterface, FormElements } from "./OptionsInterface";
 import { Message, MessageState } from "./MessageInterface";
 

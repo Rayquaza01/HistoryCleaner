@@ -1,4 +1,4 @@
-import browser, { Idle, Runtime } from "webextension-polyfill";
+import { Idle, Runtime, Alarms } from "webextension-polyfill";
 import { deleteHistory } from "./DeleteHistory";
 import { Options } from "./OptionsInterface";
 import { MessageInterface, MessageState, Message } from "./MessageInterface";
@@ -56,7 +56,7 @@ async function onMessage(msg: MessageInterface): Promise<void> {
     }
 }
 
-async function onAlarm(alarm: browser.Alarms.Alarm) {
+async function onAlarm(alarm: Alarms.Alarm) {
     if (alarm.name === "DeleteHistoryAlarm") {
         deleteHistory();
     }
