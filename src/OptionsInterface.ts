@@ -1,5 +1,3 @@
-import browser from "webextension-polyfill";
-
 /** Shape of options object */
 export interface OptionsInterface {
     behavior: "disable" | "days" | "all" | string;
@@ -75,11 +73,6 @@ export class Options implements OptionsInterface {
 
         if (typeof optionsObj.deleteMode === "string" && ["idle", "startup", "timer"].includes(optionsObj.deleteMode)) {
             this.deleteMode = optionsObj.deleteMode;
-        }
-
-        // if set to idle on manifest v3, switch to timer
-        if (browser.runtime.getManifest().manifest_version === 3 && this.deleteMode === "idle") {
-            this.deleteMode = "timer";
         }
 
         if (typeof optionsObj.notifications === "boolean") {
