@@ -16,8 +16,9 @@ Firefox addon that deletes history older than a specified amount of days.
     * Defaults to 0.
 * Trigger Mode
     * Whether the extension triggers on idle, on browser startup, or at a set interval.
-    * Defaults to idle.
-* Idle Length
+    * Defaults to idle (Firefox)
+    * Defaults to timer (Chrome)
+* Idle Length (Firefox Only)
     * Amount of time in seconds the browser should idle before triggering.
     * Only has effect if trigger mode is set to idle.
     * Defaults to 60, minimum 15.
@@ -44,8 +45,10 @@ Firefox addon that deletes history older than a specified amount of days.
 
 Clone this repository, and run `npm install` to install necessary dependencies and build tools.
 
-* `npm run build:dev` will build the extension in watch mode for development.
-* `npm run build:prod` will build the extension for production.
+* `npm run build:ff:watch` will build the extension in watch mode for development.
+* `npm run build:ff:prod` will build the extension for production.
+ * `build:cr:watch` and `build:cr:prod` will build the manifest v3 version of the extension for Chrome.
+ * The manifest v3 (Chrome) source is located under `./cr-src/`, whereas the manifest v2 (Firefox) source is under `./src/`
 * `npm run firefox` will load `./dist/` as a temporary extension in Firefox.
 
 ## Acknowledgements
