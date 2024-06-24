@@ -71,6 +71,18 @@
     "message": "Show Notifications on Delete",
     "description": ""
   },
+  "optionDownloadsText": {
+    "message": "Downloads",
+    "description": ""
+  },
+  "optionDownloadsInfo": {
+    "message": "Clear download history",
+    "description": ""
+  },
+  "optionDownloadsCheckbox": {
+    "message": "Clear Download History",
+    "description": ""
+  },
   "manualDelete": {
     "message": "Delete History Now",
     "description": ""

@@ -48,7 +48,7 @@ module.exports = {
         }),
         new copyWebpackPlugin({
             patterns: [
-                { from: "src/ff_manifest.json" },
+                { from: "src/ff_manifest.json", to: "manifest.json" },
                 {
                     from: "src/icons/",
                     to: "icons",

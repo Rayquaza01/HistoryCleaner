@@ -1,6 +1,10 @@
 import { Options, OptionsInterface, FormElements } from "./OptionsInterface";
 import { Message, MessageState } from "./MessageInterface";
 
+import browser from "./we";
+
+import { PermissionCheckbox } from "./PermissionCheckbox";
+
 import { i18n } from "./i18n";
 
 import "./popup.css";
@@ -49,7 +53,7 @@ function resetTriggerMode(opts: Options) {
             break;
     }
 
-    chrome.runtime.sendMessage(msg);
+    browser.runtime.sendMessage(msg);
 }
 
 /**
@@ -57,10 +61,9 @@ function resetTriggerMode(opts: Options) {
  */
 function manualDelete(e: MouseEvent): void {
     e.preventDefault();
-    console.log("Here?");
 
     const msg = new Message({ state: MessageState.DELETE });
-    chrome.runtime.sendMessage(msg);
+    browser.runtime.sendMessage(msg);
 }
 
 /**
@@ -69,8 +72,8 @@ function manualDelete(e: MouseEvent): void {
 async function upload(e: MouseEvent): Promise<void> {
     e.preventDefault();
 
-    const res = new Options(await chrome.storage.local.get());
-    await chrome.storage.sync.set(res);
+    const res = new Options(await browser.storage.local.get());
+    await browser.storage.sync.set(res);
     // location.reload();
 }
 
@@ -80,13 +83,13 @@ async function upload(e: MouseEvent): Promise<void> {
  * Sets idle or startup based on the contents of the downloaded options
  */
 async function download(e: MouseEvent): Promise<void> {
-    e.preventDefault();
+    e.preventDefault();;
 
-    const res = new Options(await chrome.storage.sync.get());
+    const res = new Options(await browser.storage.sync.get());
 
     resetTriggerMode(res);
 
-    chrome.storage.local.set(res);
+    browser.storage.local.set(res);
     // location.reload();
 }
 
@@ -101,7 +104,7 @@ function importConfig() {
 
             resetTriggerMode(importedConfig);
 
-            chrome.storage.local.set(importedConfig);
+            browser.storage.local.set(importedConfig);
         }
     });
 
@@ -117,7 +120,7 @@ function importConfig() {
  *  * Set idle or startup based on input
  * @param e event object
  */
-function save(e?: Event): void {
+async function save(e?: Event): Promise<void> {
     if (form.checkValidity()) {
         const opts: OptionsInterface = {
             behavior: formElements.behavior.value,
@@ -126,6 +129,7 @@ function save(e?: Event): void {
             idleLength: parseInt(formElements.idleLength.value),
             timerInterval: parseInt(formElements.timerInterval.value),
             notifications: formElements.notifications.checked,
+            downloads: formElements.downloads.checked,
             // filterHistory: formElements.filterHistory.checked,
             // filterList: formElements.filterList.value.split("\n"),
 
@@ -148,30 +152,41 @@ function save(e?: Event): void {
             if ((target.name === "idleLength" || target.name === "deleteMode") && opts.deleteMode === "idle") {
                 msg.state = MessageState.SET_IDLE;
                 msg.idleLength = opts.idleLength;
-                chrome.runtime.sendMessage(msg);
+                browser.runtime.sendMessage(msg);
             } else if (target.name === "deleteMode" && opts.deleteMode === "startup") {
                 msg.state = MessageState.SET_STARTUP;
-                chrome.runtime.sendMessage(msg);
+                browser.runtime.sendMessage(msg);
             } else if ((target.name === "timerInterval" || target.name === "deleteMode") && opts.deleteMode === "timer") {
                 msg.state = MessageState.SET_TIMER;
                 msg.timerInterval = opts.timerInterval;
-                chrome.runtime.sendMessage(msg);
+                browser.runtime.sendMessage(msg);
+            }
+
+            const isNotificationPermissionGranted = await browser.permissions.contains({ permissions: ["notifications"] });
+            if (!isNotificationPermissionGranted) {
+                opts.notifications = false;
+            }
+
+            const isDownloadPermissionGranted = await browser.permissions.contains({ permissions: ["downloads"] });
+            if (!isDownloadPermissionGranted) {
+                opts.downloads = false;
             }
 
             // if notifications were enabled
-            if (target.name === "notifications" && opts.notifications) {
-                chrome.notifications.create({
-                    type: "basic",
-                    iconUrl: "icons/icon-96.png",
-                    title: chrome.i18n.getMessage("notificationEnabled"),
-                    message: chrome.i18n.getMessage("notificationEnabledBody")
-                });
-            }
+            // if (isNotificationPermissionGranted && target.name === "notifications" && opts.notifications) {
+            //     browser.notifications.create({
+            //         type: "basic",
+            //         iconUrl: "icons/icon-96.png",
+            //         title: browser.i18n.getMessage("notificationEnabled"),
+            //         message: browser.i18n.getMessage("notificationEnabledBody")
+            //     });
+            // }
         }
 
+        console.log("Saving", opts);
 
         // save options
-        chrome.storage.local.set(opts);
+        browser.storage.local.set(opts);
     }
 }
 
@@ -180,7 +195,8 @@ function save(e?: Event): void {
  * Loads current options to inputs on page
  */
 async function load(): Promise<void> {
-    const res = new Options(await chrome.storage.local.get());
+    const res = new Options(await browser.storage.local.get());
+    console.log("Loading", res);
 
     formElements.behavior.value = res.behavior.toString();
     formElements.days.value = res.days.toString();
@@ -188,23 +204,24 @@ async function load(): Promise<void> {
     formElements.timerInterval.value = res.timerInterval.toString();
     formElements.deleteMode.value = res.deleteMode;
     formElements.notifications.checked = res.notifications;
+    formElements.downloads.checked = res.downloads;
     // formElements.filterHistory.checked = res.filterHistory;
     // formElements.filterList.value = res.filterList.join("\n");
 
     if (res.behavior === "disable") {
-        nextRun.innerText = chrome.i18n.getMessage("statisticsNextRunDisable");
+        nextRun.innerText = browser.i18n.getMessage("statisticsNextRunDisable");
     } else {
-        const alarm = await chrome.alarms.get("DeleteHistoryAlarm");
+        const alarm = await browser.alarms.get("DeleteHistoryAlarm");
         if (res.deleteMode === "timer" && alarm !== undefined) {
-            nextRun.innerText = chrome.i18n.getMessage("statisticsNextRunTimer", [ new Date(alarm.scheduledTime).toLocaleString() ]);
+            nextRun.innerText = browser.i18n.getMessage("statisticsNextRunTimer", [ new Date(alarm.scheduledTime).toLocaleString() ]);
         }
 
         if (res.deleteMode === "idle") {
-            nextRun.innerText = chrome.i18n.getMessage("statisticsNextRunIdle");
+            nextRun.innerText = browser.i18n.getMessage("statisticsNextRunIdle");
         }
 
         if (res.deleteMode === "startup") {
-            nextRun.innerText = chrome.i18n.getMessage("statisticsNextRunStartup");
+            nextRun.innerText = browser.i18n.getMessage("statisticsNextRunStartup");
         }
     }
 
@@ -227,10 +244,13 @@ document.addEventListener("DOMContentLoaded", load);
 form.addEventListener("input", save);
 manualDeleteButton.addEventListener("click", manualDelete);
 
+formElements.notifications.addEventListener("input", (e) => PermissionCheckbox(["notifications"], e));
+formElements.downloads.addEventListener("input", (e) => PermissionCheckbox(["downloads"], e));
+
 uploadButton.addEventListener("click", upload);
 downloadButton.addEventListener("click", download);
 
 importButton.addEventListener("click", () => importFile.click());
 importFile.addEventListener("change", importConfig);
 
-chrome.storage.onChanged.addListener(load);
+browser.storage.onChanged.addListener(load);

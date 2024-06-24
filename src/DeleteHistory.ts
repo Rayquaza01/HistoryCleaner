@@ -1,3 +1,4 @@
+import browser from "./we";
 import { Options } from "./OptionsInterface";
 
 /**
@@ -8,7 +9,7 @@ import { Options } from "./OptionsInterface";
  *  * Creates notification if notifications are enabled
  */
 export async function deleteHistory(opts?: Options): Promise<void> {
-    const res = opts ?? new Options(await chrome.storage.local.get());
+    const res = opts ?? new Options(await browser.storage.local.get());
     if (res.behavior === "days") {
         const end = new Date();
         end.setHours(0);
@@ -16,12 +17,16 @@ export async function deleteHistory(opts?: Options): Promise<void> {
         end.setSeconds(0);
         end.setMilliseconds(0);
         end.setDate(end.getDate() - res.days);
-        await chrome.history.deleteRange({
+        await browser.history.deleteRange({
             startTime: 0,
             endTime: end.getTime()
         });
 
-        const notificationBody: string = chrome.i18n.getMessage(
+        if (res.downloads) {
+            await browser.downloads.erase({ endedBefore: end });
+        }
+
+        const notificationBody: string = browser.i18n.getMessage(
             "historyDeletedNotificationBody",
             [
                 end.toLocaleString(),
@@ -30,32 +35,36 @@ export async function deleteHistory(opts?: Options): Promise<void> {
         );
         console.log(notificationBody);
         if (res.notifications) {
-            chrome.notifications.create({
+            browser.notifications.create({
                 type: "basic",
                 iconUrl: "icons/icon-96.png",
-                title: chrome.i18n.getMessage("historyDeletedNotification"),
+                title: browser.i18n.getMessage("historyDeletedNotification"),
                 message: notificationBody
             });
         }
 
-        chrome.storage.local.set({ lastRun: notificationBody });
+        browser.storage.local.set({ lastRun: notificationBody });
     } else if (res.behavior === "all") {
-        const notificationBody = chrome.i18n.getMessage("historyAllDeleted", [new Date().toLocaleString()]);
+        const notificationBody = browser.i18n.getMessage("historyAllDeleted", [new Date().toLocaleString()]);
 
-        await chrome.history.deleteAll();
+        await browser.history.deleteAll();
+
+        if (res.downloads) {
+            await browser.downloads.erase({ endedBefore: new Date() });
+        }
 
         console.log(notificationBody);
 
         if (res.notifications) {
-            chrome.notifications.create({
+            browser.notifications.create({
                 type: "basic",
                 iconUrl: "icons/icon-96.png",
-                title: chrome.i18n.getMessage("historyDeletedNotification"),
+                title: browser.i18n.getMessage("historyDeletedNotification"),
                 message: notificationBody
             });
         }
 
-        chrome.storage.local.set({ lastRun: notificationBody });
+        browser.storage.local.set({ lastRun: notificationBody });
     }
 }
 

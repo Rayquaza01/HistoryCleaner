@@ -1,3 +1,5 @@
+import browser from "./we";
+
 /** Shape of options object */
 export interface OptionsInterface {
     behavior: "disable" | "days" | "all" | string;
@@ -6,6 +8,7 @@ export interface OptionsInterface {
     timerInterval: number;
     deleteMode: "idle" | "startup" | "timer" | string;
     notifications: boolean;
+    downloads: boolean;
     // filterHistory: boolean;
     // filterList: string[];
 
@@ -20,6 +23,7 @@ export interface FormElements extends HTMLFormControlsCollection {
     timerInterval: HTMLInputElement;
     deleteMode: RadioNodeList;
     notifications: HTMLInputElement;
+    downloads: HTMLInputElement;
     // filterHistory: HTMLInputElement;
     // filterList: HTMLTextAreaElement;
 
@@ -36,6 +40,7 @@ export class Options implements OptionsInterface {
     timerInterval = 1440;
     deleteMode = "timer";
     notifications = false;
+    downloads = false;
     // filterHistory = false
     // filterList = ["example.com", "example.org"]
 
@@ -76,12 +81,16 @@ export class Options implements OptionsInterface {
         }
 
         // if set to idle on manifest v3, switch to timer
-        if (this.deleteMode === "idle") {
+        if (browser.runtime.getManifest().manifest_version === 3 && this.deleteMode === "idle") {
             this.deleteMode = "timer";
         }
 
         if (typeof optionsObj.notifications === "boolean") {
             this.notifications = optionsObj.notifications;
+        }
+
+        if (typeof optionsObj.downloads === "boolean") {
+            this.downloads = optionsObj.downloads;
         }
 
         // if (typeof optionsObj.filterHistory === "boolean") {
