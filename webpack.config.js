@@ -8,9 +8,9 @@ const TerserWebpackPlugin = require("terser-webpack-plugin");
 
 module.exports = {
     entry: {
-        background: __dirname + "/src/background.ts",
+        background: __dirname + "/src/ff_background.ts",
         // options: __dirname + "/src/options.ts",
-        popup: __dirname + "/src/popup.ts"
+        popup: __dirname + "/src/ff_popup.ts"
     },
     devtool: "source-map",
     output: {
@@ -42,13 +42,13 @@ module.exports = {
         //     chunks: ["options"],
         // }),
         new HtmlWebpackPlugin({
-            template: "src/popup.html",
+            template: "src/ff_popup.html",
             filename: "popup.html",
             chunks: ["popup"],
         }),
         new copyWebpackPlugin({
             patterns: [
-                { from: "src/manifest.json" },
+                { from: "src/ff_manifest.json" },
                 {
                     from: "src/icons/",
                     to: "icons",

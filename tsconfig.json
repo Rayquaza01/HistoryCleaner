@@ -9,6 +9,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "files": ["src/popup.ts", "src/background.ts", "cr-src/background.ts", "cr-src/popup.ts"],
+  "files": ["src/ff_popup.ts", "src/ff_background.ts", "src/cr_background.ts", "src/cr_popup.ts"],
   "include": ["tsglobal.d.ts"]
 }
