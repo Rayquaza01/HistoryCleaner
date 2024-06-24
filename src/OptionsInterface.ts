@@ -34,12 +34,12 @@ export class Options implements OptionsInterface {
     days = 0;
     idleLength = 60;
     timerInterval = 1440;
-    deleteMode = "idle";
+    deleteMode = "timer";
     notifications = false;
     // filterHistory = false
     // filterList = ["example.com", "example.org"]
 
-    lastRun = browser.i18n.getMessage("lastRunNever");
+    lastRun = chrome.i18n.getMessage("lastRunNever");
     deleteCount = 0;
 
     /**
@@ -73,6 +73,11 @@ export class Options implements OptionsInterface {
 
         if (typeof optionsObj.deleteMode === "string" && ["idle", "startup", "timer"].includes(optionsObj.deleteMode)) {
             this.deleteMode = optionsObj.deleteMode;
+        }
+
+        // if set to idle on manifest v3, switch to timer
+        if (this.deleteMode === "idle") {
+            this.deleteMode = "timer";
         }
 
         if (typeof optionsObj.notifications === "boolean") {
