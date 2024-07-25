@@ -13,8 +13,11 @@
   "permissions": [
     "history",
     "storage",
-    "notifications",
     "alarms"
+  ],
+  "optional_permissions": [
+    "notifications",
+    "downloads"
   ],
   "options_ui": {
     "page": "popup.html"
