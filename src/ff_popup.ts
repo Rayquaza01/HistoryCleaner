@@ -83,7 +83,7 @@ async function upload(e: MouseEvent): Promise<void> {
  * Sets idle or startup based on the contents of the downloaded options
  */
 async function download(e: MouseEvent): Promise<void> {
-    e.preventDefault();;
+    e.preventDefault();
 
     const res = new Options(await browser.storage.sync.get());
 
@@ -162,15 +162,15 @@ async function save(e?: Event): Promise<void> {
                 browser.runtime.sendMessage(msg);
             }
 
-            const isNotificationPermissionGranted = await browser.permissions.contains({ permissions: ["notifications"] });
-            if (!isNotificationPermissionGranted) {
-                opts.notifications = false;
-            }
+            // const isNotificationPermissionGranted = await browser.permissions.contains({ permissions: ["notifications"] });
+            // if (!isNotificationPermissionGranted) {
+            //     opts.notifications = false;
+            // }
 
-            const isDownloadPermissionGranted = await browser.permissions.contains({ permissions: ["downloads"] });
-            if (!isDownloadPermissionGranted) {
-                opts.downloads = false;
-            }
+            // const isDownloadPermissionGranted = await browser.permissions.contains({ permissions: ["downloads"] });
+            // if (!isDownloadPermissionGranted) {
+            //     opts.downloads = false;
+            // }
 
             // if notifications were enabled
             // if (isNotificationPermissionGranted && target.name === "notifications" && opts.notifications) {
@@ -203,10 +203,24 @@ async function load(): Promise<void> {
     formElements.idleLength.value = res.idleLength.toString();
     formElements.timerInterval.value = res.timerInterval.toString();
     formElements.deleteMode.value = res.deleteMode;
-    formElements.notifications.checked = res.notifications;
-    formElements.downloads.checked = res.downloads;
     // formElements.filterHistory.checked = res.filterHistory;
     // formElements.filterList.value = res.filterList.join("\n");
+
+    if (await browser.permissions.contains({ permissions: ["notifications"] })) {
+        formElements.notificationsPermission.checked = res.notifications;
+        formElements.notifications.checked = res.notifications;
+    } else {
+        formElements.notificationsPermission.checked = false;
+        formElements.notifications.checked = false;
+    }
+
+    if (await browser.permissions.contains({ permissions: ["downloads"] })) {
+        formElements.downloadsPermission.checked = res.notifications;
+        formElements.downloads.checked = res.downloads;
+    } else {
+        formElements.downloadsPermission.checked = false;
+        formElements.downloads.checked = false;
+    }
 
     if (res.behavior === "disable") {
         nextRun.innerText = browser.i18n.getMessage("statisticsNextRunDisable");
@@ -244,8 +258,18 @@ document.addEventListener("DOMContentLoaded", load);
 form.addEventListener("input", save);
 manualDeleteButton.addEventListener("click", manualDelete);
 
-formElements.notifications.addEventListener("input", (e) => PermissionCheckbox(["notifications"], e));
-formElements.downloads.addEventListener("input", (e) => PermissionCheckbox(["downloads"], e));
+formElements.notificationsPermission.addEventListener("input", (e) => PermissionCheckbox(
+    ["notifications"],
+    formElements.notifications,
+    e
+));
+
+// TODO figure out why this behaves differently?
+formElements.downloadsPermission.addEventListener("input", (e) => PermissionCheckbox(
+    ["downloads"],
+    formElements.downloads,
+    e
+));
 
 uploadButton.addEventListener("click", upload);
 downloadButton.addEventListener("click", download);
