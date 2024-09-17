@@ -23,9 +23,9 @@ export interface FormElements extends HTMLFormControlsCollection {
     timerInterval: HTMLInputElement;
     deleteMode: RadioNodeList;
     notifications: HTMLInputElement;
-    notificationsPermission: HTMLInputElement;
+    // notificationsPermission: HTMLInputElement;
     downloads: HTMLInputElement;
-    downloadsPermission: HTMLInputElement;
+    // downloadsPermission: HTMLInputElement;
     // filterHistory: HTMLInputElement;
     // filterList: HTMLTextAreaElement;
 

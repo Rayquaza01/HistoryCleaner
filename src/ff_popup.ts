@@ -207,18 +207,14 @@ async function load(): Promise<void> {
     // formElements.filterList.value = res.filterList.join("\n");
 
     if (await browser.permissions.contains({ permissions: ["notifications"] })) {
-        formElements.notificationsPermission.checked = res.notifications;
         formElements.notifications.checked = res.notifications;
     } else {
-        formElements.notificationsPermission.checked = false;
         formElements.notifications.checked = false;
     }
 
     if (await browser.permissions.contains({ permissions: ["downloads"] })) {
-        formElements.downloadsPermission.checked = res.notifications;
         formElements.downloads.checked = res.downloads;
     } else {
-        formElements.downloadsPermission.checked = false;
         formElements.downloads.checked = false;
     }
 
@@ -258,18 +254,8 @@ document.addEventListener("DOMContentLoaded", load);
 form.addEventListener("input", save);
 manualDeleteButton.addEventListener("click", manualDelete);
 
-formElements.notificationsPermission.addEventListener("input", (e) => PermissionCheckbox(
-    ["notifications"],
-    formElements.notifications,
-    e
-));
-
-// TODO figure out why this behaves differently?
-formElements.downloadsPermission.addEventListener("input", (e) => PermissionCheckbox(
-    ["downloads"],
-    formElements.downloads,
-    e
-));
+formElements.notifications.addEventListener("click", (e) => PermissionCheckbox(["notifications"], e, save));
+formElements.downloads.addEventListener("click", (e) => PermissionCheckbox(["downloads"], e, save));
 
 uploadButton.addEventListener("click", upload);
 downloadButton.addEventListener("click", download);
