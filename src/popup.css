@@ -249,7 +249,7 @@ details[open] {
 }
 
 img.badge {
-    height: 50px;
+    height: 3em;
 }
 
 a {
@@ -263,4 +263,8 @@ a:hover {
 
 #import-file {
     display: none;
+}
+
+.kofi {
+    height: 3em;
 }
