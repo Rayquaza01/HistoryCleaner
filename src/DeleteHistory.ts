@@ -23,7 +23,7 @@ export async function deleteHistory(opts?: Options): Promise<void> {
         });
 
         if (res.downloads) {
-            await browser.downloads.erase({ endedBefore: end });
+            await browser.downloads.erase({ endedBefore: end.toISOString() });
         }
 
         const notificationBody: string = browser.i18n.getMessage(
