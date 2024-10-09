@@ -14,6 +14,8 @@ export interface OptionsInterface {
 
     // statistics
     lastRun: string;
+
+    icon: "theme" | "icon_circle" | "icon_square" | "icon_circle_gradient" | "icon_square_gradient" | string;
 }
 
 export interface FormElements extends HTMLFormControlsCollection {
@@ -32,6 +34,8 @@ export interface FormElements extends HTMLFormControlsCollection {
     // statistics
     lastRun: HTMLInputElement;
     deleteCount: HTMLInputElement;
+
+    icon: HTMLSelectElement
 }
 
 /** Creates Options object */
@@ -43,6 +47,7 @@ export class Options implements OptionsInterface {
     deleteMode = "timer";
     notifications = false;
     downloads = false;
+    icon = "theme";
     // filterHistory = false
     // filterList = ["example.com", "example.org"]
 
@@ -57,6 +62,8 @@ export class Options implements OptionsInterface {
         if (optionsObj === undefined) {
             return;
         }
+
+        const manifest_version = browser.runtime.getManifest().manifest_version;
 
         if (typeof optionsObj.behavior === "string" && ["disable", "days", "all"].includes(optionsObj.behavior)) {
             this.behavior = optionsObj.behavior;
@@ -83,7 +90,7 @@ export class Options implements OptionsInterface {
         }
 
         // if set to idle on manifest v3, switch to timer
-        if (browser.runtime.getManifest().manifest_version === 3 && this.deleteMode === "idle") {
+        if (manifest_version === 3 && this.deleteMode === "idle") {
             this.deleteMode = "timer";
         }
 
@@ -105,6 +112,14 @@ export class Options implements OptionsInterface {
 
         if (typeof optionsObj.lastRun === "string") {
             this.lastRun = optionsObj.lastRun;
+        }
+
+        if (typeof optionsObj.icon === "string") {
+            this.icon = optionsObj.icon;
+        }
+
+        if (manifest_version === 3 && this.icon === "theme") {
+            this.icon = "icon_circle_gradient";
         }
     }
 }
