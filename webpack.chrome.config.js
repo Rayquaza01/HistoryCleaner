@@ -10,7 +10,7 @@ module.exports = {
     entry: {
         background: __dirname + "/src/cr_background.ts",
         // options: __dirname + "/src/options.ts",
-        popup: __dirname + "/src/cr_popup.ts"
+        popup: __dirname + "/src/ff_popup.ts"
     },
     devtool: "source-map",
     output: {
