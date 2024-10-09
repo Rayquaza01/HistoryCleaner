@@ -1,1 +1,1 @@
-export default "browser" in window ? browser : chrome;
+export default "browser" in self ? browser : chrome;
