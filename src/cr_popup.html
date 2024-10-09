@@ -54,6 +54,12 @@
                             <span class="i18n" data-i18n="behaviorAll"></span>
                         </span>
                     </label>
+
+                    <label>
+                        <!-- <input type="checkbox" id="downloadsPermission" name="downloadsPermission"> -->
+                        <input type="checkbox" id="downloads" name="downloads">
+                        <span class="i18n" data-i18n="optionDownloadsCheckbox"></span>
+                    </label>
                 </div>
 
                 <h2 class="i18n" data-i18n="optionDaysText"></h2>
@@ -104,6 +110,18 @@
                 <label>
                     <input type="checkbox" id="notifications" name="notifications">
                     <span class="i18n" data-i18n="optionNotificationsCheckbox"></span>
+                </label>
+
+                <h2 class="i18n" data-i18n="optionIconText"></h2>
+                <p class="i18n" data-i18n="optionIconInfo"></p>
+                <label>
+                    <select id="icon" name="icon">
+                        <option class="i18n" data-i18n="optionIcon_theme" value="theme" default></option>
+                        <option class="i18n" data-i18n="optionIcon_circle" value="icon_circle"></option>
+                        <option class="i18n" data-i18n="optionIcon_square" value="icon_square"></option>
+                        <option class="i18n" data-i18n="optionIcon_circle_gradient" value="icon_circle_gradient"></option>
+                        <option class="i18n" data-i18n="optionIcon_square_gradient" value="icon_square_gradient"></option>
+                    </select>
                 </label>
             </details>
 

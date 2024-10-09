@@ -83,6 +83,34 @@
     "message": "Clear Download History",
     "description": ""
   },
+  "optionIconText": {
+    "message": "Icon",
+    "description": ""
+  },
+  "optionIconInfo": {
+    "message": "Choose the extension's icon (Defaults to theme icon in Firefox. Defaults to circle gradient icon in Chrome. Theme icons are not supported in Chrome)",
+    "description": ""
+  },
+  "optionIcon_theme": {
+    "message": "Theme Icon",
+    "description": ""
+  },
+  "optionIcon_circle": {
+    "message": "Circle",
+    "description": ""
+  },
+  "optionIcon_square": {
+    "message": "Square",
+    "description": ""
+  },
+  "optionIcon_circle_gradient": {
+    "message": "Circle Gradient",
+    "description": ""
+  },
+  "optionIcon_square_gradient": {
+    "message": "Square Gradient",
+    "description": ""
+  },
   "manualDelete": {
     "message": "Delete History Now",
     "description": ""
