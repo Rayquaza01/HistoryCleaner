@@ -3,6 +3,23 @@ import { deleteHistory } from "./DeleteHistory";
 import { Options } from "./OptionsInterface";
 import { MessageInterface, MessageState, Message } from "./MessageInterface";
 
+function IconLookup(icon: string): string {
+    switch (icon) {
+        case "theme":
+            return "icons/icon-96.png";
+        case "icon_circle":
+            return "icons/icon_red_circle.png";
+        case "icon_circle_gradient":
+            return "icons/icon_red_circle_gradient.png";
+        case "icon_square":
+            return "icons/icon_red_square.png";
+        case "icon_square_gradient":
+            return "icons/icon_red_square_gradient.png";
+        default:
+            return "icons/icon-96.png";
+    }
+}
+
 /**
  * Message listener
  *
@@ -34,7 +51,9 @@ async function onMessage(msg: MessageInterface): Promise<void> {
             // create a new one with new period
             chrome.alarms.create("DeleteHistoryAlarm", { delayInMinutes: 1, periodInMinutes: message.timerInterval });
             break;
-
+        case MessageState.SET_ICON:
+            chrome.action.setIcon({ path: IconLookup(msg.icon) });
+            break;
     }
 }
 
@@ -64,6 +83,8 @@ async function startup(): Promise<void> {
             chrome.alarms.create("DeleteHistoryAlarm", { delayInMinutes: 1, periodInMinutes: res.timerInterval });
             break;
     }
+
+    chrome.action.setIcon({ path: IconLookup(res.icon) });
 }
 
 /**

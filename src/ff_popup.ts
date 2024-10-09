@@ -133,7 +133,9 @@ async function save(e?: Event): Promise<void> {
             // filterHistory: formElements.filterHistory.checked,
             // filterList: formElements.filterList.value.split("\n"),
 
-            lastRun: formElements.lastRun.value
+            lastRun: formElements.lastRun.value,
+
+            icon: formElements.icon.value,
         };
 
         if (opts.behavior === "disable") {
@@ -159,6 +161,10 @@ async function save(e?: Event): Promise<void> {
             } else if ((target.name === "timerInterval" || target.name === "deleteMode") && opts.deleteMode === "timer") {
                 msg.state = MessageState.SET_TIMER;
                 msg.timerInterval = opts.timerInterval;
+                browser.runtime.sendMessage(msg);
+            } else if (target.name === "icon") {
+                msg.state = MessageState.SET_ICON;
+                msg.icon = opts.icon;
                 browser.runtime.sendMessage(msg);
             }
 
@@ -205,6 +211,8 @@ async function load(): Promise<void> {
     formElements.deleteMode.value = res.deleteMode;
     // formElements.filterHistory.checked = res.filterHistory;
     // formElements.filterList.value = res.filterList.join("\n");
+
+    formElements.icon.value = res.icon;
 
     if (await browser.permissions.contains({ permissions: ["notifications"] })) {
         formElements.notifications.checked = res.notifications;
@@ -254,8 +262,8 @@ document.addEventListener("DOMContentLoaded", load);
 form.addEventListener("input", save);
 manualDeleteButton.addEventListener("click", manualDelete);
 
-formElements.notifications.addEventListener("click", (e) => PermissionCheckbox(["notifications"], e, save));
-formElements.downloads.addEventListener("click", (e) => PermissionCheckbox(["downloads"], e, save));
+formElements.notifications.addEventListener("change", (e) => PermissionCheckbox(["notifications"], e, save));
+formElements.downloads.addEventListener("change", (e) => PermissionCheckbox(["downloads"], e, save));
 
 uploadButton.addEventListener("click", upload);
 downloadButton.addEventListener("click", download);
