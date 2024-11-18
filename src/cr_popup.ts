@@ -130,10 +130,13 @@ async function save(e?: Event): Promise<void> {
             idleLength: parseInt(formElements.idleLength.value),
             timerInterval: parseInt(formElements.timerInterval.value),
             notifications: formElements.notifications.checked,
+            downloads: formElements.downloads.checked,
             // filterHistory: formElements.filterHistory.checked,
             // filterList: formElements.filterList.value.split("\n"),
 
-            lastRun: formElements.lastRun.value
+            lastRun: formElements.lastRun.value,
+
+            icon: formElements.icon.value,
         };
 
         if (opts.behavior === "disable") {
@@ -208,6 +211,8 @@ async function load(): Promise<void> {
     // formElements.filterHistory.checked = res.filterHistory;
     // formElements.filterList.value = res.filterList.join("\n");
 
+    formElements.icon.value = res.icon;
+
     if (res.behavior === "disable") {
         nextRun.innerText = browser.i18n.getMessage("statisticsNextRunDisable");
     } else {
@@ -244,7 +249,8 @@ document.addEventListener("DOMContentLoaded", load);
 form.addEventListener("input", save);
 manualDeleteButton.addEventListener("click", manualDelete);
 
-formElements.notifications.addEventListener("input", (e) => PermissionCheckbox(["notifications"], e));
+formElements.notifications.addEventListener("change", (e) => PermissionCheckbox(["notifications"], e, save));
+formElements.downloads.addEventListener("change", (e) => PermissionCheckbox(["downloads"], e, save));
 
 uploadButton.addEventListener("click", upload);
 downloadButton.addEventListener("click", download);
