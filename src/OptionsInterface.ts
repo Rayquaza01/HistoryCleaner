@@ -1,7 +1,7 @@
 import browser from "./we";
 
 /** Shape of options object */
-export interface OptionsInterface {
+export interface OptionsInterface extends Record<string, unknown> {
     behavior: "disable" | "days" | "all" | string;
     days: number;
     idleLength: number;
@@ -53,6 +53,8 @@ export class Options implements OptionsInterface {
 
     lastRun = chrome.i18n.getMessage("lastRunNever");
     deleteCount = 0;
+
+    [key: string]: unknown
 
     /**
      * Creates default options object, with overrides from optionsObj

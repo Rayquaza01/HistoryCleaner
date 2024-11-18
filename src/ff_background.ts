@@ -29,8 +29,9 @@ function IconLookup(icon: string): string {
  *  * Sets delete mode to startup (removes event listener)
  * @param msg The message from the options page
  */
-async function onMessage(msg: MessageInterface): Promise<void> {
-    const message = new Message(msg);
+async function onMessage(msg: unknown): Promise<void> {
+    const message = new Message(msg as Partial<MessageInterface>);
+
     switch (message.state) {
         // manual delete button
         case MessageState.DELETE:
@@ -43,7 +44,7 @@ async function onMessage(msg: MessageInterface): Promise<void> {
                 chrome.idle.onStateChanged.removeListener(idleListener);
             }
             // set idle length
-            chrome.idle.setDetectionInterval(msg.idleLength);
+            chrome.idle.setDetectionInterval(message.idleLength);
             // add idle listener
             chrome.idle.onStateChanged.addListener(idleListener);
 

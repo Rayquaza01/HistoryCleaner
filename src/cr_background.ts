@@ -29,8 +29,8 @@ function IconLookup(icon: string): string {
  *  * Sets delete mode to startup (removes event listener)
  * @param msg The message from the options page
  */
-async function onMessage(msg: MessageInterface): Promise<void> {
-    const message = new Message(msg);
+async function onMessage(msg: unknown): Promise<void> {
+    const message = new Message(msg as Partial<MessageInterface>);
     switch (message.state) {
         // manual delete button
         case MessageState.DELETE:
@@ -52,7 +52,7 @@ async function onMessage(msg: MessageInterface): Promise<void> {
             chrome.alarms.create("DeleteHistoryAlarm", { delayInMinutes: 1, periodInMinutes: message.timerInterval });
             break;
         case MessageState.SET_ICON:
-            chrome.action.setIcon({ path: IconLookup(msg.icon) });
+            chrome.action.setIcon({ path: IconLookup(message.icon) });
             break;
     }
 }

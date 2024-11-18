@@ -9,7 +9,7 @@ export enum MessageState {
 }
 
 /** Shape of message */
-export interface MessageInterface {
+export interface MessageInterface extends Record<string, unknown> {
     state: MessageState;
     idleLength: number;
     timerInterval: number;
@@ -22,6 +22,8 @@ export class Message implements MessageInterface {
     idleLength: number;
     timerInterval: number;
     icon: string;
+
+    [key: string]: unknown;
 
     constructor(msgObj?: Partial<MessageInterface>) {
         this.state = msgObj?.state ?? -1;
