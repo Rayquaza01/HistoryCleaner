@@ -50,11 +50,10 @@ export async function deleteHistory(opts?: Options): Promise<void> {
         await browser.history.deleteAll();
 
         if (res.downloads) {
-            await browser.downloads.erase({ endedBefore: new Date() });
+            await browser.downloads.erase({ endedBefore: new Date().toISOString() });
         }
 
         console.log(notificationBody);
-
         if (res.notifications) {
             browser.notifications.create({
                 type: "basic",
