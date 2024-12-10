@@ -1,6 +1,6 @@
 {
   "name": "history-cleaner",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Firefox addon that deletes history older than a specified amount of days.",
   "main": "index.js",
   "scripts": {

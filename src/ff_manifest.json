@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "__MSG_extensionName__",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "__MSG_extensionDescription__",
   "browser_specific_settings": {
     "gecko": {
