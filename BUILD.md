@@ -1,10 +1,10 @@
-# Building History Cleaner 1.6.0
+# Building History Cleaner 1.7.0
 
 ## System Info
- * Fedora 40
- * node v20.12.2
- * npm 10.5.0
- * bash 5.2.26
+ * Fedora 41
+ * node v22.11.0
+ * npm 10.9.2
+ * bash 5.2.32
  * For tool and library versions, check package.json
 
 # Building Manifest v2 (Firefox)
