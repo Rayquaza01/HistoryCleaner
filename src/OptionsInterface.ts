@@ -51,7 +51,7 @@ export class Options implements OptionsInterface {
     // filterHistory = false
     // filterList = ["example.com", "example.org"]
 
-    lastRun = chrome.i18n.getMessage("lastRunNever");
+    lastRun = browser.i18n.getMessage("lastRunNever");
     deleteCount = 0;
 
     [key: string]: unknown

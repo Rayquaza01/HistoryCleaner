@@ -2,6 +2,7 @@ import { Runtime, Alarms } from "webextension-polyfill";
 import { deleteHistory } from "./DeleteHistory";
 import { Options } from "./OptionsInterface";
 import { MessageInterface, MessageState, Message } from "./MessageInterface";
+import browser from "./we";
 
 function IconLookup(icon: string): string {
     switch (icon) {
@@ -42,17 +43,17 @@ async function onMessage(msg: unknown): Promise<void> {
             break;
         // set startup mode
         case MessageState.SET_STARTUP:
-            chrome.alarms.clear("DeleteHistoryAlarm");
+            browser.alarms.clear("DeleteHistoryAlarm");
             break;
         case MessageState.SET_TIMER:
             // delete old alarm
-            chrome.alarms.clear("DeleteHistoryAlarm");
+            browser.alarms.clear("DeleteHistoryAlarm");
 
             // create a new one with new period
-            chrome.alarms.create("DeleteHistoryAlarm", { delayInMinutes: 1, periodInMinutes: message.timerInterval });
+            browser.alarms.create("DeleteHistoryAlarm", { delayInMinutes: 1, periodInMinutes: message.timerInterval });
             break;
         case MessageState.SET_ICON:
-            chrome.action.setIcon({ path: IconLookup(message.icon) });
+            browser.action.setIcon({ path: IconLookup(message.icon) });
             break;
     }
 }
@@ -69,7 +70,7 @@ async function onAlarm(alarm: Alarms.Alarm) {
  *  * Deletes history if set delete mode set to startup
  */
 async function startup(): Promise<void> {
-    const res = new Options(await chrome.storage.local.get());
+    const res = new Options(await browser.storage.local.get());
     switch (res.deleteMode) {
         case "idle":
             // should never run on chrome!
@@ -80,11 +81,11 @@ async function startup(): Promise<void> {
             break;
         // if delete mode is timer, set alarm to run at timer interval
         case "timer":
-            chrome.alarms.create("DeleteHistoryAlarm", { delayInMinutes: 1, periodInMinutes: res.timerInterval });
+            browser.alarms.create("DeleteHistoryAlarm", { delayInMinutes: 1, periodInMinutes: res.timerInterval });
             break;
     }
 
-    chrome.action.setIcon({ path: IconLookup(res.icon) });
+    browser.action.setIcon({ path: IconLookup(res.icon) });
 }
 
 /**
@@ -96,8 +97,8 @@ async function startup(): Promise<void> {
 async function setup(installed: Runtime.OnInstalledDetailsType): Promise<void> {
     if (installed.reason === "install" || installed.reason === "update") {
         // apply default values to storage
-        const res = new Options(await chrome.storage.local.get());
-        await chrome.storage.local.set(res);
+        const res = new Options(await browser.storage.local.get());
+        await browser.storage.local.set(res);
 
         // initialize sync object
         // doing this in manifest v3 causes the bg script to get unloaded
@@ -109,12 +110,12 @@ async function setup(installed: Runtime.OnInstalledDetailsType): Promise<void> {
         startup();
         // open options page on first install
         if (installed.reason === "install") {
-            chrome.runtime.openOptionsPage();
+            browser.runtime.openOptionsPage();
         }
     }
 }
 
-chrome.alarms.onAlarm.addListener(onAlarm);
-chrome.runtime.onMessage.addListener(onMessage);
-chrome.runtime.onInstalled.addListener(setup);
-chrome.runtime.onStartup.addListener(startup);
+browser.alarms.onAlarm.addListener(onAlarm);
+browser.runtime.onMessage.addListener(onMessage);
+browser.runtime.onInstalled.addListener(setup);
+browser.runtime.onStartup.addListener(startup);
