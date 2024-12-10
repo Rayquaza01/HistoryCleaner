@@ -38,6 +38,9 @@ Firefox addon that deletes history older than a specified amount of days.
 * `notifications`
     * Used to send a notification when history is cleared
     * Notifications are only sent if the user enables notifications in options
+* `downloads`
+    * Used to clear download history
+    * Download history is only cleared if user enables the option
 * `alarms`
     * Used to set a timer for the timer trigger mode.
 
