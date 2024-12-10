@@ -56,7 +56,7 @@ Clone this repository, and run `npm install` to install necessary dependencies a
 
 ## Acknowledgements
 
-Icons used in History Cleaner are from [Pictogrammers](https://pictogrammers.com/), formerly Material Design Icons. ([Pictogrammers Free License](https://pictogrammers.com/docs/general/license/))
+Icons used in History Cleaner are from [Pictogrammers](https://pictogrammers.com/). ([Pictogrammers Free License](https://pictogrammers.com/docs/general/license/))
 
 ## Links
 
