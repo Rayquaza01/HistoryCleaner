@@ -1,12 +1,11 @@
-v1.6.0 Changelog
+v1.7.0 Changelog
 
-[Firefox]
-
-Maintenance update, keep parity with Chrome
+* Add option to clear download history.
+* Add option to change icon.
+* Download and Notification permissions are now again.
 
 [Chrome]
 
-Migrate to Manifest v3
-Fix bug where notification would always display when deleting all history (<a href="https://github.com/Rayquaza01/HistoryCleaner/issues/34">#34</a>) (was fixed in 1.5.1 on Firefox)
-Changed default trigger mode to timer
-Remove idle support (See <a href="https://github.com/Rayquaza01/HistoryCleaner/issues/30">#30</a>)
+* Change default icon.
+* Disable theme icon, as theme icons aren't supported in Chrome.
+* [Known Issue] The optional permission checkboxes close the popup in Chrome. They *should* work as expected, but you may want to toggle them from `chrome://extensions` instead.
