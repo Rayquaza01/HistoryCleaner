@@ -2,7 +2,7 @@ v1.7.0 Changelog
 
 * Add option to clear download history.
 * Add option to change icon.
-* Download and Notification permissions are now again.
+* Download and Notification permissions are now optional.
 
 [Chrome]
 
