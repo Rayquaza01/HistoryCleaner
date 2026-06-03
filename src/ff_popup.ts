@@ -25,6 +25,8 @@ const exportButton = document.querySelector("#export") as HTMLAnchorElement;
 const importButton = document.querySelector("#import") as HTMLButtonElement;
 const importFile = document.querySelector("#import-file") as HTMLInputElement;
 
+const submitButton = document.querySelector("#activate") as HTMLButtonElement;
+
 // manual delete button
 const manualDeleteButton = document.querySelector("#manual-delete") as HTMLButtonElement;
 
@@ -114,6 +116,37 @@ function importConfig() {
 }
 
 /**
+ * Sets dirty flag in storage when extension is activated or behavior is changed
+ * Extension will not activate until dirty flag is cleared, or browser is restarted
+ * @param e event
+ */
+function markSettingsDirty(e?: Event): void {
+    let target = e?.target as HTMLInputElement | undefined;
+
+    if (target?.name === "behavior") {
+        // if behavior is ENABLED, mark settings DIRTY
+        //  history will not be cleared until settings are confirmed
+        // if behavior is DISABLED, mark settings CLEAN
+        //  since no destructive things can occur while disabled, don't need confirmation
+        if (target.value !== "disable") {
+            submitButton.classList.add("ready");
+            browser.storage.local.set({ dirty: true });
+        } else {
+            markSettingsClean();
+        }
+    }
+}
+
+/**
+ * Clears dirty flag in storage
+ * Extension will activate when dirty flag is cleared
+ */
+function markSettingsClean(): void {
+    submitButton.classList.remove("ready");
+    browser.storage.local.set({ dirty: false })
+}
+
+/**
  * Saves inputs on options page to storage
  *  * Runs when input is changed by user
  *  * If user input is not valid, does not save
@@ -122,6 +155,8 @@ function importConfig() {
  */
 async function save(e?: Event): Promise<void> {
     if (form.checkValidity()) {
+        submitButton.classList.remove("ready");
+
         const opts: OptionsInterface = {
             behavior: formElements.behavior.value,
             days: parseInt(formElements.days.value),
@@ -228,6 +263,9 @@ async function load(): Promise<void> {
 
     if (res.behavior === "disable") {
         nextRun.innerText = browser.i18n.getMessage("statisticsNextRunDisable");
+    } else if (res.dirty) {
+        nextRun.innerText = browser.i18n.getMessage("statisticsUnsavedChanges");
+        submitButton.classList.add("ready");
     } else {
         const alarm = await browser.alarms.get("DeleteHistoryAlarm");
         if (res.deleteMode === "timer" && alarm !== undefined) {
@@ -247,7 +285,7 @@ async function load(): Promise<void> {
     formElements.lastRun.value = res.lastRun;
     lastRunVisible.innerText = res.lastRun;
 
-    if (res.behavior === "disable") {
+    if (res.behavior === "disable" || res.dirty) {
         manualDeleteButton.disabled = true;
     } else {
         manualDeleteButton.disabled = false;
@@ -260,6 +298,12 @@ async function load(): Promise<void> {
 document.addEventListener("DOMContentLoaded", load);
 // notificationRequestButton.getElement().addEventListener("click", togglePermission);
 form.addEventListener("input", save);
+form.addEventListener("input", markSettingsDirty);
+
+submitButton.addEventListener("click", markSettingsClean);
+form.addEventListener("submit", save);
+form.addEventListener("submit", markSettingsClean);
+
 manualDeleteButton.addEventListener("click", manualDelete);
 
 formElements.notifications.addEventListener("change", (e) => PermissionCheckbox(["notifications"], e, save));

@@ -13,6 +13,8 @@
 
     --accent-bg: #a51d2d;
     --accent-color: #ffffff;
+
+    --save-bg: #26A269;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -53,6 +55,17 @@ header {
     width: 100%;
 
     margin-bottom: 10px;
+
+    position: sticky;
+    top: 0;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    h1 {
+        flex-grow: 1
+    }
 }
 
 svg path {
@@ -267,4 +280,26 @@ a:hover {
 
 .kofi {
     height: 3em;
+}
+
+#activateSection {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    height: 2em;
+}
+
+#activate {
+    margin-right: 10px;
+}
+
+#activate.ready {
+    background-color: var(--save-bg);
+    color: white;
+
+    svg path {
+        fill: white;
+    }
 }

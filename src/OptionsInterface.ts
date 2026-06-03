@@ -2,6 +2,7 @@ import browser from "./we";
 
 /** Shape of options object */
 export interface OptionsInterface extends Record<string, unknown> {
+    dirty: boolean;
     behavior: "disable" | "days" | "all" | string;
     days: number;
     idleLength: number;
@@ -40,6 +41,7 @@ export interface FormElements extends HTMLFormControlsCollection {
 
 /** Creates Options object */
 export class Options implements OptionsInterface {
+    dirty = false;
     behavior = "disable";
     days = 0;
     idleLength = 60;
@@ -66,6 +68,10 @@ export class Options implements OptionsInterface {
         }
 
         const manifest_version = browser.runtime.getManifest().manifest_version;
+
+        if (typeof optionsObj.dirty === "boolean") {
+            this.dirty = optionsObj.dirty;
+        }
 
         if (typeof optionsObj.behavior === "string" && ["disable", "days", "all"].includes(optionsObj.behavior)) {
             this.behavior = optionsObj.behavior;

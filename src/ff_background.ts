@@ -103,6 +103,10 @@ function idleListener(state: Idle.IdleState): void {
  *  * Deletes history if set delete mode set to startup
  */
 async function startup(): Promise<void> {
+    // clear dirty flag on browser startup
+    // any unsaved changes will be committed when browser restarts!
+    await browser.storage.local.set({ dirty: false });
+
     const res = new Options(await browser.storage.local.get());
 
     switch (res.deleteMode) {

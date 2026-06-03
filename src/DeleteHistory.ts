@@ -10,6 +10,11 @@ import { Options } from "./OptionsInterface";
  */
 export async function deleteHistory(opts?: Options): Promise<void> {
     const res = opts ?? new Options(await browser.storage.local.get());
+    // don't delete history if settings are dirty
+    if (res.dirty) {
+        return;
+    }
+
     if (res.behavior === "days") {
         const end = new Date();
         end.setHours(0);

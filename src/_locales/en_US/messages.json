@@ -280,5 +280,13 @@
   "resetStatistics": {
     "message": "Delete Statistics",
     "description": ""
+  },
+  "activateButton": {
+    "message": "Save Settings",
+    "description": ""
+  },
+  "statisticsUnsavedChanges": {
+    "message": "History will not be cleared because there are unsaved changes.",
+    "description": ""
   }
 }
