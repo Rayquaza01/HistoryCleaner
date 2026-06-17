@@ -1,0 +1,284 @@
+{
+  "extensionName": {
+    "message": "History Cleaner",
+    "description": "Назва розширення"
+  },
+  "extensionDescription": {
+    "message": "Стирає історію, давнішу за вказану кількість днів.",
+    "description": "Опис розширення"
+  },
+  "optionDaysText": {
+    "message": "Скільки днів зберігати історію",
+    "description": ""
+  },
+  "optionDaysInfo": {
+    "message": "З історії стиратимуться записи, створені стільки днів тому опівночі або раніше. Не діє, якщо поведінку вимкнено або налаштовано стирання всієї історії. (Типово 0)",
+    "description": ""
+  },
+  "optionIdleLengthText": {
+    "message": "Тривалість бездіяльності",
+    "description": ""
+  },
+  "optionIdleLengthInfo": {
+    "message": "Стільки секунд у браузері не повинно відбуватись жодних дій, перш ніж спрацює розширення. (Типово 60, мінімум 15)",
+    "description": ""
+  },
+  "optionTimerIntervalText": {
+    "message": "Інтервал таймера",
+    "description": ""
+  },
+  "optionTimerIntervalInfo": {
+    "message": "Хвилин між спрацюваннями. (Типово 1440 хвилин, або 24 години; мінімум 1)",
+    "description": ""
+  },
+  "optionDeleteModeText": {
+    "message": "Режим спрацювання",
+    "description": ""
+  },
+  "optionDeleteModeInfo": {
+    "message": "Розширення може спрацьовувати при бездіяльності, при запуску браузера чи за таймером. (Типово — при бездіяльності)",
+    "description": ""
+  },
+  "optionDeleteModeInfoManifestv3": {
+    "message": "Розширення може спрацьовувати при запуску браузера чи за таймером. (Типово — за таймером)",
+    "description": ""
+  },
+  "optionDeleteModeIdle": {
+    "message": "Бездіяльність",
+    "description": ""
+  },
+  "optionDeleteModeStartup": {
+    "message": "Запуск",
+    "description": ""
+  },
+  "optionDeleteModeAlarm": {
+    "message": "Таймер",
+    "description": ""
+  },
+  "optionNotificationsText": {
+    "message": "Сповіщення",
+    "description": ""
+  },
+  "optionNotificationsInfo": {
+    "message": "При натиску кнопки внизу браузер попросить вас дозволити сповіщення. Видавши дозвіл, поставте пташку «Сповіщати про стирання», щоб дізнаватись про стирання історії.",
+    "description": ""
+  },
+  "optionNotificationsInfoNew": {
+    "message": "Чи потрібні сповіщення про стирання історії.",
+    "description": ""
+  },
+  "optionNotificationsCheckbox": {
+    "message": "Сповіщати про стирання",
+    "description": ""
+  },
+  "optionDownloadsText": {
+    "message": "Завантаження",
+    "description": ""
+  },
+  "optionDownloadsInfo": {
+    "message": "Стирати історію завантажень",
+    "description": ""
+  },
+  "optionDownloadsCheckbox": {
+    "message": "Стирати історію завантажень",
+    "description": ""
+  },
+  "optionIconText": {
+    "message": "Піктограма",
+    "description": ""
+  },
+  "optionIconInfo": {
+    "message": "Оберіть піктограму розширення (типово: в Firefox — піктограма теми, в Chrome — коло з градієнтом, бо він не підтримує піктограм теми)",
+    "description": ""
+  },
+  "optionIcon_theme": {
+    "message": "Піктограма теми",
+    "description": ""
+  },
+  "optionIcon_circle": {
+    "message": "Коло",
+    "description": ""
+  },
+  "optionIcon_square": {
+    "message": "Квадрат",
+    "description": ""
+  },
+  "optionIcon_circle_gradient": {
+    "message": "Коло з градієнтом",
+    "description": ""
+  },
+  "optionIcon_square_gradient": {
+    "message": "Квадрат із градієнтом",
+    "description": ""
+  },
+  "manualDelete": {
+    "message": "Стерти історію зараз",
+    "description": ""
+  },
+  "manualDeleteInfo": {
+    "message": "Натисніть кнопку, щоб стерти історію достроково.",
+    "description": ""
+  },
+  "sync": {
+    "message": "Синхронізація",
+    "description": ""
+  },
+  "syncUp": {
+    "message": "Вивантажити параметри в Sync",
+    "description": ""
+  },
+  "syncDown": {
+    "message": "Завантажити параметри з Sync",
+    "description": ""
+  },
+  "exportConfig": {
+    "message": "Експортувати параметри до файлу",
+    "description": ""
+  },
+  "importConfig": {
+    "message": "Імпортувати параметри з файлу",
+    "description": ""
+  },
+  "notificationRequest": {
+    "message": "Запитати дозвіл на сповіщення",
+    "description": ""
+  },
+  "notificationRevoke": {
+    "message": "Скасувати дозвіл на сповіщення",
+    "description": ""
+  },
+  "notificationEnabled": {
+    "message": "Сповіщення ввімкнено!",
+    "description": ""
+  },
+  "notificationEnabledBody": {
+    "message": "При стиранні історії буде показано сповіщення",
+    "description": ""
+  },
+  "historyDeletedNotification": {
+    "message": "Історію стерто",
+    "description": ""
+  },
+  "historyDeletedNotificationBody": {
+    "message": "Історію до $END$ стерто $NOW$.",
+    "description": "",
+    "placeholders": {
+      "end": {
+        "content": "$1",
+        "example": ""
+      },
+      "now": {
+        "content": "$2",
+        "example": ""
+      }
+    }
+  },
+  "historyAllDeleted": {
+    "message": "Всю історію стерто $NOW$.",
+    "description": "",
+    "placeholders": {
+      "now": {
+        "content": "$1",
+        "example": ""
+      }
+    }
+  },
+  "optionBehaviorText": {
+    "message": "Поведінка розширення",
+    "description": ""
+  },
+  "optionBehaviorInfo": {
+    "message": "Яку історію слід стирати при спрацюванні.",
+    "description": ""
+  },
+  "behaviorDisable": {
+    "message": "Вимкнено",
+    "description": ""
+  },
+  "behaviorDays": {
+    "message": "Стирати історію, давнішу за обрану кількість днів",
+    "description": ""
+  },
+  "behaviorAll": {
+    "message": "Стирати всю історію",
+    "description": ""
+  },
+  "optionFilterHistoryText": {
+    "message": "Фільтрувати історію",
+    "description": ""
+  },
+  "optionFilterHistoryInfo": {
+    "message": "Не стирати історії окремих сайтів. Якщо ввімкнено, рахуватиметься загальна кількість стертих записів.",
+    "description": ""
+  },
+  "optionFilterHistoryCheckbox": {
+    "message": "Не стирати сайтів",
+    "description": ""
+  },
+  "optionFilterListText": {
+    "message": "Список фільтрування",
+    "description": ""
+  },
+  "optionFilterListInfo": {
+    "message": "Записи про ці сайти не стиратимуться. Поставте пташку «Фільтрувати історію», щоб це працювало. Введіть домени, яких не слід стирати — по одному на рядок.",
+    "description": ""
+  },
+  "statisticsSection": {
+    "message": "Статистика",
+    "description": ""
+  },
+  "optionsSection": {
+    "message": "Параметри",
+    "description": ""
+  },
+  "syncSection": {
+    "message": "Синхронізація",
+    "description": ""
+  },
+  "extrasSection": {
+    "message": "Додатково",
+    "description": ""
+  },
+  "statisticsLastRun": {
+    "message": "Історію востаннє стерто",
+    "description": ""
+  },
+  "statisticsNextRunDisable": {
+    "message": "Історії не буде стерто автоматично.",
+    "description": ""
+  },
+  "statisticsNextRunIdle": {
+    "message": "Історію буде стерто при бездіяльності браузера.",
+    "description": ""
+  },
+  "statisticsNextRunStartup": {
+    "message": "Історію буде стерто при наступному запуску браузера.",
+    "description": ""
+  },
+  "statisticsNextRunTimer": {
+    "message": "Історію буде стерто через $TIMER$.",
+    "description": "",
+    "placeholders": {
+      "timer": {
+        "content": "$1",
+        "example": ""
+      }
+    }
+  },
+  "statisticsDeleteCount": {
+    "message": "Усього стерто записів історії",
+    "description": ""
+  },
+  "statisticsDeleteCountWarning": {
+    "message": "(Статистика збирається, якщо ввімкнено фільтрування історії)",
+    "description": ""
+  },
+  "lastRunNever": {
+    "message": "Історії ще не було стерто жодного разу.",
+    "description": ""
+  },
+  "resetStatistics": {
+    "message": "Стерти статистику",
+    "description": ""
+  }
+}
