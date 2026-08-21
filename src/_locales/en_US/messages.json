@@ -288,5 +288,121 @@
   "statisticsUnsavedChanges": {
     "message": "History will not be cleared because there are unsaved changes.",
     "description": ""
+  },
+  "optionRegexCleanCheckbox": {
+    "message": "Enable regex clean section",
+    "description": ""
+  },
+  "regexCleanSection": {
+    "message": "Regex Clean",
+    "description": ""
+  },
+  "regexCleanInfo": {
+    "message": "Preview/Delete history entries whose URL matches a regular expression.",
+    "description": ""
+  },
+  "regexCleanPatternLabel": {
+    "message": "Regular expression",
+    "description": ""
+  },
+  "regexCleanFlagIgnoreCase": {
+    "message": "Case insensitive (i)",
+    "description": ""
+  },
+  "regexCleanFlagUnicode": {
+    "message": "Unicode (u)",
+    "description": ""
+  },
+  "regexCleanRegex101": {
+    "message": "Open in regex101.com",
+    "description": ""
+  },
+  "regexCleanPreview": {
+    "message": "Preview Matches",
+    "description": ""
+  },
+  "regexCleanDelete": {
+    "message": "Delete Matches",
+    "description": ""
+  },
+  "regexCleanMatchCount": {
+    "message": "$COUNT$ matches",
+    "description": "",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": ""
+      }
+    }
+  },
+  "regexCleanNoMatches": {
+    "message": "No matches",
+    "description": ""
+  },
+  "regexCleanSearchError": {
+    "message": "History search failed",
+    "description": ""
+  },
+  "regexCleanDeleted": {
+    "message": "Deleted $COUNT$ entries",
+    "description": "",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": ""
+      }
+    }
+  },
+  "regexCleanDeleteError": {
+    "message": "History deletion failed",
+    "description": ""
+  },
+  "regexCleanTruncated": {
+    "message": "(capped at $CAP$)",
+    "description": "",
+    "placeholders": {
+      "cap": {
+        "content": "$1",
+        "example": ""
+      }
+    }
+  },
+  "regexCleanShowMore": {
+    "message": "Show $COUNT$ more",
+    "description": "",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": ""
+      }
+    }
+  },
+  "regexCleanSortLabel": {
+    "message": "Sort by",
+    "description": ""
+  },
+  "regexCleanSortLastVisit": {
+    "message": "Last visit",
+    "description": ""
+  },
+  "regexCleanSortVisitCount": {
+    "message": "Visit count",
+    "description": ""
+  },
+  "regexCleanSortUrl": {
+    "message": "URL",
+    "description": ""
+  },
+  "regexCleanRecentPatterns": {
+    "message": "Recent patterns",
+    "description": ""
+  },
+  "regexCleanRemovePattern": {
+    "message": "Remove from recent patterns",
+    "description": ""
+  },
+  "regexCleanPopout": {
+    "message": "Open in window",
+    "description": ""
   }
 }

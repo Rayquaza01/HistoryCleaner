@@ -26,6 +26,12 @@ Firefox addon that deletes history older than a specified amount of days.
     * Interval in minutes between triggering.
     * Only has effect if trigger mode is set to timer.
     * Defaults to 1440 (24 hours), Minimum 1
+* Regex Clean
+    * Manually preview & delete history entries whose URL matches a regular expression.
+    * Supports case-insensitive/unicode flags, live pattern validation.
+    * Results show page title, visit count, visit time, sortable by last visit, visit count, URL.
+    * Recent patterns saved for easy re-use later.
+    * Hidden by default. Enable the section from the Extras section of the popup.
 
 ## Permissions
 

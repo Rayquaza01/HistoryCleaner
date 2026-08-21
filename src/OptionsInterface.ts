@@ -1,5 +1,10 @@
 import browser from "./we";
 
+export interface RegexHistoryEntry {
+    pattern: string;
+    flags: string;
+}
+
 /** Shape of options object */
 export interface OptionsInterface extends Record<string, unknown> {
     dirty: boolean;
@@ -10,6 +15,8 @@ export interface OptionsInterface extends Record<string, unknown> {
     deleteMode: "idle" | "startup" | "timer" | string;
     notifications: boolean;
     downloads: boolean;
+    regexClean: boolean;
+    regexHistory?: RegexHistoryEntry[];
     // filterHistory: boolean;
     // filterList: string[];
 
@@ -28,6 +35,7 @@ export interface FormElements extends HTMLFormControlsCollection {
     notifications: HTMLInputElement;
     // notificationsPermission: HTMLInputElement;
     downloads: HTMLInputElement;
+    regexClean: HTMLInputElement;
     // downloadsPermission: HTMLInputElement;
     // filterHistory: HTMLInputElement;
     // filterList: HTMLTextAreaElement;
@@ -49,6 +57,8 @@ export class Options implements OptionsInterface {
     deleteMode = "timer";
     notifications = false;
     downloads = false;
+    regexClean = false;
+    regexHistory: RegexHistoryEntry[] = [];
     icon = "theme";
     // filterHistory = false
     // filterList = ["example.com", "example.org"]
@@ -108,6 +118,20 @@ export class Options implements OptionsInterface {
 
         if (typeof optionsObj.downloads === "boolean") {
             this.downloads = optionsObj.downloads;
+        }
+
+        if (typeof optionsObj.regexClean === "boolean") {
+            this.regexClean = optionsObj.regexClean;
+        }
+
+        if (Array.isArray(optionsObj.regexHistory)) {
+            const entries: RegexHistoryEntry[] = [];
+            for (const entry of optionsObj.regexHistory) {
+                if (typeof entry === "object" && entry !== null && typeof entry.pattern === "string" && typeof entry.flags === "string") {
+                    entries.push({ pattern: entry.pattern, flags: entry.flags });
+                }
+            }
+            this.regexHistory = entries.slice(0, 10);
         }
 
         // if (typeof optionsObj.filterHistory === "boolean") {

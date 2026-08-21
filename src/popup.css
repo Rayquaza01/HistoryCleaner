@@ -15,6 +15,19 @@
     --accent-color: #ffffff;
 
     --save-bg: #26A269;
+
+    --re-escape: #1565c0;
+    --re-charClass: #6a1b9a;
+    --re-quantifier: #2e7d32;
+    --re-group: #e65100;
+    --re-alternation: #c62828;
+    --re-anchor: #00838f;
+    --regex-valid: #30e60b;
+    --regex-invalid: #ff4f5e;
+    --regex-tint-bg: rgba(128, 128, 128, 0.12);
+    --regex-tint-line: rgba(128, 128, 128, 0.25);
+    --regex-tint-border: rgba(128, 128, 128, 0.35);
+    --regex-tint-scroll: rgba(128, 128, 128, 0.5);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -30,6 +43,13 @@
 
         --hover: #3d3846;
         --pressed: #5e5c64;
+
+        --re-escape: #64b5f6;
+        --re-charClass: #ce93d8;
+        --re-quantifier: #81c784;
+        --re-group: #ffb74d;
+        --re-alternation: #e57373;
+        --re-anchor: #4dd0e1;
     }
 }
 
@@ -302,4 +322,266 @@ a:hover {
     svg path {
         fill: white;
     }
+}
+
+#regex-results-card {
+    background: var(--regex-tint-bg);
+    border: 1px solid var(--regex-tint-border);
+    border-radius: 4px;
+    padding: 8px;
+}
+
+#regex-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 6px;
+}
+
+#regex-count {
+    opacity: 0.8;
+    font-size: 0.9em;
+}
+
+#regex-results {
+    max-height: 320px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--regex-tint-scroll) transparent;
+}
+
+#regex-results::-webkit-scrollbar {
+    width: 8px;
+}
+
+#regex-results::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#regex-results::-webkit-scrollbar-thumb {
+    background: var(--regex-tint-scroll);
+    border-radius: 4px;
+}
+
+#regex-results details {
+    border-bottom: 1px solid var(--regex-tint-line);
+}
+
+#regex-results summary {
+    cursor: pointer;
+    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    font-size: 12px;
+    padding: 6px 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#regex-results ul {
+    list-style: none;
+    padding-inline-start: 16px;
+    margin: 0;
+}
+
+#regex-results li {
+    padding: 3px 4px;
+    cursor: pointer;
+}
+
+.regex-row-line {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+}
+
+.regex-row-path {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    font-size: 12px;
+}
+
+.regex-row-meta {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    opacity: 0.6;
+    font-size: 0.8em;
+}
+
+.regex-row-full {
+    display: none;
+}
+
+.regex-show-more {
+    cursor: pointer;
+    opacity: 0.7;
+    font-size: 0.85em;
+}
+
+#regex-results li.expanded .regex-row-full {
+    display: block;
+    word-break: break-all;
+    font-size: 0.85em;
+    opacity: 0.85;
+    padding: 2px 0 4px;
+}
+
+#regex-history {
+    list-style: none;
+    padding-inline-start: 0;
+}
+
+#regex-history li {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 0;
+}
+
+.regex-history-use {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: calc(100% - 28px);
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    text-overflow: "[...]";
+}
+
+.regex-history-flags {
+    opacity: 0.6;
+}
+
+.regex-history-remove {
+    flex: 0 0 auto;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.regex-history-remove svg {
+    width: 14px;
+    height: 14px;
+    margin-right: 0;
+}
+
+.regex-history-remove svg path {
+    fill: var(--regex-invalid);
+}
+
+#regex-pattern.regex-valid {
+    border-color: var(--regex-valid);
+    box-shadow: 0 0 0 1px var(--regex-valid);
+}
+
+#regex-pattern.regex-invalid {
+    border-color: var(--regex-invalid);
+    box-shadow: 0 0 0 1px var(--regex-invalid);
+}
+
+#regex-input-wrap {
+    position: relative;
+}
+
+#regex-pattern {
+    position: relative;
+    padding-right: 28px;
+    background: transparent;
+    color: transparent;
+    caret-color: var(--color);
+    border-color: var(--color);
+}
+
+#regex-pattern,
+#regex-highlight,
+#regex-input-wrap {
+    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    font-size: 13px;
+    line-height: 18px;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+#regex-highlight {
+    position: absolute;
+    inset: 0;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    padding: 10px 28px 10px 10px;
+    background: var(--button-color);
+    white-space: pre;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+#regex-highlight .re-escape, #regex-history .re-escape { color: var(--re-escape); }
+#regex-highlight .re-charClass, #regex-history .re-charClass { color: var(--re-charClass); }
+#regex-highlight .re-quantifier, #regex-history .re-quantifier { color: var(--re-quantifier); }
+#regex-highlight .re-group, #regex-history .re-group { color: var(--re-group); }
+#regex-highlight .re-alternation, #regex-history .re-alternation { color: var(--re-alternation); }
+#regex-highlight .re-anchor, #regex-history .re-anchor { color: var(--re-anchor); }
+#regex-highlight .re-literal, #regex-history .re-literal { color: var(--color); }
+
+#regex-validity {
+    display: none;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#regex-validity.valid,
+#regex-validity.invalid {
+    display: flex;
+    align-items: center;
+}
+
+#regex-validity svg {
+    width: 16px;
+    height: 16px;
+}
+
+#regex-validity.valid .invalid-icon {
+    display: none;
+}
+
+#regex-validity.invalid .valid-icon {
+    display: none;
+}
+
+#regex-validity.valid .valid-icon path {
+    fill: var(--regex-valid);
+}
+
+#regex-validity.invalid .invalid-icon path {
+    fill: var(--regex-invalid);
+}
+
+h2 #regex-101 {
+    margin-left: 8px;
+    font-size: 0.8em;
+    font-weight: normal;
+}
+
+body.regex-popout header,
+body.regex-popout form > details:not(#regex-clean-section),
+body.regex-popout form > input[type="submit"],
+body.regex-popout #regex-popout {
+    display: none;
+}
+
+html:has(body.regex-popout),
+body.regex-popout {
+    width: 100%;
+    max-width: none;
 }
